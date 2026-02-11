@@ -1,0 +1,753 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Tu San Valentín 💗</title>
+  <meta name="theme-color" content="#f4b7c6">
+
+  <style>
+    :root{
+      /* Rosa palo suave */
+      --bg0:#fff2f6;
+      --bg1:#ffe7ee;
+      --bg2:#ffd7e3;
+
+      --cardA: rgba(255,255,255,.72);
+      --cardB: rgba(255,255,255,.55);
+      --stroke: rgba(214, 114, 140, .22);
+
+      --text:#2b0b15;
+      --muted: rgba(43,11,21,.68);
+
+      --pink:#f0648f;
+      --hot:#e94d7a;
+      --rose:#f7a3b7;
+      --lav:#cdb7ff;
+
+      --ok:#2fbf71;
+      --bad:#ff4b55;
+
+      --shadow: 0 18px 55px rgba(43,11,21,.12);
+      --radius: 26px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      color:var(--text);
+      background:
+        radial-gradient(1200px 900px at 10% 10%, rgba(240,100,143,.25), transparent 55%),
+        radial-gradient(900px 700px at 85% 20%, rgba(205,183,255,.18), transparent 55%),
+        radial-gradient(700px 600px at 50% 95%, rgba(247,163,183,.20), transparent 50%),
+        linear-gradient(180deg, var(--bg0), var(--bg1) 45%, var(--bg2));
+      overflow-x:hidden;
+    }
+
+    /* Fondo: corazones flotantes */
+    .hearts{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      overflow:hidden;
+      z-index:0;
+      opacity:.55;
+    }
+    .heart{
+      position:absolute;
+      bottom:-80px;
+      left:0;
+      font-size:18px;
+      opacity:0;
+      text-shadow: 0 12px 26px rgba(43,11,21,.12);
+      filter: saturate(1.05);
+    }
+
+    /* Confetti */
+    canvas#confetti{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      opacity:0;
+      transition: opacity .25s ease;
+      z-index:5;
+    }
+    canvas#confetti.on{opacity:1}
+
+    /* Layout */
+    .wrap{
+      min-height:100%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:22px 14px 30px;
+      position:relative;
+      z-index:1;
+    }
+    .app{ width:min(560px, 100%); }
+
+    .card{
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, var(--cardA), var(--cardB));
+      border:1px solid var(--stroke);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+      padding:18px 16px;
+      overflow:hidden;
+      position:relative;
+    }
+
+    /* Glow top */
+    .card::before{
+      content:"";
+      position:absolute;
+      inset:-2px -2px auto -2px;
+      height:150px;
+      background:
+        radial-gradient(420px 160px at 25% 40%, rgba(240,100,143,.28), transparent 65%),
+        radial-gradient(320px 140px at 78% 10%, rgba(205,183,255,.22), transparent 60%);
+      opacity:.95;
+      pointer-events:none;
+    }
+
+    .top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom:12px;
+      position:relative;
+      z-index:2;
+    }
+
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:9px 11px;
+      border-radius:999px;
+      background: rgba(255,255,255,.65);
+      border:1px solid rgba(214,114,140,.22);
+      color: rgba(43,11,21,.70);
+      font-size:12px;
+      letter-spacing:.2px;
+      user-select:none;
+    }
+
+    .dot{
+      width:10px;height:10px;border-radius:50%;
+      background: var(--hot);
+      box-shadow: 0 0 0 rgba(233,77,122,.35);
+      animation: pulse 1.4s infinite;
+    }
+    @keyframes pulse{
+      0%{box-shadow:0 0 0 0 rgba(233,77,122,.32)}
+      70%{box-shadow:0 0 0 12px rgba(233,77,122,0)}
+      100%{box-shadow:0 0 0 0 rgba(233,77,122,0)}
+    }
+
+    .progress{
+      height:10px;
+      width:100%;
+      background: rgba(255,255,255,.62);
+      border-radius:999px;
+      overflow:hidden;
+      border:1px solid rgba(214,114,140,.20);
+      position:relative;
+      z-index:2;
+    }
+    .bar{
+      height:100%;
+      width:0%;
+      background: linear-gradient(90deg, var(--hot), var(--rose), var(--lav));
+      border-radius:999px;
+      transition: width .35s ease;
+      box-shadow: 0 0 18px rgba(233,77,122,.20);
+    }
+
+    .screen{ display:none; animation: in .38s ease; position:relative; z-index:2; }
+    .screen.active{ display:block; }
+    @keyframes in{
+      from{opacity:0; transform: translateY(10px)}
+      to{opacity:1; transform: translateY(0)}
+    }
+
+    h1,h2{ margin:0 0 10px; }
+    h1{
+      font-size:22px;
+      line-height:1.15;
+      letter-spacing:.2px;
+    }
+    h2{
+      font-size:18px;
+      letter-spacing:.2px;
+    }
+    p{
+      margin:0 0 12px;
+      color: var(--muted);
+      line-height:1.45;
+    }
+    .mini{ font-size:12px; color: rgba(43,11,21,.60); }
+
+    .grid{
+      display:grid;
+      gap:10px;
+      margin-top:12px;
+    }
+
+    .btn{
+      width:100%;
+      border:0;
+      border-radius: 18px;
+      padding:14px 14px;
+      text-align:left;
+      background: rgba(255,255,255,.68);
+      border:1px solid rgba(214,114,140,.22);
+      color:var(--text);
+      font-size:15px;
+      cursor:pointer;
+      transition: transform .06s ease, background .2s ease, border-color .2s ease;
+      position:relative;
+      overflow:hidden;
+    }
+    .btn:hover{
+      background: rgba(255,255,255,.80);
+      border-color: rgba(214,114,140,.32);
+    }
+    .btn:active{ transform: scale(.99); }
+    .btn:disabled{ opacity:.70; cursor:not-allowed; }
+
+    .btn::after{
+      content:"";
+      position:absolute;
+      inset:auto auto -48px -48px;
+      width:150px; height:150px;
+      background: radial-gradient(circle at 30% 30%, rgba(240,100,143,.22), transparent 65%);
+      transform: rotate(20deg);
+      opacity:0;
+      transition: opacity .2s ease;
+      pointer-events:none;
+    }
+    .btn:hover::after{ opacity:1; }
+
+    .btn.primary{
+      text-align:center;
+      background: linear-gradient(90deg, var(--hot), var(--rose), var(--lav));
+      border:0;
+      font-weight:800;
+      letter-spacing:.2px;
+      color: #fff7fb;
+      box-shadow: 0 14px 28px rgba(233,77,122,.18);
+    }
+    .btn.ghost{
+      text-align:center;
+      background: transparent;
+      border:1px dashed rgba(214,114,140,.35);
+      color: rgba(43,11,21,.62);
+    }
+
+    .row{ display:flex; gap:10px; margin-top:12px; }
+    .row .btn{ flex:1; text-align:center; }
+
+    .feedback{
+      margin-top:12px;
+      padding:12px;
+      border-radius: 18px;
+      border:1px solid rgba(214,114,140,.20);
+      background: rgba(255,255,255,.62);
+      display:none;
+    }
+    .feedback.show{ display:block; }
+
+    .tag{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 10px;
+      border-radius:999px;
+      font-size:12px;
+      border:1px solid rgba(214,114,140,.22);
+      background: rgba(255,255,255,.70);
+      color: rgba(43,11,21,.72);
+      user-select:none;
+    }
+    .tag.ok{ border-color: rgba(47,191,113,.28); color: rgba(18,86,52,.92); }
+    .tag.bad{ border-color: rgba(255,75,85,.24); color: rgba(130,18,24,.92); }
+
+    .center{text-align:center}
+    .big{ font-size:40px; margin:10px 0 4px; }
+
+    .loveCard{
+      margin-top:14px;
+      padding:14px;
+      border-radius: 20px;
+      border:1px solid rgba(214,114,140,.20);
+      background: linear-gradient(180deg, rgba(240,100,143,.14), rgba(205,183,255,.10));
+    }
+    .sig{
+      margin-top:10px;
+      font-family: ui-serif, Georgia, "Times New Roman", serif;
+      font-size:16px;
+      color: rgba(43,11,21,.90);
+    }
+
+    .footer{
+      margin-top:12px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      color: rgba(43,11,21,.55);
+      font-size:12px;
+      position:relative;
+      z-index:2;
+    }
+
+    /* Micro shine */
+    .shine{
+      position:absolute;
+      inset:-60px -60px auto auto;
+      width:150px;height:150px;
+      background: radial-gradient(circle, rgba(255,255,255,.50), transparent 65%);
+      transform: rotate(18deg);
+      filter: blur(1px);
+      opacity:.55;
+      pointer-events:none;
+      z-index:1;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="hearts" id="hearts"></div>
+  <canvas id="confetti"></canvas>
+
+  <div class="wrap">
+    <div class="app">
+      <div class="card">
+        <div class="shine"></div>
+
+        <div class="top">
+          <div class="badge"><span class="dot"></span> Misión: tener la suerte de ser mi san valentin.</div>
+          <div class="badge" id="scoreBadge">Puntos: 0</div>
+        </div>
+
+        <div class="progress" aria-label="progreso">
+          <div class="bar" id="bar"></div>
+        </div>
+
+        <!-- INTRO -->
+        <section class="screen active" id="s0">
+          <h1 id="introTitle">💗 Olga, mi amor...</h1>
+          <p id="introText"></p>
+
+          <div class="grid">
+            <button class="btn primary" onclick="start()">Empezar</button>
+          </div>
+
+          <p class="mini" style="margin-top:10px">Funciona offline. Ábrelo en el navegador del móvil.</p>
+        </section>
+
+        <!-- Q1 -->
+        <section class="screen" id="s1">
+          <h2 id="q1_title"></h2>
+          <div class="grid" id="q1"></div>
+          <div class="feedback" id="f1"></div>
+        </section>
+
+        <!-- Q2 -->
+        <section class="screen" id="s2">
+          <h2 id="q2_title"></h2>
+          <div class="grid" id="q2"></div>
+          <div class="feedback" id="f2"></div>
+        </section>
+
+        <!-- Q3 -->
+        <section class="screen" id="s3">
+          <h2 id="q3_title"></h2>
+          <div class="grid" id="q3"></div>
+          <div class="feedback" id="f3"></div>
+        </section>
+
+        <!-- Q4 -->
+        <section class="screen" id="s4">
+          <h2 id="q4_title"></h2>
+          <div class="grid" id="q4"></div>
+          <div class="feedback" id="f4"></div>
+        </section>
+
+        <!-- Q5 -->
+        <section class="screen" id="s5">
+          <h2 id="q5_title"></h2>
+          <div class="grid" id="q5"></div>
+          <div class="feedback" id="f5"></div>
+        </section>
+
+        <!-- RESULT -->
+        <section class="screen" id="s6">
+          <div class="center">
+            <div class="big" id="resultEmoji">💗</div>
+            <h1 id="resultTitle">Resultado</h1>
+            <p id="resultText"></p>
+          </div>
+
+          <div class="loveCard" id="proposalBox" style="display:none">
+            <h2 class="center" style="margin-bottom:6px" id="prizeHeader"></h2>
+            <p class="center" style="margin-bottom:10px">
+              <strong id="proposalLine"></strong>
+            </p>
+            <p class="mini center" id="finalExtra" style="margin:0 0 10px"></p>
+
+            <div class="row">
+              <button class="btn primary" onclick="accept()">Sí 💘</button>
+              <button class="btn" onclick="acceptAlt()">Sí, pero quiero que me invites a comer.</button>
+            </div>
+
+            <div class="sig center" id="signature"></div>
+          </div>
+
+          <div class="grid" style="margin-top:12px">
+            <button class="btn ghost" onclick="resetAll()">Volver al inicio</button>
+          </div>
+        </section>
+
+        <div class="footer">
+          <span id="footerLeft">Hecho con amor para la mejor 💘</span>
+          <span id="footerRight" class="mini"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+  const CONFIG = {
+    introTitle: "💗 Olga, mi amor...",
+    introText: "Michuilta... Te he preparado un mini-quiz. Son cinco preguntas extremadamente complicadas, pero se que me conoces muchísimo, confío en ti.<br>Si aciertas las 5 serás mi san valentin (y si no también jeje).",
+    introMini: "Cinco preguntas. Un premio para ti, porque el mío es tenerte en mi vida",
+
+    prizeHeader: "El premio",
+    proposalLine: "Olga, ¿quieres ser mi San Valentín?, creo que lo mereces, y yo estaría encantado de serlo hoy y siempre",
+    finalExtra: "Yo te elijo siempre, en días chorras como este, y en todos los que le sigan. Perdón por hacer esta lacheada pero ya te dije que estoy medio tonto, y sobre todo enamorado de ti miamor",
+    signature: "Tu gitanillo de ojos chicos"
+  };
+
+  const QUIZ = [
+    {
+      id: "q1", screen: 1,
+      title: "1) ¿De dónde vengo? ¿Cuál es mi sangre?",
+      correct: 0,
+      options: ["Galicia", "Noruega", "Brasileña", "Camerún"],
+      correctFeedback: "Exacto. Galicia en la sangre. Aunque por mi futura esposa hasta me cambio la nacionalidad",
+      wrongFeedback: "No, michuilta… pero me gustas igual 😌"
+    },
+    {
+      id: "q2", screen: 2,
+      title: "2) ¿Cuál es mi comida favorita?",
+      correct: 0,
+      options: ["Olga Fernández Belmonte", "Pulpo", "Croquetas de gambas", "Sopa de la Sonia"],
+      correctFeedback: "En todos tus estados y en todas tus formas, la que más disfruto y la que más alimentado me tiene.",
+      wrongFeedback: "Incorrecto. Era una trampa romántica 😈"
+    },
+    {
+      id: "q3", screen: 3,
+      title: "3) ¿Cuál es mi animal favorito?",
+      correct: 0,
+      options: ["Pantera", "Pulpo", "Rinoceronte", "Camaleona"],
+      correctFeedback: "Mi felina de ojos gigantes, colmillos afilados y pelaje denso y sedoso",
+      wrongFeedback: "Nope. Pero te perdono porque eres tú."
+    },
+    {
+      id: "q4", screen: 4,
+      title: "4) ¿Mi hobby favorito?",
+      correct: 0,
+      options: ["Comer freixos al atardecer con michulita al lado", "Generar imágenes con IA", "Boxear", "Dormir"],
+      correctFeedback: "Esta es la más fácil de todas, el momento que siempre recuerdo, donde quiero estar y sobre todo con quien quiero estar.",
+      wrongFeedback: "Casi… pero no. Te falta esa escena."
+    },
+    {
+      id: "q5", screen: 5,
+      title: "5) ¿Cuál es la mejor forma de pasar mi 14 de febrero?",
+      correct: 0,
+      options: ["Comiendo rico con mi amor", "Trabajar todo el día", "Leerme el Quijote", "Jugar al Clash Royale"],
+      correctFeedback: "No se me ocurre mejor forma de pasar ese día, ni ningún otro...",
+      wrongFeedback: "No. Eso es un 14F triste y no lo vamos a permitir."
+    }
+  ];
+
+  const TOTAL_SCREENS = 6;
+  let score = 0;
+  let step = 0;
+
+  const $ = (id) => document.getElementById(id);
+
+  function setFooter(){
+    const d = new Date();
+    const dd = d.toLocaleDateString("es-ES", { year:"numeric", month:"long", day:"numeric" });
+    $("footerRight").textContent = dd;
+  }
+
+  function updateScore(){ $("scoreBadge").textContent = `Puntos: ${score}`; }
+
+  function setProgress(){
+    const pct = step === 0 ? 0 : Math.round((step-1) / TOTAL_SCREENS * 100);
+    $("bar").style.width = `${pct}%`;
+  }
+
+  function show(screenIndex){
+    for(let i=0;i<=6;i++){
+      const el = $("s"+i);
+      if(el) el.classList.remove("active");
+    }
+    $("s"+screenIndex).classList.add("active");
+    step = screenIndex;
+    setProgress();
+  }
+
+  function hydrateStaticText(){
+    $("introTitle").textContent = CONFIG.introTitle;
+    $("introText").innerHTML = CONFIG.introText + `<br><span class="mini">${CONFIG.introMini}</span>`;
+    $("prizeHeader").textContent = CONFIG.prizeHeader;
+    $("proposalLine").textContent = CONFIG.proposalLine;
+    $("finalExtra").textContent = CONFIG.finalExtra;
+    $("signature").textContent = CONFIG.signature;
+  }
+
+  function hydrateQuestions(){
+    QUIZ.forEach((q) => {
+      $("q"+q.screen+"_title").textContent = q.title;
+
+      const host = $(q.id);
+      host.innerHTML = "";
+      q.options.forEach((opt, i) => {
+        const b = document.createElement("button");
+        b.className = "btn";
+        b.textContent = opt;
+        b.onclick = () => answer(q, i);
+        host.appendChild(b);
+      });
+    });
+  }
+
+  function start(){
+    score = 0;
+    updateScore();
+    QUIZ.forEach(q=>{
+      const host = $(q.id);
+      if(host) Array.from(host.querySelectorAll("button")).forEach(btn => btn.disabled = false);
+      const fb = $("f"+q.screen);
+      if(fb){ fb.className = "feedback"; fb.innerHTML = ""; }
+    });
+    stopConfetti();
+    show(1);
+  }
+
+  function resetAll(){
+    stopConfetti();
+    score = 0;
+    updateScore();
+    QUIZ.forEach(q=>{
+      const host = $(q.id);
+      if(host) Array.from(host.querySelectorAll("button")).forEach(btn => btn.disabled = false);
+      const fb = $("f"+q.screen);
+      if(fb){ fb.className = "feedback"; fb.innerHTML = ""; }
+    });
+    $("proposalBox").style.display = "none";
+    show(0);
+  }
+
+  function answer(q, optionIndex){
+    const fb = $("f" + q.screen);
+    const isCorrect = optionIndex === q.correct;
+
+    const host = $(q.id);
+    Array.from(host.querySelectorAll("button")).forEach(btn => btn.disabled = true);
+
+    fb.className = "feedback show";
+    fb.innerHTML = isCorrect
+      ? `<div class="tag ok">✅ Correcto</div><p style="margin:10px 0 0">${q.correctFeedback}</p>`
+      : `<div class="tag bad">❌ Casi</div><p style="margin:10px 0 0">${q.wrongFeedback}</p>`;
+
+    if(isCorrect){
+      score += 2;
+      updateScore();
+    }
+
+    const nextBtn = document.createElement("button");
+    nextBtn.className = "btn primary";
+    nextBtn.textContent = q.screen === 5 ? "Ver el premio 💝" : "Siguiente 💗";
+    nextBtn.onclick = () => {
+      fb.className = "feedback";
+      fb.innerHTML = "";
+      show(q.screen + 1);
+      if(q.screen + 1 === 6) renderResult();
+    };
+
+    const spacer = document.createElement("div");
+    spacer.style.height = "10px";
+    fb.appendChild(spacer);
+    fb.appendChild(nextBtn);
+  }
+
+  function renderResult(){
+    const max = QUIZ.length * 2;
+    const pct = Math.round((score / max) * 100);
+
+    let title, text, emoji;
+    if(pct === 100){
+      emoji = "💘";
+      title = "Perfecto. 5/5.";
+      text = "Te lo sabías todo. Y yo ya lo sabía: tú eres mi persona.";
+    } else if(pct >= 60){
+      emoji = "💝";
+      title = "Muy bien, michuilta.";
+      text = `Has sacado ${score}/${max}. Me basta. El premio es tuyo igualmente.`;
+    } else {
+      emoji = "💗";
+      title = "Da igual.";
+      text = `Has sacado ${score}/${max}. Pero esto no es un examen: es una excusa para decirte lo que siento.`;
+    }
+
+    $("resultEmoji").textContent = emoji;
+    $("resultTitle").textContent = title;
+    $("resultText").textContent = text;
+
+    $("proposalBox").style.display = "block";
+    startConfetti();
+  }
+
+  function accept(){
+    startConfetti(true);
+    $("resultTitle").textContent = "Sí aceptado 💘";
+    $("resultText").textContent = "me haces el hombre más feliz y enamorado de este triste mundo, te invito a comer.";
+  }
+
+  function acceptAlt(){
+    startConfetti(true);
+    $("resultTitle").textContent = "Deseo concedido 💘";
+    $("resultText").textContent = "Deseo concedido, te invito a comer todo lo que te quepa y más, pero de postre te como yo a ti.";
+  }
+
+  /**********************
+   * CORAZONES FLOTANTES
+   **********************/
+  const heartLayer = document.getElementById("hearts");
+  const heartGlyphs = ["💗","💖","💘","💝","💕","❤️"];
+  function spawnHearts(){
+    heartLayer.innerHTML = "";
+    const n = 28;
+    for(let i=0;i<n;i++){
+      const h = document.createElement("div");
+      h.className = "heart";
+      h.textContent = heartGlyphs[Math.floor(Math.random()*heartGlyphs.length)];
+
+      const left = Math.random()*100;
+      const size = 14 + Math.random()*22;
+      const dur = 9 + Math.random()*10;
+      const delay = Math.random()*6;
+      const drift = (Math.random()*2 - 1) * 35;
+
+      h.style.left = left + "vw";
+      h.style.fontSize = size + "px";
+
+      h.animate([
+        { transform: "translateY(0) translateX(0) scale(.9)", opacity: 0 },
+        { opacity: .75, offset: .12 },
+        { opacity: .75, offset: .88 },
+        { transform: `translateY(-120vh) translateX(${drift}px) scale(1.35)`, opacity: 0 }
+      ], { duration: dur*1000, iterations: Infinity, delay: delay*1000, easing: "linear" });
+
+      heartLayer.appendChild(h);
+    }
+  }
+
+  /**********************
+   * CONFETTI
+   **********************/
+  const canvas = document.getElementById("confetti");
+  const ctx = canvas.getContext("2d");
+  let confettiOn = false;
+  let pieces = [];
+  let raf = null;
+
+  function resize(){
+    canvas.width = window.innerWidth * devicePixelRatio;
+    canvas.height = window.innerHeight * devicePixelRatio;
+    canvas.style.width = window.innerWidth + "px";
+    canvas.style.height = window.innerHeight + "px";
+  }
+  window.addEventListener("resize", resize);
+
+  function pickColor(){
+    const colors = [
+      "rgba(233,77,122,.92)",
+      "rgba(247,163,183,.92)",
+      "rgba(205,183,255,.92)",
+      "rgba(255,255,255,.92)"
+    ];
+    return colors[Math.floor(Math.random()*colors.length)];
+  }
+
+  function startConfetti(extra=false){
+    resize();
+    canvas.classList.add("on");
+    confettiOn = true;
+    pieces = [];
+    const n = extra ? 240 : 150;
+    for(let i=0;i<n;i++){
+      pieces.push({
+        x: Math.random()*canvas.width,
+        y: (Math.random()*canvas.height) - canvas.height,
+        s: (Math.random()*2+1.6) * devicePixelRatio,
+        a: Math.random()*Math.PI*2,
+        w: (Math.random()*10+6) * devicePixelRatio,
+        h: (Math.random()*6+4) * devicePixelRatio,
+        c: pickColor()
+      });
+    }
+    loop();
+    setTimeout(() => { if(!extra) stopConfetti(); }, 2200);
+  }
+
+  function stopConfetti(){
+    confettiOn = false;
+    canvas.classList.remove("on");
+    if(raf) cancelAnimationFrame(raf);
+    raf = null;
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+  }
+
+  function loop(){
+    if(!confettiOn) return;
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+
+    pieces.forEach(p=>{
+      p.y += p.s;
+      p.x += Math.sin(p.a) * (1.15*devicePixelRatio);
+      p.a += 0.02;
+
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.a);
+      ctx.fillStyle = p.c;
+      ctx.fillRect(-p.w/2, -p.h/2, p.w, p.h);
+      ctx.restore();
+
+      if(p.y > canvas.height + 40*devicePixelRatio){
+        p.y = -20*devicePixelRatio;
+        p.x = Math.random()*canvas.width;
+      }
+    });
+
+    raf = requestAnimationFrame(loop);
+  }
+
+  // Init
+  setFooter();
+  hydrateStaticText();
+  hydrateQuestions();
+  spawnHearts();
+</script>
+</body>
+</html>
