@@ -41,6 +41,16 @@
     --film-grain: rgba(78, 46, 56, 0.05);
     --safe-top: env(safe-area-inset-top, 0px);
     --safe-bottom: env(safe-area-inset-bottom, 0px);
+    --silver-foil: linear-gradient(140deg, #ffffff 0%, #dfe4ec 18%, #ffffff 32%, #cdd4e0 48%, #f4f6fa 58%, #ffffff 68%, #dce2ee 82%, #f0f2f8 100%);
+    --spine-w: 26px;
+    --frame-inset: 4px;
+    --frame-top: var(--frame-inset);
+    --frame-right: var(--frame-inset);
+    --frame-bottom: var(--frame-inset);
+    --frame-left: var(--frame-inset);
+    --corner-size: 64px;
+    --corner-nudge: -4px;
+    --corner-left-shift: 4px;
   }
 
   * {
@@ -145,7 +155,7 @@
     inset: 0;
     pointer-events: none;
     z-index: 1;
-    overflow: hidden;
+    overflow: visible;
   }
   .ambient-orb.orb-1 {
     width: 210px;
@@ -303,6 +313,7 @@
     animation: softFadeIn 1s ease forwards 1.2s;
     display: flex; flex-direction: column; align-items: center;
   }
+  .envelope-wrapper.is-hidden { display: none; }
   .envelope-container {
     width: 300px;
     height: 222px;
@@ -373,7 +384,7 @@
       0 7px 16px rgba(72, 23, 39, 0.2),
       inset 0 -10px 14px rgba(199, 143, 159, 0.08);
     z-index: 4;
-    overflow: hidden;
+    overflow: visible;
     pointer-events: none;
   }
   .envelope-letter::before {
@@ -421,7 +432,7 @@
       linear-gradient(180deg, rgba(255,255,255,0.22), rgba(255,255,255,0) 20%),
       linear-gradient(180deg, #b44b68 0%, #8d324e 68%, #75273f 100%);
     box-shadow: 0 15px 34px var(--envelope-shadow), inset 0 -22px 28px rgba(59, 16, 31, 0.24), inset 0 1px 0 rgba(255,255,255,0.28);
-    overflow: hidden;
+    overflow: visible;
     z-index: 5;
   }
   .envelope-body::before {
@@ -574,13 +585,437 @@
     display: flex; align-items: center; gap: 6px;
     text-shadow: 0 1px 0 rgba(255,255,255,0.4);
   }
-  .pulse-dot {
-    width: 6px; height: 6px; background: var(--accent);
-    border-radius: 50%; animation: pulse 2s ease-in-out infinite;
+
+  /* === Album entry (days 2-5) === */
+  .album-entry-wrapper {
+    margin: 0 auto 12px;
+    opacity: 0;
+    animation: softFadeIn 1s ease forwards 0.4s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
+  .album-entry-wrapper.is-hidden { display: none; }
+
+  .album-entry-container {
+    width: 248px;
+    max-width: 72vw;
+    height: 348px;
+    border: none;
+    background: transparent;
+    padding: 0;
+    cursor: pointer;
+    position: relative;
+    filter: drop-shadow(0 28px 40px rgba(49, 18, 33, 0.38));
+    transition: transform 0.3s ease, filter 0.3s ease;
+    transform-origin: 50% 78%;
+  }
+  .album-entry-container:active {
+    transform: scale(0.988) translateY(2px);
+    filter: drop-shadow(0 16px 26px rgba(58, 17, 33, 0.26));
+  }
+  .album-entry-container.opening-zoom {
+    pointer-events: none;
+    animation: albumZoomBlurSoft 0.9s cubic-bezier(0.18, 0.72, 0.16, 1) 0.08s forwards;
+  }
+  .album-entry-container::after {
+    content: "";
+    position: absolute;
+    left: 22px;
+    right: 22px;
+    bottom: -14px;
+    height: 24px;
+    border-radius: 50%;
+    background: radial-gradient(ellipse at center, rgba(57, 22, 38, 0.34) 0%, rgba(57, 22, 38, 0) 74%);
+    pointer-events: none;
+  }
+
+  .album-entry {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    perspective: 2200px;
+    transform-style: preserve-3d;
+  }
+
+  .album-book {
+    position: relative;
+    width: 232px;
+    max-width: 100%;
+    height: 328px;
+    border-radius: 3px 5px 5px 3px;
+    border: 1px solid rgba(73, 26, 43, 0.62);
+    overflow: visible;
+    transform: none;
+    animation: albumIdleFloat 5.2s ease-in-out infinite;
+    background:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g1'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.4' numOctaves='6' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23g1)' opacity='0.11'/%3E%3C/svg%3E"),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Cfilter id='g2'%3E%3CfeTurbulence type='turbulence' baseFrequency='0.5 0.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23g2)' opacity='0.05'/%3E%3C/svg%3E"),
+      radial-gradient(ellipse at 60% 12%, rgba(255,255,255,0.09) 0%, transparent 52%),
+      linear-gradient(178deg, #b24664 0%, #993954 24%, #7f2f48 50%, #68253d 72%, #571d33 88%, #4b182b 100%);
+    box-shadow:
+      inset 0 -32px 42px rgba(46, 14, 28, 0.28),
+      inset 0 1px 0 rgba(255,255,255,0.11),
+      0 18px 30px rgba(66, 20, 40, 0.32);
+  }
+  .album-book::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: var(--spine-w);
+    z-index: 2;
+    background:
+      linear-gradient(90deg,
+        rgba(36, 14, 24, 0.42) 0%,
+        rgba(54, 24, 38, 0.08) 32%,
+        rgba(70, 36, 50, 0.03) 50%,
+        rgba(54, 24, 38, 0.1) 68%,
+        rgba(36, 14, 24, 0.48) 100%),
+      linear-gradient(180deg, #8c3551 0%, #662338 100%);
+    border-right: 1px solid rgba(255,255,255,0.04);
+    box-shadow:
+      inset -2px 0 5px rgba(36, 14, 24, 0.35),
+      inset 1px 0 0 rgba(44, 18, 30, 0.5);
+  }
+  .album-book::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='lx'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.6' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23lx)' opacity='0.06'/%3E%3C/svg%3E");
+    opacity: 0.75;
+    pointer-events: none;
+    mix-blend-mode: overlay;
+  }
+
+  .album-pages {
+    position: absolute;
+    left: 28px;
+    right: 8px;
+    top: 8px;
+    bottom: 8px;
+    perspective: 1400px;
+    transform-style: preserve-3d;
+    pointer-events: none;
+    z-index: 1;
+  }
+  .album-page {
+    position: absolute;
+    inset: 0;
+    border-radius: 1px 3px 3px 1px;
+    border: 1px solid rgba(178, 148, 156, 0.38);
+    background:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='pp'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23pp)' opacity='0.035'/%3E%3C/svg%3E"),
+      radial-gradient(110% 65% at 50% 0%, rgba(255,255,255,0.68) 0%, transparent 52%),
+      radial-gradient(ellipse at 100% 50%, rgba(212, 186, 176, 0.15) 0%, transparent 55%),
+      radial-gradient(ellipse at 50% 100%, rgba(206, 180, 170, 0.1) 0%, transparent 45%),
+      linear-gradient(180deg, #fcfaf3 0%, #f6ede5 55%, #f2e8de 100%);
+    box-shadow: 0 4px 9px rgba(60, 20, 34, 0.12);
+    transform-origin: left center;
+    transform-style: preserve-3d;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    overflow: visible;
+  }
+  .album-page::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background:
+      radial-gradient(circle at 90% 12%, rgba(186, 162, 150, 0.1) 0%, transparent 16%),
+      radial-gradient(circle at 94% 80%, rgba(182, 158, 146, 0.08) 0%, transparent 12%),
+      radial-gradient(circle at 78% 96%, rgba(190, 166, 152, 0.06) 0%, transparent 10%);
+    opacity: 0.55;
+    z-index: 1;
+  }
+  .album-page.page-1 { transform: translate(0, 0); opacity: 0.96; z-index: 3; }
+  .album-page.page-2 { transform: translate(3px, 2px); opacity: 0.78; z-index: 2; }
+  .album-page.page-3 { transform: translate(6px, 4px); opacity: 0.62; z-index: 1; }
+
+  .page-photos {
+    position: absolute;
+    inset: 14px 12px 14px 10px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    gap: 7px;
+    z-index: 0;
+  }
+  .page-photo {
+    border-radius: 2px;
+    border: 1px solid rgba(180, 155, 162, 0.3);
+    background:
+      radial-gradient(ellipse at 50% 40%, rgba(255,255,255,0.4) 0%, transparent 70%),
+      linear-gradient(155deg, #f0dde2 0%, #e8cdd4 40%, #dfc2ca 100%);
+    box-shadow:
+      inset 0 1px 2px rgba(255,255,255,0.3),
+      0 1px 3px rgba(80, 36, 50, 0.1);
+    position: relative;
+    overflow: hidden;
+  }
+  .page-photo::before {
+    content: "";
+    position: absolute;
+    top: -1px;
+    left: 3px;
+    width: 12px;
+    height: 5px;
+    background: rgba(245, 235, 230, 0.55);
+    border-radius: 0 0 1px 1px;
+    box-shadow: 0 1px 1px rgba(0,0,0,0.04);
+  }
+  .page-photo::after {
+    content: "";
+    position: absolute;
+    top: -1px;
+    right: 3px;
+    width: 12px;
+    height: 5px;
+    background: rgba(245, 235, 230, 0.55);
+    border-radius: 0 0 1px 1px;
+    box-shadow: 0 1px 1px rgba(0,0,0,0.04);
+  }
+  .page-photo.photo-wide { grid-column: 1 / -1; }
+
+  .page-photos-alt {
+    position: absolute;
+    inset: 14px 12px 14px 10px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1.2fr 0.8fr 1fr;
+    gap: 7px;
+    z-index: 0;
+  }
+
+  .page-photos-third {
+    position: absolute;
+    inset: 14px 12px 14px 10px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1.6fr 1fr;
+    gap: 7px;
+    z-index: 0;
+  }
+
+  .album-cover {
+    position: absolute;
+    inset: 0;
+    border-radius: 1px 3px 3px 1px;
+    border: none;
+    background:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='cv'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.3' numOctaves='6' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23cv)' opacity='0.09'/%3E%3C/svg%3E"),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='90' height='90'%3E%3Cfilter id='cv2'%3E%3CfeTurbulence type='turbulence' baseFrequency='0.6 1.0' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='90' height='90' filter='url(%23cv2)' opacity='0.04'/%3E%3C/svg%3E"),
+      radial-gradient(ellipse at 56% 12%, rgba(255,255,255,0.08) 0%, transparent 46%),
+      linear-gradient(170deg, #b94a69 0%, #9f3d5a 30%, #85324c 54%, #6f2941 74%, #5d2237 88%, #501d30 100%);
+    transform-origin: left center;
+    transform: translateZ(8px);
+    z-index: 10;
+    box-shadow:
+      inset 0 -24px 36px rgba(46, 18, 30, 0.24),
+      inset 0 1px 0 rgba(255,255,255,0.07),
+      0 10px 18px rgba(58, 16, 30, 0.28);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transform-style: preserve-3d;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    overflow: visible;
+  }
+  .album-cover::before { display: none; }
+
+  .album-cover .cover-shine {
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    pointer-events: none;
+    background: radial-gradient(
+      ellipse 100% 70% at var(--shine-x, -40%) var(--shine-y, -40%),
+      rgba(255, 255, 255, 0.2) 0%,
+      rgba(255, 255, 255, 0.07) 28%,
+      transparent 60%
+    );
+    opacity: 0;
+    transition: opacity 0.45s ease;
+    mix-blend-mode: overlay;
+  }
+  .album-entry-container:hover .cover-shine,
+  .album-entry-container:active .cover-shine { opacity: 1; }
+
+  .album-cover .cover-frame {
+    display: none;
+  }
+
+  .album-cover .corner {
+    position: absolute;
+    pointer-events: none;
+    z-index: 6;
+    width: var(--corner-size);
+    height: var(--corner-size);
+    filter:
+      drop-shadow(0 0 1px rgba(255,255,255,0.4))
+      drop-shadow(0 1px 2px rgba(28, 10, 18, 0.42));
+  }
+  .album-cover .corner svg { width: 100%; height: 100%; }
+  .album-cover .corner-tl {
+    top: var(--corner-nudge);
+    left: calc(var(--corner-nudge) + var(--corner-left-shift));
+  }
+  .album-cover .corner-tr {
+    top: var(--corner-nudge);
+    right: var(--corner-nudge);
+  }
+  .album-cover .corner-bl {
+    bottom: var(--corner-nudge);
+    left: calc(var(--corner-nudge) + var(--corner-left-shift));
+  }
+  .album-cover .corner-br {
+    bottom: var(--corner-nudge);
+    right: var(--corner-nudge);
+  }
+
+  .album-monogram {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    z-index: 2;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+  }
+  .album-monogram-letters {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+  }
+
+  @keyframes silverShimmer {
+    0% { background-position: -200% center; }
+    100% { background-position: 200% center; }
+  }
+
+  .album-monogram-letter {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 48px;
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: 2px;
+    background: linear-gradient(
+      105deg,
+      #ccd2dc 0%, #e4e8f0 12%, #ffffff 24%, #f6f7fa 32%,
+      #d2d8e2 44%, #eceff4 52%, #ffffff 62%, #e0e4ec 74%,
+      #f4f6fa 84%, #ccd2dc 100%
+    );
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: silverShimmer 6s ease-in-out infinite;
+    filter:
+      drop-shadow(0 1px 0 rgba(255,255,255,0.65))
+      drop-shadow(0 2px 3px rgba(28, 10, 18, 0.5));
+  }
+
+  .album-monogram-ampersand {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 1;
+    background: linear-gradient(
+      105deg,
+      #ccd2dc 0%, #e4e8f0 12%, #ffffff 24%, #f6f7fa 32%,
+      #d2d8e2 44%, #eceff4 52%, #ffffff 62%, #e0e4ec 74%,
+      #f4f6fa 84%, #ccd2dc 100%
+    );
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter:
+      drop-shadow(0 1px 0 rgba(255,255,255,0.55))
+      drop-shadow(0 1px 2px rgba(28, 10, 18, 0.42));
+    transform: translateY(1px);
+    animation: silverShimmer 6s ease-in-out infinite, heartGentlePulse 4s ease-in-out infinite;
+  }
+
+  .album-monogram-rule {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin-top: 12px;
+    opacity: 0.8;
+  }
+  .album-monogram-rule-end {
+    width: 4.5px;
+    height: 4.5px;
+    background: var(--silver-foil);
+    border-radius: 50%;
+    box-shadow: 0 0 3px rgba(255,255,255,0.2);
+    flex-shrink: 0;
+  }
+  .album-monogram-rule-line {
+    width: 54px;
+    height: 1px;
+    background: var(--silver-foil);
+    box-shadow: 0 0 6px rgba(255, 255, 255, 0.2), 0 1px 1px rgba(0,0,0,0.1);
+  }
+
+  .album-entry-tap-label {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 14px;
+    font-weight: 500;
+    font-style: italic;
+    color: #a8617a;
+    margin-top: 22px;
+    opacity: 0;
+    animation: softFadeIn 1s ease forwards 1.4s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    text-shadow: 0 1px 0 rgba(255,255,255,0.35);
+    letter-spacing: 0.4px;
+  }
+  .pulse-dot {
+    width: 6px;
+    height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+    display: inline-block;
+    animation: pulse 2s ease-in-out infinite;
+  }
+  .album-entry-tap-label .pulse-dot {
+    width: 5px;
+    height: 5px;
+    animation: pulse 2.4s ease-in-out infinite;
+  }
+
+  .album-entry.opening .album-book { animation: albumBookLift 0.84s cubic-bezier(0.2, 0.72, 0.18, 1) forwards; }
+  .album-entry.opening .album-cover { animation: albumCoverOpen 0.86s cubic-bezier(0.22, 0.74, 0.16, 1) forwards; }
+  .album-entry.opening .album-page.page-1 { animation: albumPageLiftOne 0.62s cubic-bezier(0.28, 0.7, 0.24, 1) 0.12s forwards; }
+  .album-entry.opening .album-page.page-2 { animation: albumPageLiftTwo 0.62s cubic-bezier(0.28, 0.7, 0.24, 1) 0.2s forwards; }
+  .album-entry.opening .album-page.page-3 { animation: albumPageLiftThree 0.62s cubic-bezier(0.28, 0.7, 0.24, 1) 0.28s forwards; }
+
   @keyframes pulse {
-    0%, 100% { opacity: 0.4; transform: scale(1); }
-    50% { opacity: 1; transform: scale(1.4); }
+    0%, 100% { opacity: 0.3; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.5); }
+  }
+  @keyframes heartGentlePulse {
+    0%, 100% { transform: translateY(1px) scale(1); }
+    50% { transform: translateY(1px) scale(1.06); }
+  }
+  @keyframes albumIdleFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-3.5px); }
   }
 
   @keyframes envelopeSealGlow {
@@ -637,6 +1072,49 @@
       transform: scale(1.21) translateY(-12px);
       opacity: 0;
       filter: drop-shadow(0 28px 40px rgba(74, 20, 38, 0.22)) blur(6px);
+    }
+  }
+
+  @keyframes albumBookLift {
+    0% { transform: translateY(0) scale(1); }
+    56% { transform: translateY(-7px) scale(1.01); }
+    100% { transform: translateY(-10px) scale(1.018); }
+  }
+  @keyframes albumCoverOpen {
+    0% { transform: rotateY(0deg) translateZ(8px); filter: brightness(1); }
+    52% { transform: rotateY(-112deg) translateZ(8px); }
+    100% { transform: rotateY(-168deg) translateZ(8px); filter: brightness(1.1); }
+  }
+  @keyframes albumPageLiftOne {
+    0% { transform: translate(0, 0) rotateY(0deg); opacity: 0.96; }
+    38% { transform: translate(0, -1px) rotateY(-86deg); opacity: 0.94; }
+    100% { transform: translate(0, -2px) rotateY(-172deg); opacity: 0; }
+  }
+  @keyframes albumPageLiftTwo {
+    0% { transform: translate(3px, 2px) rotateY(0deg); opacity: 0.78; }
+    38% { transform: translate(2px, 1px) rotateY(-84deg); opacity: 0.76; }
+    100% { transform: translate(1px, 0) rotateY(-170deg); opacity: 0; }
+  }
+  @keyframes albumPageLiftThree {
+    0% { transform: translate(6px, 4px) rotateY(0deg); opacity: 0.62; }
+    38% { transform: translate(5px, 3px) rotateY(-82deg); opacity: 0.58; }
+    100% { transform: translate(4px, 2px) rotateY(-168deg); opacity: 0; }
+  }
+  @keyframes albumZoomBlurSoft {
+    0% {
+      transform: scale(1) translateY(0);
+      opacity: 1;
+      filter: drop-shadow(0 24px 36px rgba(66, 19, 36, 0.36)) blur(0);
+    }
+    52% {
+      transform: scale(1.1) translateY(-8px);
+      opacity: 0.96;
+      filter: drop-shadow(0 32px 44px rgba(66, 19, 36, 0.36)) blur(2px);
+    }
+    100% {
+      transform: scale(1.24) translateY(-16px);
+      opacity: 0;
+      filter: drop-shadow(0 34px 48px rgba(66, 19, 36, 0.24)) blur(6px);
     }
   }
 
@@ -986,13 +1464,13 @@
   }
   .card-back::before,
   .card-back::after {
-    content: "ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œ"; position: absolute;
+    content: "\201C"; position: absolute;
     font-family: 'Cormorant Garamond', serif;
     font-size: 54px; color: var(--accent-lighter);
     line-height: 1; opacity: 0.5;
   }
   .card-back::before { top: 16px; left: 20px; }
-  .card-back::after { content: "ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â"; bottom: 16px; right: 20px; }
+  .card-back::after { content: "\201D"; bottom: 16px; right: 20px; }
 
   /* Paper texture overlay */
   .card-back-texture {
@@ -1439,6 +1917,12 @@
     .welcome-title { font-size: clamp(47px, 12.2vw, 58px); }
     .welcome-subtitle { letter-spacing: 2.6px; }
     .envelope-container { width: 276px; height: 204px; }
+    .album-entry-container { width: 222px; max-width: 68vw; height: 318px; }
+    .album-book { width: 206px; height: 298px; }
+    .album-monogram-letter { font-size: 42px; }
+    .album-monogram-ampersand { font-size: 16px; }
+    .album-cover .corner { width: 52px; height: 52px; }
+    .album-monogram-rule-line { width: 46px; }
     .envelope-body { height: 146px; }
     .envelope-slot { left: 18px; right: 18px; top: 52px; }
     .envelope-letter {
@@ -1460,6 +1944,18 @@
     .envelope-seal { top: 86px; }
     .card-back-text { font-size: 20px; line-height: 1.58; }
     .complete-card, .final-card { border-radius: 16px; }
+  }
+
+  @media (max-width: 340px) {
+    .album-entry-container { width: 202px; height: 292px; }
+    .album-book { width: 188px; height: 272px; }
+    .album-monogram-letter { font-size: 38px; }
+    .album-cover .corner { width: 46px; height: 46px; }
+  }
+
+  @media (min-height: 800px) and (max-width: 430px) {
+    .album-entry-container { height: 362px; }
+    .album-book { height: 342px; }
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -1545,6 +2041,130 @@
       </span>
     </div>
 
+    <div class="album-entry-wrapper is-hidden" id="album-entry-wrapper">
+      <button class="album-entry-container" id="album-entry-trigger" type="button" aria-label="Abrir album del dia">
+        <div class="album-entry" id="album-entry">
+          <div class="album-book">
+            <div class="album-pages">
+              <div class="album-page page-3">
+                <div class="page-photos-third">
+                  <div class="page-photo photo-wide"></div>
+                  <div class="page-photo"></div>
+                  <div class="page-photo"></div>
+                </div>
+              </div>
+              <div class="album-page page-2">
+                <div class="page-photos-alt">
+                  <div class="page-photo"></div>
+                  <div class="page-photo"></div>
+                  <div class="page-photo photo-wide"></div>
+                  <div class="page-photo"></div>
+                  <div class="page-photo"></div>
+                </div>
+              </div>
+              <div class="album-page page-1">
+                <div class="page-photos">
+                  <div class="page-photo photo-wide"></div>
+                  <div class="page-photo"></div>
+                  <div class="page-photo"></div>
+                  <div class="page-photo"></div>
+                  <div class="page-photo"></div>
+                </div>
+              </div>
+              <div class="album-cover">
+                <div class="cover-shine" id="coverShine"></div>
+                <div class="cover-frame"></div>
+
+                <div class="corner corner-tl" aria-hidden="true">
+                  <svg viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                      <linearGradient id="s1" x1="0" y1="0" x2="34" y2="34">
+                        <stop offset="0%" stop-color="#ffffff"/>
+                        <stop offset="22%" stop-color="#dee3ec"/>
+                        <stop offset="42%" stop-color="#ffffff"/>
+                        <stop offset="62%" stop-color="#cad2e0"/>
+                        <stop offset="82%" stop-color="#f0f2f8"/>
+                        <stop offset="100%" stop-color="#d8dee8"/>
+                      </linearGradient>
+                    </defs>
+                    <path d="M2.5 20 L2.5 5 Q2.5 2.5 5 2.5 L20 2.5" stroke="url(#s1)" stroke-width="2.8" fill="none" stroke-linecap="round"/>
+                    <rect x="1.2" y="1.2" width="4.2" height="4.2" rx="0.7" fill="url(#s1)" opacity="0.95"/>
+                  </svg>
+                </div>
+
+                <div class="corner corner-tr" aria-hidden="true">
+                  <svg viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                      <linearGradient id="s2" x1="34" y1="0" x2="0" y2="34">
+                        <stop offset="0%" stop-color="#ffffff"/>
+                        <stop offset="22%" stop-color="#dee3ec"/>
+                        <stop offset="42%" stop-color="#ffffff"/>
+                        <stop offset="62%" stop-color="#cad2e0"/>
+                        <stop offset="82%" stop-color="#f0f2f8"/>
+                        <stop offset="100%" stop-color="#d8dee8"/>
+                      </linearGradient>
+                    </defs>
+                    <path d="M14 2.5 L29 2.5 Q31.5 2.5 31.5 5 L31.5 20" stroke="url(#s2)" stroke-width="2.8" fill="none" stroke-linecap="round"/>
+                    <rect x="28.6" y="1.2" width="4.2" height="4.2" rx="0.7" fill="url(#s2)" opacity="0.95"/>
+                  </svg>
+                </div>
+
+                <div class="corner corner-bl" aria-hidden="true">
+                  <svg viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                      <linearGradient id="s3" x1="0" y1="34" x2="34" y2="0">
+                        <stop offset="0%" stop-color="#ffffff"/>
+                        <stop offset="22%" stop-color="#dee3ec"/>
+                        <stop offset="42%" stop-color="#ffffff"/>
+                        <stop offset="62%" stop-color="#cad2e0"/>
+                        <stop offset="82%" stop-color="#f0f2f8"/>
+                        <stop offset="100%" stop-color="#d8dee8"/>
+                      </linearGradient>
+                    </defs>
+                    <path d="M2.5 14 L2.5 29 Q2.5 31.5 5 31.5 L20 31.5" stroke="url(#s3)" stroke-width="2.8" fill="none" stroke-linecap="round"/>
+                    <rect x="1.2" y="28.6" width="4.2" height="4.2" rx="0.7" fill="url(#s3)" opacity="0.95"/>
+                  </svg>
+                </div>
+
+                <div class="corner corner-br" aria-hidden="true">
+                  <svg viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                      <linearGradient id="s4" x1="34" y1="34" x2="0" y2="0">
+                        <stop offset="0%" stop-color="#ffffff"/>
+                        <stop offset="22%" stop-color="#dee3ec"/>
+                        <stop offset="42%" stop-color="#ffffff"/>
+                        <stop offset="62%" stop-color="#cad2e0"/>
+                        <stop offset="82%" stop-color="#f0f2f8"/>
+                        <stop offset="100%" stop-color="#d8dee8"/>
+                      </linearGradient>
+                    </defs>
+                    <path d="M14 31.5 L29 31.5 Q31.5 31.5 31.5 29 L31.5 14" stroke="url(#s4)" stroke-width="2.8" fill="none" stroke-linecap="round"/>
+                    <rect x="28.6" y="28.6" width="4.2" height="4.2" rx="0.7" fill="url(#s4)" opacity="0.95"/>
+                  </svg>
+                </div>
+
+                <div class="album-monogram" aria-hidden="true">
+                  <div class="album-monogram-letters">
+                    <span class="album-monogram-letter">O</span>
+                    <span class="album-monogram-ampersand">&hearts;</span>
+                    <span class="album-monogram-letter">A</span>
+                  </div>
+                  <div class="album-monogram-rule">
+                    <div class="album-monogram-rule-end"></div>
+                    <div class="album-monogram-rule-line"></div>
+                    <div class="album-monogram-rule-end"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </button>
+      <span class="album-entry-tap-label">
+        <span class="pulse-dot"></span> Toca el album para abrirlo
+      </span>
+    </div>
+
     <p class="welcome-chapter">1/6</p>
     <div class="welcome-progress">
       <div class="welcome-progress-dot current"></div>
@@ -1579,7 +2199,7 @@
       <button class="header-btn header-envelope-btn" type="button" title="Volver al sobre">&#9993;</button>
       <div class="header-left">
         <span class="header-title">Cartas a mi amor</span>
-        <span class="header-chapter">Parte 1 de 5</span>
+        <span class="header-chapter">Carta 1 de 5</span>
       </div>
     </div>
     <div class="header-right">
@@ -1591,7 +2211,7 @@
           <div class="header-progress-bar"></div>
           <div class="header-progress-bar"></div>
         </div>
-        <span class="header-progress-text">Parte 1/5</span>
+        <span class="header-progress-text">Carta 1/5</span>
       </div>
       <button class="header-btn header-recap-btn" type="button" title="Abrir album completo">&#10022;</button>
     </div>
@@ -1646,25 +2266,25 @@
     <p class="reveal-line">que solo nosotros sabemos.</p>
   </div>
 
-  <button class="complete-btn" type="button">Ver recorrido completo</button>
+  <button class="complete-btn" type="button">Ir a nuestro álbum</button>
 </div>
 
 <!-- ===== ACCUMULATED ===== -->
 <div id="screen-accumulated" class="screen accumulated-screen">
   <div class="accumulated-header">
     <button class="back-btn" type="button" aria-label="Volver al album">&#8249;</button>
-    <span class="accumulated-title">Partes del recorrido</span>
+    <span class="accumulated-title">Nuestro álbum</span>
   </div>
 
   <div class="accumulated-content">
     <div class="day-selector"></div>
 
-    <p class="section-label"><span class="section-label-icon">&#128248;</span> Nuestras fotos</p>
+    <p class="section-label"><span class="section-label-icon">&#128248;</span> Nuestro carrete</p>
     <div class="photo-carousel-wrapper">
       <div class="photo-carousel" id="photo-carousel"></div>
     </div>
 
-    <p class="section-label"><span class="section-label-icon">&#128140;</span> Nuestras partes</p>
+    <p class="section-label"><span class="section-label-icon">&#128140;</span> Tus cartas</p>
     <div class="text-blocks"></div>
   </div>
 </div>
@@ -1692,6 +2312,13 @@
   <button type="button" data-screen="screen-complete">Cierre parte</button>
   <button type="button" data-screen="screen-accumulated">Acumulada</button>
   <button type="button" data-screen="screen-final">Final parte 5</button>
+  <span class="demo-label">Preview partes</span>
+  <button type="button" data-preview-day="0">Auto</button>
+  <button type="button" data-preview-day="1">P1</button>
+  <button type="button" data-preview-day="2">P2</button>
+  <button type="button" data-preview-day="3">P3</button>
+  <button type="button" data-preview-day="4">P4</button>
+  <button type="button" data-preview-day="5">P5</button>
 </div>
 
 <script>
@@ -1738,14 +2365,14 @@
       "Manana seguimos escribiendo esta carta."
     ],
     [
-      "Segunda parte, misma magia entre los dos.",
-      "Londres cambia de color cuando caminas a mi lado.",
-      "Tu risa convierte cualquier calle en casa.",
-      "Cada instante contigo vale mas de lo que digo.",
-      "Hay miradas que explican todo sin palabras.",
-      "Guardo estos segundos para volver a ellos.",
-      "Tu forma de estar vuelve simple lo dificil.",
-      "Seguimos, paso a paso, juntos."
+      "Tras todo el estrés y tantas horas inquieta, por fin puedes tener tu rato tranquila, a punto de un descanso merecido antes de empezar tu british week.",
+      "Espero que hasta ahora hayas mantenido tu spanish accent, para que desde el primer momento sepan que ha llegado una preciosa gitanilla del Maresme, con las cosas muy claras.",
+      "Que no deja que nadie le diga qué ni como hacer las cosas.",
+      "Como ves por aquí te voy dejando algunos de nuestros recuerdos juntos, cuando iba seleccionando las fotos era difícil escoger entre una u otra.",
+      "Todas me llevan a esos momentos felices a tu lado, haciendo lo que sea, estando como sea, pero juntos y pasando esos ratitos randoms que tanto nos gustan.",
+      "Por aquí el día ha sido gris, supongo que hasta las nubes te echan de menos, un lunes muy lunes, rutinario, pero ya queda menos para ese abrazo colgón y apretado del viernes por la noche.",
+      "Sigo muy pendiente de ti, de que todo te vaya bien; aunque ahora nos separen unos cuantos litros de agua, te sigo cuidando, y si hiciese falta me pondría el bañador e iría nadando hasta tu lado.",
+      "Por ti lo que sea, cuando y donde sea. Te adoro mi chulita, ojalá pases una noche de calma y de descanso profundo. Ya sabes que es por ti que late mi corazón y ya sabes que es por ti que ahora ya se lo que es el amor."
     ],
     [
       "Mitad del recorrido y el corazon en calma.",
@@ -1780,11 +2407,11 @@
   ];
 
   const PART_DETAILS = [
-    { title: "Primer latido", name: "Todo empieza aqui" },
-    { title: "Complices", name: "Risas y momentos nuestros" },
-    { title: "Cerca de ti", name: "Detalles que nos unen" },
-    { title: "Siempre tu y yo", name: "Nuestro refugio" },
-    { title: "Para siempre", name: "Lo que sigue despues" }
+    { title: "Carta 1", name: "Ya te echo de menos" },
+    { title: "Carta 2", name: "Dia gris, pero queda menos para abrazarte" },
+    { title: "Carta 3", name: "Mitad del recorrido y el corazon en calma" },
+    { title: "Carta 4", name: "Todo sigue creciendo" },
+    { title: "Carta 5", name: "Lo nuestro no termina aqui" }
   ];
 
   const DAY_THEMES = [
@@ -1805,10 +2432,13 @@
   const refs = {
     transition: document.getElementById("transition"),
     screens: Array.from(document.querySelectorAll(".screen")),
-    demoButtons: Array.from(document.querySelectorAll(".demo-nav button")),
+    demoScreenButtons: Array.from(document.querySelectorAll(".demo-nav button[data-screen]")),
+    demoPreviewButtons: Array.from(document.querySelectorAll(".demo-nav button[data-preview-day]")),
     greeting: document.getElementById("greeting"),
     welcomeTitle: document.getElementById("welcome-title"),
     welcomeSubtitle: document.getElementById("welcome-subtitle"),
+    envelopeWrapper: document.querySelector(".envelope-wrapper"),
+    albumEntryWrapper: document.getElementById("album-entry-wrapper"),
     welcomeChapter: document.querySelector(".welcome-chapter"),
     welcomeCountdown: document.getElementById("welcome-countdown"),
     welcomeProgressDots: Array.from(document.querySelectorAll(".welcome-progress-dot")),
@@ -1819,6 +2449,8 @@
     letterCloseBtn: document.querySelector(".letter-close-btn"),
     envelope: document.getElementById("envelope"),
     envelopeTrigger: document.getElementById("envelope-trigger"),
+    albumEntry: document.getElementById("album-entry"),
+    albumEntryTrigger: document.getElementById("album-entry-trigger"),
     openEnvelopeBtn: document.querySelector(".header-envelope-btn"),
     openRecapBtn: document.querySelector(".header-recap-btn"),
     headerChapter: document.querySelector(".header-chapter"),
@@ -1860,6 +2492,8 @@
     activeIndex: 0,
     countdownTimer: null,
     openingEnvelope: false,
+    openingAlbum: false,
+    previewDayOverride: null,
     suppressFlipUntil: 0,
     swipe: {
       startX: 0,
@@ -1881,6 +2515,7 @@
 
   function init() {
     document.body.dataset.debug = APP_CONFIG.debugMode ? "1" : "0";
+    state.previewDayOverride = APP_CONFIG.debugMode ? getPreviewDayFromQuery() : null;
     refs.day1LetterMessage.textContent = DAY1_LETTER_MESSAGE;
     const cover = APP_CONFIG.coverOptions[clamp(APP_CONFIG.coverVariant, 0, APP_CONFIG.coverOptions.length - 1)] || APP_CONFIG.coverOptions[0];
     refs.welcomeTitle.textContent = cover.title;
@@ -1898,29 +2533,26 @@
     renderLetter();
     renderCompleteScreen();
     renderAccumulated();
-    if (state.unlockedDay >= 2) {
-      state.activeDay = state.unlockedDay;
-      state.selectedDay = state.unlockedDay;
-      state.envelopeTargetDay = state.unlockedDay;
-      state.activeIndex = state.lastIndexByDay.get(state.activeDay) || 0;
-      applyThemeByDay(state.activeDay);
-      renderAlbum();
-      updateScreen("screen-album", true);
-    } else {
-      applyThemeByDay(1);
-      updateScreen("screen-welcome", true);
-    }
+    state.activeDay = clamp(state.activeDay || state.unlockedDay, 1, state.unlockedDay);
+    state.selectedDay = clamp(state.selectedDay || state.activeDay, 1, state.unlockedDay);
+    state.envelopeTargetDay = clamp(state.envelopeTargetDay || state.unlockedDay, 1, state.unlockedDay);
+    state.activeIndex = getDayData(state.activeDay).type === "letter" ? 0 : (state.lastIndexByDay.get(state.activeDay) || 0);
+    applyThemeByDay(state.envelopeTargetDay);
+    updateScreen("screen-welcome", true);
+    renderPreviewControls();
     startReleaseWatcher();
     startCountdownTicker();
   }
 
   function bindEvents() {
     refs.envelopeTrigger.addEventListener("click", openEnvelope);
+    if (refs.albumEntryTrigger) refs.albumEntryTrigger.addEventListener("click", openAlbumEntry);
+    bindAlbumCoverShine();
     refs.arrowLeft.addEventListener("click", () => moveCard(-1));
     refs.arrowRight.addEventListener("click", () => moveCard(1));
     refs.cardContainer.addEventListener("click", onCardTap);
-    refs.letterHomeBtn.addEventListener("click", () => goToEnvelope(1));
-    refs.letterCloseBtn.addEventListener("click", () => goToEnvelope(1));
+    refs.letterHomeBtn.addEventListener("click", () => goToEnvelope(state.unlockedDay));
+    refs.letterCloseBtn.addEventListener("click", () => goToEnvelope(state.unlockedDay));
     refs.completeBtn.addEventListener("click", () => {
       if (state.activeDay === APP_CONFIG.totalDays && state.unlockedDay === APP_CONFIG.totalDays) {
         showScreen("screen-final");
@@ -1928,10 +2560,7 @@
       }
       showScreen("screen-accumulated");
     });
-    refs.openEnvelopeBtn.addEventListener("click", () => {
-      if (state.unlockedDay === 1) goToEnvelope(1);
-      else showScreen("screen-album");
-    });
+    refs.openEnvelopeBtn.addEventListener("click", () => goToEnvelope(state.unlockedDay));
     refs.openRecapBtn.addEventListener("click", () => {
       state.selectedDay = state.activeDay;
       showScreen("screen-accumulated");
@@ -1962,8 +2591,16 @@
       openLightboxByData(day, index);
     });
 
-    refs.demoButtons.forEach((button) => {
+    refs.demoScreenButtons.forEach((button) => {
       button.addEventListener("click", () => showScreen(button.dataset.screen));
+    });
+    refs.demoPreviewButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        if (!APP_CONFIG.debugMode) return;
+        const day = Number(button.dataset.previewDay);
+        if (!Number.isInteger(day)) return;
+        setPreviewDay(day === 0 ? null : day);
+      });
     });
 
     refs.lightbox.addEventListener("click", (event) => {
@@ -1983,6 +2620,39 @@
     });
   }
 
+  function bindAlbumCoverShine() {
+    const shine = document.getElementById("coverShine");
+    if (!shine) return;
+    const cover = shine.closest(".album-cover");
+    if (!cover) return;
+
+    cover.addEventListener("mousemove", (event) => {
+      const rect = cover.getBoundingClientRect();
+      shine.style.setProperty("--shine-x", `${((event.clientX - rect.left) / rect.width) * 100}%`);
+      shine.style.setProperty("--shine-y", `${((event.clientY - rect.top) / rect.height) * 100}%`);
+    });
+
+    cover.addEventListener("mouseleave", () => {
+      shine.style.setProperty("--shine-x", "-40%");
+      shine.style.setProperty("--shine-y", "-40%");
+    });
+
+    cover.addEventListener("touchmove", (event) => {
+      const touch = event.touches[0];
+      if (!touch) return;
+      const rect = cover.getBoundingClientRect();
+      shine.style.setProperty("--shine-x", `${((touch.clientX - rect.left) / rect.width) * 100}%`);
+      shine.style.setProperty("--shine-y", `${((touch.clientY - rect.top) / rect.height) * 100}%`);
+      shine.style.opacity = "1";
+    }, { passive: true });
+
+    cover.addEventListener("touchend", () => {
+      shine.style.opacity = "0";
+      shine.style.setProperty("--shine-x", "-40%");
+      shine.style.setProperty("--shine-y", "-40%");
+    });
+  }
+
   function buildDayData() {
     const days = [];
     for (let day = 1; day <= APP_CONFIG.totalDays; day += 1) {
@@ -1992,7 +2662,7 @@
       days.push({
         day,
         chapter: `Parte ${day} de ${APP_CONFIG.totalDays}`,
-        closeTitle: isLetter ? "Primera carta" : `Tu carta, parte ${day}`,
+        closeTitle: `Carta ${day}: ${part.name || `Parte ${day}`}`,
         type: isLetter ? "letter" : "album",
         partTitle: part.title || `Parte ${day}`,
         partName: part.name || `Parte ${day}`,
@@ -2000,7 +2670,7 @@
         photos: isLetter
           ? []
           : fragments.map((text, index) => ({
-              src: `img/day${day}/${String(index + 1).padStart(2, "0")}.webp`,
+              src: `img/day${day}/${String(index + 1).padStart(2, "0")}.jpg`,
               text
             }))
       });
@@ -2029,7 +2699,46 @@
     }, 1000);
   }
 
+  function getPreviewDayFromQuery() {
+    const value = Number(new URLSearchParams(window.location.search).get("previewDay"));
+    if (!Number.isInteger(value)) return null;
+    if (value < 1 || value > APP_CONFIG.totalDays) return null;
+    return value;
+  }
+
+  function renderPreviewControls() {
+    if (!APP_CONFIG.debugMode) return;
+    refs.demoPreviewButtons.forEach((button) => {
+      const day = Number(button.dataset.previewDay);
+      const isAuto = day === 0;
+      const active = isAuto ? !state.previewDayOverride : day === state.previewDayOverride;
+      button.classList.toggle("active", active);
+    });
+  }
+
+  function setPreviewDay(dayOrNull) {
+    if (!APP_CONFIG.debugMode) return;
+    const safeDay = Number.isInteger(dayOrNull) ? clamp(dayOrNull, 1, APP_CONFIG.totalDays) : null;
+    state.previewDayOverride = safeDay;
+
+    const url = new URL(window.location.href);
+    if (safeDay) url.searchParams.set("previewDay", String(safeDay));
+    else url.searchParams.delete("previewDay");
+    window.history.replaceState({}, "", url.toString());
+
+    refreshUnlockedDay({ force: true });
+    state.envelopeTargetDay = state.unlockedDay;
+    state.activeDay = state.unlockedDay;
+    state.selectedDay = state.unlockedDay;
+    state.activeIndex = getDayData(state.activeDay).type === "letter" ? 0 : (state.lastIndexByDay.get(state.activeDay) || 0);
+    applyThemeByDay(state.envelopeTargetDay);
+    updateScreen("screen-welcome", true);
+  }
+
   function getUnlockedDayBySchedule(nowMs = Date.now()) {
+    if (state.previewDayOverride) {
+      return clamp(state.previewDayOverride, 1, APP_CONFIG.totalDays);
+    }
     let unlocked = 1;
     RELEASE_SCHEDULE.forEach((item) => {
       if (nowMs >= item.atUtc) unlocked = item.day;
@@ -2052,6 +2761,12 @@
 
   function renderLetterCountdown() {
     if (!refs.letterCountdown || !refs.welcomeCountdown) return;
+    if (state.previewDayOverride) {
+      const text = `Modo previsualizacion: parte ${state.previewDayOverride}/${APP_CONFIG.totalDays}`;
+      refs.letterCountdown.textContent = text;
+      refs.welcomeCountdown.textContent = text;
+      return;
+    }
     const next = getNextReleaseEntry();
     if (!next) {
       refs.letterCountdown.textContent = "Recorrido completo desbloqueado";
@@ -2080,20 +2795,21 @@
     if (state.activeScreen === "screen-letter") renderLetter();
     if (state.activeScreen === "screen-album") renderAlbum();
     if (state.activeScreen === "screen-complete") renderCompleteScreen();
+    renderPreviewControls();
 
-    if (nextUnlocked > prevUnlocked && nextUnlocked >= 2 && (state.activeScreen === "screen-welcome" || state.activeScreen === "screen-letter")) {
-      state.activeDay = nextUnlocked;
-      state.selectedDay = nextUnlocked;
+    if (nextUnlocked > prevUnlocked) {
       state.envelopeTargetDay = nextUnlocked;
-      state.activeIndex = state.lastIndexByDay.get(nextUnlocked) || 0;
-      applyThemeByDay(state.activeDay);
-      showScreen("screen-album", true);
+      if (state.activeScreen === "screen-welcome" || state.activeScreen === "screen-letter") {
+        state.activeDay = nextUnlocked;
+        state.selectedDay = nextUnlocked;
+        state.activeIndex = getDayData(nextUnlocked).type === "letter" ? 0 : (state.lastIndexByDay.get(nextUnlocked) || 0);
+        applyThemeByDay(state.envelopeTargetDay);
+      }
     }
   }
 
   function updateEntryControls() {
-    const showEnvelopeEntry = state.unlockedDay === 1;
-    refs.openEnvelopeBtn.style.display = showEnvelopeEntry ? "flex" : "none";
+    refs.openEnvelopeBtn.style.display = "flex";
   }
 
   function renderLetter() {
@@ -2104,8 +2820,12 @@
 
   function renderWelcome() {
     const targetDay = clamp(state.envelopeTargetDay || state.unlockedDay, 1, state.unlockedDay);
+    const targetData = getDayData(targetDay);
+    const showEnvelopeEntry = targetData.type === "letter";
     refs.greeting.innerHTML = `${getGreetingBySpainHour()}, <em>michulita</em>, que bonita que estás siempre...`;
-    refs.welcomeChapter.textContent = "1/6";
+    refs.welcomeChapter.textContent = `${targetDay}/6`;
+    refs.envelopeWrapper.classList.toggle("is-hidden", !showEnvelopeEntry);
+    refs.albumEntryWrapper.classList.toggle("is-hidden", showEnvelopeEntry);
     refs.welcomeProgressDots.forEach((dot, index) => {
       dot.classList.remove("filled", "current");
       if (index + 1 <= state.unlockedDay) dot.classList.add("filled");
@@ -2123,12 +2843,12 @@
     const photoData = dayData.photos[state.activeIndex];
     const visitedSet = state.flippedByDay.get(state.activeDay);
 
-    refs.headerChapter.textContent = dayData.chapter;
+    refs.headerChapter.textContent = `Carta ${state.activeDay} de ${APP_CONFIG.totalDays}`;
     refs.headerProgressBars.forEach((bar, index) => {
       bar.classList.toggle("filled", index + 1 <= state.unlockedDay);
       bar.classList.toggle("current", index + 1 === state.activeDay);
     });
-    refs.headerProgressText.textContent = `Parte ${state.activeDay}/${APP_CONFIG.totalDays}`;
+    refs.headerProgressText.textContent = `Carta ${state.activeDay}/${APP_CONFIG.totalDays}`;
 
     refs.card.classList.remove("flipped");
     refs.cardText.textContent = photoData.text;
@@ -2165,7 +2885,7 @@
     refs.completeBtn.textContent =
       state.activeDay === APP_CONFIG.totalDays && state.unlockedDay === APP_CONFIG.totalDays
         ? "Ver cierre final"
-        : "Ver recorrido completo";
+        : "Ir a nuestro álbum";
 
     dayData.photos.forEach((photo, index) => {
       const line = document.createElement("p");
@@ -2183,15 +2903,16 @@
   function renderAccumulated() {
     refs.daySelector.innerHTML = "";
     for (let day = 1; day <= APP_CONFIG.totalDays; day += 1) {
+      const dayLabel = getAccumulatedDayLabel(day);
       const pill = document.createElement("button");
       pill.type = "button";
       pill.className = "day-pill";
       pill.dataset.day = String(day);
       if (day === state.selectedDay) pill.classList.add("active");
-      pill.textContent = `Parte ${day}`;
+      pill.textContent = dayLabel;
       if (!isDayUnlocked(day)) {
         pill.classList.add("locked");
-        pill.setAttribute("aria-label", `Parte ${day} bloqueada`);
+        pill.setAttribute("aria-label", dayLabel);
       }
       refs.daySelector.appendChild(pill);
     }
@@ -2216,7 +2937,7 @@
         thumb.className = "photo-thumb";
         thumb.dataset.day = String(day);
         thumb.dataset.index = String(index);
-        thumb.setAttribute("aria-label", `Abrir foto ${index + 1} de la parte ${day}`);
+        thumb.setAttribute("aria-label", `Abrir foto ${index + 1} de ${getAccumulatedDayLabel(day)}`);
 
         const thumbInner = document.createElement("div");
         thumbInner.className = "photo-thumb-inner";
@@ -2231,11 +2952,12 @@
     refs.textBlocks.innerHTML = "";
     const textFragment = document.createDocumentFragment();
     for (let day = 1; day <= APP_CONFIG.totalDays; day += 1) {
+      const dayLabel = getAccumulatedDayLabel(day);
       const dayData = getDayData(day);
       if (!isDayUnlocked(day)) {
         const locked = document.createElement("div");
         locked.className = "text-block locked";
-        locked.innerHTML = `<span class="lock-icon">&#128274;</span><span class="lock-text">Parte ${day} - bloqueado</span>`;
+        locked.innerHTML = `<span class="lock-icon">&#128274;</span><span class="lock-text">${dayLabel}</span>`;
         textFragment.appendChild(locked);
         continue;
       }
@@ -2243,7 +2965,7 @@
       const block = document.createElement("div");
       block.className = "text-block";
       block.innerHTML = `
-        <p class="text-block-label">Parte ${day}</p>
+        <p class="text-block-label">${dayLabel}</p>
         <p class="text-block-title">${escapeHtml(dayData.partTitle)}</p>
         <p class="text-block-name">${escapeHtml(dayData.partName)}</p>
         <p class="text-block-content">${escapeHtml(dayData.fullText)}</p>
@@ -2253,6 +2975,11 @@
     refs.textBlocks.appendChild(textFragment);
   }
   function openEnvelope() {
+    const targetDay = clamp(state.envelopeTargetDay || state.activeDay || state.unlockedDay, 1, state.unlockedDay);
+    if (getDayData(targetDay).type !== "letter") {
+      openAlbumEntry();
+      return;
+    }
     if (state.openingEnvelope) return;
     state.openingEnvelope = true;
     const timings = REDUCED_MOTION
@@ -2271,7 +2998,6 @@
     }, timings.overlayIn);
 
     setTimeout(() => {
-      const targetDay = clamp(state.envelopeTargetDay || state.activeDay || state.unlockedDay, 1, state.unlockedDay);
       state.activeDay = targetDay;
       state.selectedDay = targetDay;
       state.activeIndex = 0;
@@ -2296,6 +3022,50 @@
     }, timings.cleanup);
   }
 
+  function openAlbumEntry() {
+    const targetDay = clamp(state.envelopeTargetDay || state.activeDay || state.unlockedDay, 1, state.unlockedDay);
+    if (getDayData(targetDay).type === "letter") {
+      openEnvelope();
+      return;
+    }
+    if (state.openingAlbum) return;
+    state.openingAlbum = true;
+    const timings = REDUCED_MOTION
+      ? { settle: 80, overlayIn: 0, switchScreen: 120, overlayOut: 190, cleanup: 260 }
+      : { settle: 280, overlayIn: 210, switchScreen: 860, overlayOut: 1040, cleanup: 1290 };
+
+    refs.albumEntry.classList.add("opening");
+    refs.albumEntryTrigger.classList.add("opening-zoom");
+    playSound("open");
+    triggerHaptic("envelope-open");
+    setTimeout(() => {
+      triggerHaptic("envelope-settle");
+    }, timings.settle);
+
+    setTimeout(() => {
+      refs.transition.classList.add("envelope-pass", "active");
+    }, timings.overlayIn);
+
+    setTimeout(() => {
+      state.activeDay = targetDay;
+      state.selectedDay = targetDay;
+      state.activeIndex = 0;
+      state.lastIndexByDay.set(state.activeDay, 0);
+      showScreen("screen-album", true);
+    }, timings.switchScreen);
+
+    setTimeout(() => {
+      refs.transition.classList.remove("active");
+    }, timings.overlayOut);
+
+    setTimeout(() => {
+      refs.albumEntry.classList.remove("opening");
+      refs.albumEntryTrigger.classList.remove("opening-zoom");
+      refs.transition.classList.remove("envelope-pass");
+      state.openingAlbum = false;
+    }, timings.cleanup);
+  }
+
   function onCardTap() {
     if (performance.now() < state.suppressFlipUntil) return;
     const nowFlipped = !refs.card.classList.contains("flipped");
@@ -2307,18 +3077,24 @@
     triggerHaptic("flip");
     state.flippedByDay.get(state.activeDay).add(state.activeIndex);
     saveProgress();
-
-    if (state.activeIndex === APP_CONFIG.cardsPerDay - 1) {
-      state.completedByDay.add(state.activeDay);
-      saveProgress();
-      setTimeout(() => {
-        renderCompleteScreen();
-        showScreen("screen-complete");
-      }, 380);
-    }
   }
 
   function moveCard(direction) {
+    const isLastCard = state.activeIndex === APP_CONFIG.cardsPerDay - 1;
+    const wantsNext = direction > 0;
+    const cardIsFlipped = refs.card.classList.contains("flipped");
+
+    if (wantsNext && isLastCard) {
+      // Allow reading the last card first; close only when user swipes again.
+      if (cardIsFlipped) {
+        state.completedByDay.add(state.activeDay);
+        saveProgress();
+        renderCompleteScreen();
+        showScreen("screen-complete");
+      }
+      return;
+    }
+
     const next = clamp(state.activeIndex + direction, 0, APP_CONFIG.cardsPerDay - 1);
     if (next === state.activeIndex) return;
     state.activeIndex = next;
@@ -2478,20 +3254,17 @@
   }
 
   function goToEnvelope(day) {
-    if (state.unlockedDay >= 2) {
-      state.activeDay = state.unlockedDay;
-      state.selectedDay = state.unlockedDay;
-      state.envelopeTargetDay = state.unlockedDay;
-      state.activeIndex = state.lastIndexByDay.get(state.activeDay) || 0;
-      showScreen("screen-album");
-      return;
-    }
     state.envelopeTargetDay = clamp(day, 1, state.unlockedDay);
+    state.activeDay = state.envelopeTargetDay;
+    state.selectedDay = state.envelopeTargetDay;
     state.openingEnvelope = false;
+    state.openingAlbum = false;
     refs.envelope.classList.remove("opening");
     refs.envelopeTrigger.classList.remove("opening-zoom");
+    if (refs.albumEntry) refs.albumEntry.classList.remove("opening");
+    if (refs.albumEntryTrigger) refs.albumEntryTrigger.classList.remove("opening-zoom");
     refs.transition.classList.remove("active", "envelope-pass");
-    applyThemeByDay(1);
+    applyThemeByDay(state.envelopeTargetDay);
     renderWelcome();
     showScreen("screen-welcome");
   }
@@ -2500,7 +3273,8 @@
     state.selectedDay = day;
     state.activeDay = day;
     state.envelopeTargetDay = day;
-    state.activeIndex = getDayData(day).type === "letter" ? 0 : (state.lastIndexByDay.get(day) || 0);
+    state.activeIndex = 0;
+    state.lastIndexByDay.set(day, 0);
     applyThemeByDay(day);
     saveProgress();
     renderAccumulated();
@@ -2559,7 +3333,7 @@
     const current = document.getElementById(id);
     if (current) current.classList.add("active");
 
-    refs.demoButtons.forEach((button) => {
+    refs.demoScreenButtons.forEach((button) => {
       button.classList.toggle("active", button.dataset.screen === id);
     });
 
@@ -2568,7 +3342,14 @@
     if (id === "screen-complete") triggerReveal();
     if (id === "screen-accumulated") renderAccumulated();
     if (id === "screen-final") createConfetti();
-    if (id === "screen-album") renderAlbum();
+    if (id === "screen-album") {
+      if (getDayData(state.activeDay).type === "letter" && state.unlockedDay >= 2) {
+        state.activeDay = clamp(state.unlockedDay, 2, APP_CONFIG.totalDays);
+        state.selectedDay = state.activeDay;
+        state.activeIndex = state.lastIndexByDay.get(state.activeDay) || 0;
+      }
+      renderAlbum();
+    }
     window.scrollTo(0, 0);
   }
 
@@ -2682,6 +3463,11 @@
     return DAY_DATA[day - 1];
   }
 
+  function getAccumulatedDayLabel(day) {
+    if (day === 1) return "Carta 1";
+    return `Carrete ${day - 1}`;
+  }
+
   function isDayUnlocked(day) {
     return day <= state.unlockedDay;
   }
@@ -2738,10 +3524,3 @@
 </script>
 </body>
 </html>
-
-
-
-
-
-
-
