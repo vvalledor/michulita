@@ -139,7 +139,7 @@
       radial-gradient(ellipse at 16% 10%, rgba(180, 70, 95, 0.16) 0%, transparent 52%),
       radial-gradient(ellipse at 82% 76%, rgba(232, 146, 165, 0.2) 0%, transparent 56%),
       linear-gradient(172deg, #fff8f4 0%, #ffedf1 44%, #f9dfe8 100%);
-    position: relative; overflow: hidden;
+    overflow: hidden;
   }
   .ambient-orb {
     position: absolute;
@@ -275,7 +275,7 @@
     width: min(100vw, 590px);
     margin: 0 auto;
     padding: calc(26px + var(--safe-top)) 20px calc(20px + var(--safe-bottom));
-    min-height: 100dvh;
+    height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -639,6 +639,116 @@
     justify-content: center;
     perspective: 2200px;
     transform-style: preserve-3d;
+  }
+
+  .entry-heart-puzzle {
+    width: 232px;
+    max-width: 100%;
+    height: 328px;
+    border-radius: 6px;
+    border: 1px solid rgba(166, 117, 133, 0.65);
+    background:
+      radial-gradient(ellipse at 26% 14%, rgba(255, 255, 255, 0.62) 0%, transparent 58%),
+      radial-gradient(ellipse at 78% 86%, rgba(233, 193, 205, 0.4) 0%, transparent 56%),
+      linear-gradient(170deg, #f6e4ea 0%, #efd5dd 46%, #e7c4cf 100%);
+    box-shadow:
+      inset 0 -20px 28px rgba(162, 110, 128, 0.3),
+      inset 0 1px 0 rgba(255,255,255,0.45),
+      0 14px 26px rgba(111, 67, 84, 0.28);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    padding: 14px 10px;
+  }
+  .entry-heart-puzzle::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 84% 18%, rgba(255,255,255,0.26), transparent 18%),
+      radial-gradient(circle at 20% 86%, rgba(255,255,255,0.14), transparent 22%),
+      repeating-linear-gradient(0deg, rgba(255,255,255,0.05) 0px, rgba(255,255,255,0.05) 1px, transparent 1px, transparent 3px);
+    pointer-events: none;
+  }
+  .entry-heart-stage {
+    width: 100%;
+    max-width: 212px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    position: relative;
+    z-index: 1;
+  }
+  .entry-heart-canvas {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    border-radius: 12px;
+    background:
+      radial-gradient(ellipse at 48% 34%, rgba(255, 255, 255, 0.34) 0%, rgba(255, 255, 255, 0) 68%),
+      linear-gradient(180deg, #f3d9e0 0%, #ecc7d2 100%);
+    border: 1px solid rgba(188, 137, 154, 0.42);
+    box-shadow:
+      inset 0 2px 3px rgba(255,255,255,0.42),
+      inset 0 -9px 14px rgba(157, 95, 117, 0.2),
+      inset 0 0 0 1px rgba(134, 75, 95, 0.2);
+    padding: 2px;
+  }
+  .entry-heart-svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+    overflow: visible;
+  }
+  .entry-heart-slot {
+    fill: rgba(116, 59, 80, 0.24);
+    stroke: rgba(130, 69, 90, 0.38);
+    stroke-width: 1.4;
+    filter:
+      drop-shadow(0 1px 0 rgba(255,255,255,0.5))
+      drop-shadow(0 2px 3px rgba(98, 44, 64, 0.26));
+    pointer-events: none;
+  }
+  .entry-heart-piece {
+    opacity: 0;
+    transform-origin: center;
+    transform-box: fill-box;
+    transform: translate(var(--piece-x, 0px), var(--piece-y, 0px)) rotate(var(--piece-r, 0deg)) scale(0.78);
+    transition: transform 0.36s cubic-bezier(0.19, 0.92, 0.28, 1), opacity 0.36s ease;
+    stroke: rgba(255, 220, 231, 0.56);
+    stroke-width: 1.2;
+    filter: drop-shadow(0 2px 3px rgba(63, 19, 35, 0.26));
+  }
+  .entry-heart-piece.active {
+    opacity: 1;
+    transform: translate(0, 0) rotate(0deg) scale(1);
+  }
+  .entry-heart-piece.piece-1 { --piece-x: -86px; --piece-y: -68px; --piece-r: -14deg; }
+  .entry-heart-piece.piece-2 { --piece-x: -10px; --piece-y: -78px; --piece-r: 13deg; }
+  .entry-heart-piece.piece-3 { --piece-x: -94px; --piece-y: 92px; --piece-r: -10deg; }
+  .entry-heart-piece.piece-4 { --piece-x: 86px; --piece-y: -68px; --piece-r: 14deg; }
+  .entry-heart-piece.piece-5 { --piece-x: 10px; --piece-y: -78px; --piece-r: -13deg; }
+  .entry-heart-piece.piece-6 { --piece-x: 94px; --piece-y: 92px; --piece-r: 10deg; }
+  .entry-heart-outline {
+    fill: none;
+    stroke: rgba(119, 58, 79, 0.5);
+    stroke-width: 1.6;
+    stroke-linejoin: round;
+    pointer-events: none;
+  }
+  .entry-heart-progress {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+    color: rgba(122, 62, 83, 0.9);
+  }
+  .album-entry-wrapper.is-puzzle-day .album-book { display: none; }
+  .album-entry-wrapper.is-puzzle-day .entry-heart-puzzle { display: flex; }
+  .album-entry-wrapper.is-puzzle-day .album-entry.opening .entry-heart-puzzle {
+    animation: heartEntryLift 0.8s cubic-bezier(0.2, 0.72, 0.18, 1) forwards;
   }
 
   .album-book {
@@ -1016,6 +1126,11 @@
   @keyframes albumIdleFloat {
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-3.5px); }
+  }
+  @keyframes heartEntryLift {
+    0% { transform: translateY(0) scale(1); }
+    56% { transform: translateY(-7px) scale(1.01); }
+    100% { transform: translateY(-10px) scale(1.018); }
   }
 
   @keyframes envelopeSealGlow {
@@ -1748,6 +1863,17 @@
     font-size: 16px; font-weight: 400; font-style: italic;
     line-height: 1.7; color: var(--text-primary);
   }
+  .text-block-content.poem {
+    text-align: center;
+    white-space: pre-line;
+  }
+  .text-block-content.poem .poem-verse {
+    display: block;
+    margin-bottom: 10px;
+  }
+  .text-block-content.poem .poem-verse:last-child {
+    margin-bottom: 0;
+  }
   .text-block.locked {
     background: var(--lock-bg); border: 1px dashed var(--accent-lighter);
     display: flex; align-items: center; justify-content: center;
@@ -1876,6 +2002,155 @@
   }
   .final-btn:active { transform: scale(0.97); }
 
+  /* ===== PUZZLE (3x3 x 6 fotos) ===== */
+  .puzzle-screen {
+    background:
+      radial-gradient(ellipse at 20% 10%, rgba(232, 120, 140, 0.1) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 85%, rgba(244, 184, 196, 0.12) 0%, transparent 50%),
+      linear-gradient(175deg, #fff5f8 0%, #ffecf2 50%, #fde6ef 100%);
+    padding: calc(10px + var(--safe-top)) 6px calc(22px + var(--safe-bottom));
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+  .puzzle-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    max-width: min(99vw, 860px);
+    margin-bottom: 12px;
+    padding: 0 4px;
+  }
+  .puzzle-back-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1.5px solid var(--accent-lighter);
+    background: var(--bg-card);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 18px;
+    color: var(--text-light);
+    transition: all 0.25s ease;
+  }
+  .puzzle-back-btn:active { background: var(--accent-lighter); }
+  .puzzle-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    letter-spacing: 0.5px;
+  }
+  .puzzle-spacer { width: 40px; }
+  .puzzle-grid-wrap {
+    width: min(99vw, 860px);
+    max-width: min(99vw, 860px);
+    margin: 0 auto 16px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 28px rgba(80, 36, 50, 0.2);
+    background: var(--bg-card);
+  }
+  .puzzle-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    aspect-ratio: 4 / 5;
+    gap: 2px;
+    padding: 4px;
+  }
+  .puzzle-piece {
+    aspect-ratio: auto;
+    background-size: 300% 300%;
+    background-repeat: no-repeat;
+    background-color: var(--bg-paper-deep);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .puzzle-piece:active { transform: scale(0.96); }
+  .puzzle-piece.selected {
+    box-shadow: 0 0 0 3px var(--accent);
+    transform: scale(1.02);
+    z-index: 2;
+  }
+  .puzzle-caption {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 17px;
+    font-style: italic;
+    line-height: 1.5;
+    color: var(--text-primary);
+    text-align: center;
+    max-width: min(96vw, 620px);
+    margin-bottom: 14px;
+    padding: 0 8px;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .puzzle-caption.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .puzzle-next-btn {
+    font-family: 'Quicksand', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: white;
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
+    border: none;
+    padding: 12px 24px;
+    border-radius: 50px;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 16px rgba(212, 90, 112, 0.3);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease, transform 0.2s ease;
+  }
+  .puzzle-next-btn.visible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .puzzle-next-btn:active { transform: scale(0.97); }
+  .puzzle-done {
+    text-align: center;
+    padding: 20px 16px;
+    display: none;
+  }
+  .puzzle-done.visible { display: block; }
+  .puzzle-done .puzzle-done-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 24px;
+    font-style: italic;
+    color: var(--text-primary);
+    margin-bottom: 12px;
+  }
+  .puzzle-done .puzzle-done-btn {
+    font-family: 'Quicksand', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: white;
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
+    border: none;
+    padding: 12px 24px;
+    border-radius: 50px;
+    cursor: pointer;
+    margin-top: 8px;
+  }
+  .puzzle-game { display: block; }
+  .puzzle-game.hidden { display: none; }
+
+  @media (max-width: 480px) {
+    .puzzle-grid {
+      aspect-ratio: 3 / 4;
+    }
+  }
+
   /* ===== SHARED ===== */
   @keyframes softFadeIn {
     from { opacity: 0; transform: translateY(16px); }
@@ -1919,6 +2194,7 @@
     .envelope-container { width: 276px; height: 204px; }
     .album-entry-container { width: 222px; max-width: 68vw; height: 318px; }
     .album-book { width: 206px; height: 298px; }
+    .entry-heart-puzzle { width: 206px; height: 298px; }
     .album-monogram-letter { font-size: 42px; }
     .album-monogram-ampersand { font-size: 16px; }
     .album-cover .corner { width: 52px; height: 52px; }
@@ -1949,6 +2225,7 @@
   @media (max-width: 340px) {
     .album-entry-container { width: 202px; height: 292px; }
     .album-book { width: 188px; height: 272px; }
+    .entry-heart-puzzle { width: 188px; height: 272px; }
     .album-monogram-letter { font-size: 38px; }
     .album-cover .corner { width: 46px; height: 46px; }
   }
@@ -1956,6 +2233,7 @@
   @media (min-height: 800px) and (max-width: 430px) {
     .album-entry-container { height: 362px; }
     .album-book { height: 342px; }
+    .entry-heart-puzzle { height: 342px; }
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -2158,10 +2436,37 @@
               </div>
             </div>
           </div>
+          <div class="entry-heart-puzzle" id="entry-heart-puzzle" aria-hidden="true">
+            <div class="entry-heart-stage">
+              <div class="entry-heart-canvas">
+                <svg class="entry-heart-svg" viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <path class="entry-heart-slot" d="M88 88 C78 58 50 54 42 78 C36 96 42 114 56 124 C66 116 76 104 84 92 L88 88 Z"></path>
+                  <path class="entry-heart-slot" d="M88 88 C98 58 126 54 134 78 C140 96 134 114 120 124 C110 116 100 104 92 92 L88 88 Z"></path>
+                  <path class="entry-heart-slot" d="M56 124 C66 146 82 162 88 208 C94 162 110 146 120 124 C106 132 98 136 88 146 C78 136 70 132 56 124 Z"></path>
+
+                  <path class="entry-heart-slot" d="M152 88 C142 58 114 54 106 78 C100 96 106 114 120 124 C130 116 140 104 148 92 L152 88 Z"></path>
+                  <path class="entry-heart-slot" d="M152 88 C162 58 190 54 198 78 C204 96 198 114 184 124 C174 116 164 104 156 92 L152 88 Z"></path>
+                  <path class="entry-heart-slot" d="M120 124 C130 146 146 162 152 208 C158 162 174 146 184 124 C170 132 162 136 152 146 C142 136 134 132 120 124 Z"></path>
+
+                  <path class="entry-heart-piece piece-1" fill="#8e1f41" d="M88 88 C78 58 50 54 42 78 C36 96 42 114 56 124 C66 116 76 104 84 92 L88 88 Z"></path>
+                  <path class="entry-heart-piece piece-2" fill="#811b3a" d="M88 88 C98 58 126 54 134 78 C140 96 134 114 120 124 C110 116 100 104 92 92 L88 88 Z"></path>
+                  <path class="entry-heart-piece piece-3" fill="#6f1432" d="M56 124 C66 146 82 162 88 208 C94 162 110 146 120 124 C106 132 98 136 88 146 C78 136 70 132 56 124 Z"></path>
+
+                  <path class="entry-heart-piece piece-4" fill="#7a1737" d="M152 88 C142 58 114 54 106 78 C100 96 106 114 120 124 C130 116 140 104 148 92 L152 88 Z"></path>
+                  <path class="entry-heart-piece piece-5" fill="#6d1431" d="M152 88 C162 58 190 54 198 78 C204 96 198 114 184 124 C174 116 164 104 156 92 L152 88 Z"></path>
+                  <path class="entry-heart-piece piece-6" fill="#5a0e25" d="M120 124 C130 146 146 162 152 208 C158 162 174 146 184 124 C170 132 162 136 152 146 C142 136 134 132 120 124 Z"></path>
+
+                  <path class="entry-heart-outline" d="M88 88 C76 52 46 52 38 78 C30 102 44 124 60 140 C72 152 82 167 88 182 C94 167 104 152 116 140 C132 124 146 102 138 78 C130 52 100 52 88 88 Z"></path>
+                  <path class="entry-heart-outline" d="M152 88 C140 52 110 52 102 78 C94 102 108 124 124 140 C136 152 146 167 152 182 C158 167 168 152 180 140 C196 124 210 102 202 78 C194 52 164 52 152 88 Z"></path>
+                </svg>
+              </div>
+              <span class="entry-heart-progress" id="entry-heart-progress">0/6 piezas</span>
+            </div>
+          </div>
         </div>
       </button>
-      <span class="album-entry-tap-label">
-        <span class="pulse-dot"></span> Toca el album para abrirlo
+      <span class="album-entry-tap-label" id="album-entry-tap-label">
+        <span class="pulse-dot"></span> <span id="album-entry-tap-text">Toca el album para abrirlo</span>
       </span>
     </div>
 
@@ -2247,6 +2552,29 @@
   </div>
 </div>
 
+<!-- ===== PARTE 4: PUZZLES (6 fotos 3x3) ===== -->
+<div id="screen-puzzle" class="screen puzzle-screen">
+  <div class="puzzle-header">
+    <button class="puzzle-back-btn" type="button" id="puzzle-back-btn" aria-label="Volver">&#8249;</button>
+    <span class="puzzle-title" id="puzzle-header-title">Puzzle 1 de 6</span>
+    <span class="puzzle-spacer"></span>
+  </div>
+
+  <div class="puzzle-game" id="puzzle-game">
+    <div class="puzzle-grid-wrap">
+      <div class="puzzle-grid" id="puzzle-grid"></div>
+    </div>
+    <p class="puzzle-caption" id="puzzle-caption"></p>
+    <button class="puzzle-next-btn" type="button" id="puzzle-next-btn">Siguiente foto</button>
+  </div>
+
+  <div class="puzzle-done" id="puzzle-done">
+    <p class="puzzle-done-title" id="puzzle-done-title">&#10047; Has completado todos los puzzles</p>
+    <p class="puzzle-done-text">Esta parte queda guardada como recuerdo.</p>
+    <button class="puzzle-done-btn" type="button" id="puzzle-done-btn">Ver cierre de la parte</button>
+  </div>
+</div>
+
 <!-- ===== DAY COMPLETE ===== -->
 <div id="screen-complete" class="screen complete-screen">
   <div class="complete-check">&#10047;</div>
@@ -2309,6 +2637,7 @@
   <button class="active" type="button" data-screen="screen-welcome">Bienvenida</button>
   <button type="button" data-screen="screen-letter">Parte 1 Ãƒâ€šÃ‚Â· carta</button>
   <button type="button" data-screen="screen-album">Album</button>
+  <button type="button" data-screen="screen-puzzle">Puzzle</button>
   <button type="button" data-screen="screen-complete">Cierre parte</button>
   <button type="button" data-screen="screen-accumulated">Acumulada</button>
   <button type="button" data-screen="screen-final">Final parte 5</button>
@@ -2385,14 +2714,12 @@
       "Sigo muy pendiente de ti, estoy siempre para ti. Te quiero Olga"
     ],
     [
-      "Cuarta parte y todo sigue creciendo.",
-      "Me quedo con tu forma de mirar el mundo.",
-      "Contigo aprendo a disfrutar lo simple.",
-      "Esta carta ya tiene olor a recuerdo bueno.",
-      "Cada foto confirma que elegi bien.",
-      "Gracias por estar y por cuidarnos.",
-      "Este viaje tiene tu nombre en cada esquina.",
-      "Solo falta un dia para cerrar la historia."
+      "Rojito colorao, despeinao acalorao, me da igual si catalán, gallego o andaluz, comiendo jamoncito o pescao, pero siempre a tu lao, que bonita sombra cuando tú eres mi luz",
+      "Mañanas de huevos, dientes limpios y carabollos, tú bella como siempre, yo loquito por ti",
+      "Terrorista y trenzada, cara bonita de mirada alargada, si por ti fuera robaba 8 bancos para tenerte enamorada",
+      "Relajado en tu pecho, con tu olor que me calma, las caricias suaves que me llenan el alma, tú me cuidas y yo te espero",
+      "Lola Lolita Lola.. tan bolita y señora, yo te miro como siempre, da igual la hora. Soleado o nublado, que ganas de besar mi culito rosado",
+      "Insuperable team, con esa uve que asoma y me hace tilín, tú mi nerdy y yo tu tontín. Ojos sombreados pero mi admiración y amor no tiene fin."
     ],
     [
       "Ultima parte de esta serie tan nuestra.",
@@ -2410,9 +2737,14 @@
     { title: "Carta 1", name: "Ya te echo de menos" },
     { title: "Carta 2", name: "Dia gris, pero queda menos para abrazarte" },
     { title: "Carta 3", name: "2 flamingos en el metro" },
-    { title: "Carta 4", name: "Todo sigue creciendo" },
+    { title: "Carta 4", name: "Poemita pa mi chulita" },
     { title: "Carta 5", name: "Lo nuestro no termina aqui" }
   ];
+
+  const PUZZLE_DAY = 4;
+  const PUZZLE_IMAGE_COUNT = 6;
+  const PUZZLE_GRID_SIZE = 3;
+  const ENTRY_HEART_PIECES = 6;
 
   const DAY_THEMES = [
     { accent: "#E8788C", accentLight: "#F4B8C4", accentDark: "#D45A70", secondary: "#FFE4EA" },
@@ -2439,6 +2771,10 @@
     welcomeSubtitle: document.getElementById("welcome-subtitle"),
     envelopeWrapper: document.querySelector(".envelope-wrapper"),
     albumEntryWrapper: document.getElementById("album-entry-wrapper"),
+    albumEntryTapText: document.getElementById("album-entry-tap-text"),
+    entryHeartPuzzle: document.getElementById("entry-heart-puzzle"),
+    entryHeartProgress: document.getElementById("entry-heart-progress"),
+    entryHeartPieces: Array.from(document.querySelectorAll("#entry-heart-puzzle .entry-heart-piece")),
     welcomeChapter: document.querySelector(".welcome-chapter"),
     welcomeCountdown: document.getElementById("welcome-countdown"),
     welcomeProgressDots: Array.from(document.querySelectorAll(".welcome-progress-dot")),
@@ -2480,7 +2816,16 @@
     finalButton: document.querySelector(".final-btn"),
     lightbox: document.getElementById("lightbox"),
     lightboxPhoto: document.getElementById("lightbox-photo"),
-    lightboxClose: document.querySelector(".lightbox-close")
+    lightboxClose: document.querySelector(".lightbox-close"),
+    puzzleGrid: document.getElementById("puzzle-grid"),
+    puzzleCaption: document.getElementById("puzzle-caption"),
+    puzzleNextBtn: document.getElementById("puzzle-next-btn"),
+    puzzleHeaderTitle: document.getElementById("puzzle-header-title"),
+    puzzleGame: document.getElementById("puzzle-game"),
+    puzzleDone: document.getElementById("puzzle-done"),
+    puzzleDoneTitle: document.getElementById("puzzle-done-title"),
+    puzzleDoneBtn: document.getElementById("puzzle-done-btn"),
+    puzzleBackBtn: document.getElementById("puzzle-back-btn")
   };
 
   const state = {
@@ -2506,7 +2851,14 @@
     },
     flippedByDay: new Map(),
     completedByDay: new Set(),
-    lastIndexByDay: new Map()
+    lastIndexByDay: new Map(),
+    puzzleOrder: [],
+    puzzleSelectedIndex: null,
+    puzzleCurrentIndex: 0,
+    puzzleWon: false,
+    entryPuzzleTapCount: 0,
+    entryPuzzleDay: null,
+    entryPuzzleUnlockedDays: new Set()
   };
 
   initializeStateMaps();
@@ -2536,7 +2888,8 @@
     state.activeDay = clamp(state.activeDay || state.unlockedDay, 1, state.unlockedDay);
     state.selectedDay = clamp(state.selectedDay || state.activeDay, 1, state.unlockedDay);
     state.envelopeTargetDay = clamp(state.envelopeTargetDay || state.unlockedDay, 1, state.unlockedDay);
-    state.activeIndex = getDayData(state.activeDay).type === "letter" ? 0 : (state.lastIndexByDay.get(state.activeDay) || 0);
+    const initType = getDayData(state.activeDay).type;
+    state.activeIndex = (initType === "letter" || initType === "puzzle") ? 0 : (state.lastIndexByDay.get(state.activeDay) || 0);
     applyThemeByDay(state.envelopeTargetDay);
     updateScreen("screen-welcome", true);
     renderPreviewControls();
@@ -2565,8 +2918,29 @@
       state.selectedDay = state.activeDay;
       showScreen("screen-accumulated");
     });
-    refs.accumulatedBackBtn.addEventListener("click", () => showScreen("screen-album"));
+    refs.accumulatedBackBtn.addEventListener("click", () => {
+      const dayData = getDayData(state.selectedDay || state.activeDay);
+      showScreen(dayData && dayData.type === "puzzle" ? "screen-puzzle" : "screen-album");
+    });
     refs.finalButton.addEventListener("click", () => showScreen("screen-accumulated"));
+    if (refs.puzzleBackBtn) {
+      refs.puzzleBackBtn.addEventListener("click", () => goToEnvelope(state.unlockedDay));
+    }
+    if (refs.puzzleNextBtn) {
+      refs.puzzleNextBtn.addEventListener("click", onPuzzleNext);
+    }
+    if (refs.puzzleDoneBtn) {
+      refs.puzzleDoneBtn.addEventListener("click", () => {
+        renderCompleteScreen();
+        showScreen("screen-complete");
+      });
+    }
+    if (refs.puzzleGrid) {
+      refs.puzzleGrid.addEventListener("click", (e) => {
+        const piece = e.target.closest(".puzzle-piece");
+        if (piece && piece.dataset.index != null) onPuzzlePieceClick(piece.dataset.index);
+      });
+    }
 
     refs.swipeTrack.addEventListener("pointerdown", onPointerDown);
     refs.swipeTrack.addEventListener("pointermove", onPointerMove);
@@ -2659,20 +3033,30 @@
       const fragments = DAY_FRAGMENTS[day - 1];
       const part = PART_DETAILS[day - 1] || {};
       const isLetter = day === 1;
+      const isPuzzle = day === PUZZLE_DAY;
+      const puzzleImages = isPuzzle
+        ? Array.from({ length: PUZZLE_IMAGE_COUNT }, (_, i) =>
+            `img/day${day}/${String(i + 1).padStart(2, "0")}.jpg`)
+        : [];
+      const puzzleCaptions = isPuzzle ? fragments.slice(0, PUZZLE_IMAGE_COUNT) : [];
       days.push({
         day,
         chapter: `Parte ${day} de ${APP_CONFIG.totalDays}`,
         closeTitle: `Carta ${day}: ${part.name || `Parte ${day}`}`,
-        type: isLetter ? "letter" : "album",
+        type: isLetter ? "letter" : isPuzzle ? "puzzle" : "album",
         partTitle: part.title || `Parte ${day}`,
         partName: part.name || `Parte ${day}`,
-        fullText: isLetter ? DAY1_LETTER_MESSAGE : fragments.join(" "),
+        fullText: isLetter ? DAY1_LETTER_MESSAGE : isPuzzle ? fragments.join("\n") : fragments.join(" "),
         photos: isLetter
           ? []
-          : fragments.map((text, index) => ({
-              src: `img/day${day}/${String(index + 1).padStart(2, "0")}.jpg`,
-              text
-            }))
+          : isPuzzle
+            ? puzzleImages.map((src, index) => ({ src, text: puzzleCaptions[index] || "" }))
+            : fragments.map((text, index) => ({
+                src: `img/day${day}/${String(index + 1).padStart(2, "0")}.jpg`,
+                text
+              })),
+        puzzleImages: isPuzzle ? puzzleImages : [],
+        puzzleCaptions: isPuzzle ? puzzleCaptions : []
       });
     }
     return days;
@@ -2730,7 +3114,8 @@
     state.envelopeTargetDay = state.unlockedDay;
     state.activeDay = state.unlockedDay;
     state.selectedDay = state.unlockedDay;
-    state.activeIndex = getDayData(state.activeDay).type === "letter" ? 0 : (state.lastIndexByDay.get(state.activeDay) || 0);
+    const pvType = getDayData(state.activeDay).type;
+    state.activeIndex = (pvType === "letter" || pvType === "puzzle") ? 0 : (state.lastIndexByDay.get(state.activeDay) || 0);
     applyThemeByDay(state.envelopeTargetDay);
     updateScreen("screen-welcome", true);
   }
@@ -2802,7 +3187,8 @@
       if (state.activeScreen === "screen-welcome" || state.activeScreen === "screen-letter") {
         state.activeDay = nextUnlocked;
         state.selectedDay = nextUnlocked;
-        state.activeIndex = getDayData(nextUnlocked).type === "letter" ? 0 : (state.lastIndexByDay.get(nextUnlocked) || 0);
+        const nuType = getDayData(nextUnlocked).type;
+        state.activeIndex = (nuType === "letter" || nuType === "puzzle") ? 0 : (state.lastIndexByDay.get(nextUnlocked) || 0);
         applyThemeByDay(state.envelopeTargetDay);
       }
     }
@@ -2822,10 +3208,32 @@
     const targetDay = clamp(state.envelopeTargetDay || state.unlockedDay, 1, state.unlockedDay);
     const targetData = getDayData(targetDay);
     const showEnvelopeEntry = targetData.type === "letter";
+    const showPuzzleEntry = targetData.type === "puzzle";
     refs.greeting.innerHTML = `${getGreetingBySpainHour()}, <em>michulita</em>, que bonita que estás siempre...`;
     refs.welcomeChapter.textContent = `${targetDay}/6`;
     refs.envelopeWrapper.classList.toggle("is-hidden", !showEnvelopeEntry);
     refs.albumEntryWrapper.classList.toggle("is-hidden", showEnvelopeEntry);
+    refs.albumEntryWrapper.classList.toggle("is-puzzle-day", showPuzzleEntry);
+    if (refs.entryHeartPuzzle) {
+      refs.entryHeartPuzzle.setAttribute("aria-hidden", showPuzzleEntry ? "false" : "true");
+    }
+    if (refs.albumEntryTrigger) {
+      refs.albumEntryTrigger.setAttribute(
+        "aria-label",
+        showPuzzleEntry ? "Encajar piezas del corazon para abrir el puzzle" : "Abrir album del dia"
+      );
+    }
+    if (showPuzzleEntry) {
+      if (state.entryPuzzleDay !== targetDay) {
+        state.entryPuzzleDay = targetDay;
+        state.entryPuzzleTapCount = state.entryPuzzleUnlockedDays.has(targetDay) ? ENTRY_HEART_PIECES : 0;
+      }
+      renderEntryPuzzleProgress(targetDay);
+    } else {
+      if (refs.albumEntryTapText) refs.albumEntryTapText.textContent = "Toca el album para abrirlo";
+      if (refs.entryHeartProgress) refs.entryHeartProgress.textContent = `0/${ENTRY_HEART_PIECES} piezas`;
+      refs.entryHeartPieces.forEach((piece) => piece.classList.remove("active"));
+    }
     refs.welcomeProgressDots.forEach((dot, index) => {
       dot.classList.remove("filled", "current");
       if (index + 1 <= state.unlockedDay) dot.classList.add("filled");
@@ -2834,10 +3242,32 @@
     renderLetterCountdown();
   }
 
+  function renderEntryPuzzleProgress(day) {
+    const placed = clamp(state.entryPuzzleTapCount, 0, ENTRY_HEART_PIECES);
+    refs.entryHeartPieces.forEach((piece, index) => {
+      piece.classList.toggle("active", index < placed);
+    });
+    if (refs.entryHeartProgress) refs.entryHeartProgress.textContent = `${placed}/${ENTRY_HEART_PIECES} piezas`;
+    if (!refs.albumEntryTapText) return;
+    if (placed < ENTRY_HEART_PIECES) {
+      refs.albumEntryTapText.textContent = `Toca para encajar pieza ${placed + 1} de ${ENTRY_HEART_PIECES}`;
+      return;
+    }
+    if (state.entryPuzzleUnlockedDays.has(day)) {
+      refs.albumEntryTapText.textContent = "Toca para abrir el primer puzzle";
+      return;
+    }
+    refs.albumEntryTapText.textContent = "Corazon completo. Toca una vez mas para abrir";
+  }
+
   function renderAlbum(animateClass) {
     const dayData = getDayData(state.activeDay);
     if (!dayData || dayData.type === "letter" || dayData.photos.length === 0) {
       showScreen("screen-letter", true);
+      return;
+    }
+    if (dayData.type === "puzzle") {
+      showScreen("screen-puzzle", true);
       return;
     }
     const photoData = dayData.photos[state.activeIndex];
@@ -2887,12 +3317,14 @@
         ? "Ver cierre final"
         : "Ir a nuestro álbum";
 
+    const photoCount = dayData.photos.length;
+    const dividerPositions = photoCount <= 6 ? [1, 3] : [2, 5];
     dayData.photos.forEach((photo, index) => {
       const line = document.createElement("p");
       line.className = "reveal-line";
       line.textContent = photo.text;
       refs.completeCard.appendChild(line);
-      if (index === 2 || index === 5) {
+      if (dividerPositions.includes(index)) {
         const divider = document.createElement("div");
         divider.className = "complete-divider";
         refs.completeCard.appendChild(divider);
@@ -2964,11 +3396,21 @@
 
       const block = document.createElement("div");
       block.className = "text-block";
+      const isPoem = dayData.type === "puzzle";
+      const contentClass = isPoem ? "text-block-content poem" : "text-block-content";
+      let contentHtml;
+      if (isPoem) {
+        contentHtml = dayData.fullText.split("\n")
+          .map(v => `<span class="poem-verse">${escapeHtml(v)}</span>`)
+          .join("");
+      } else {
+        contentHtml = escapeHtml(dayData.fullText);
+      }
       block.innerHTML = `
         <p class="text-block-label">${dayLabel}</p>
         <p class="text-block-title">${escapeHtml(dayData.partTitle)}</p>
         <p class="text-block-name">${escapeHtml(dayData.partName)}</p>
-        <p class="text-block-content">${escapeHtml(dayData.fullText)}</p>
+        <p class="${contentClass}">${contentHtml}</p>
       `;
       textFragment.appendChild(block);
     }
@@ -3024,10 +3466,28 @@
 
   function openAlbumEntry() {
     const targetDay = clamp(state.envelopeTargetDay || state.activeDay || state.unlockedDay, 1, state.unlockedDay);
-    if (getDayData(targetDay).type === "letter") {
+    const targetData = getDayData(targetDay);
+    if (targetData.type === "letter") {
       openEnvelope();
       return;
     }
+
+    if (targetData.type === "puzzle" && !state.entryPuzzleUnlockedDays.has(targetDay)) {
+      if (state.entryPuzzleDay !== targetDay) {
+        state.entryPuzzleDay = targetDay;
+        state.entryPuzzleTapCount = 0;
+      }
+      if (state.entryPuzzleTapCount < ENTRY_HEART_PIECES) {
+        state.entryPuzzleTapCount += 1;
+        renderEntryPuzzleProgress(targetDay);
+        playSound("flip");
+        triggerHaptic("flip");
+        return;
+      }
+      state.entryPuzzleUnlockedDays.add(targetDay);
+      renderEntryPuzzleProgress(targetDay);
+    }
+
     if (state.openingAlbum) return;
     state.openingAlbum = true;
     const timings = REDUCED_MOTION
@@ -3051,7 +3511,11 @@
       state.selectedDay = targetDay;
       state.activeIndex = 0;
       state.lastIndexByDay.set(state.activeDay, 0);
-      showScreen("screen-album", true);
+      if (getDayData(targetDay).type === "puzzle") {
+        showScreen("screen-puzzle", true);
+      } else {
+        showScreen("screen-album", true);
+      }
     }, timings.switchScreen);
 
     setTimeout(() => {
@@ -3278,9 +3742,12 @@
     applyThemeByDay(day);
     saveProgress();
     renderAccumulated();
-    if (getDayData(day).type === "letter") {
+    const dayData = getDayData(day);
+    if (dayData.type === "letter") {
       renderLetter();
       showScreen("screen-letter");
+    } else if (dayData.type === "puzzle") {
+      showScreen("screen-puzzle");
     } else {
       renderAlbum();
       showScreen("screen-album");
@@ -3315,23 +3782,38 @@
     refs.lightbox.setAttribute("aria-hidden", "true");
   }
 
+  function forceScrollReset() {
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+  }
+
   function showScreen(id, instant) {
     if (instant || REDUCED_MOTION) {
+      forceScrollReset();
       updateScreen(id);
+      forceScrollReset();
       return;
     }
     refs.transition.classList.add("active");
     setTimeout(() => {
+      forceScrollReset();
       updateScreen(id);
-      setTimeout(() => refs.transition.classList.remove("active"), 45);
+      forceScrollReset();
+      setTimeout(() => {
+        forceScrollReset();
+        refs.transition.classList.remove("active");
+      }, 50);
     }, 350);
   }
 
   function updateScreen(id) {
     state.activeScreen = id;
     refs.screens.forEach((screen) => screen.classList.remove("active"));
+    forceScrollReset();
     const current = document.getElementById(id);
     if (current) current.classList.add("active");
+    forceScrollReset();
 
     refs.demoScreenButtons.forEach((button) => {
       button.classList.toggle("active", button.dataset.screen === id);
@@ -3342,15 +3824,152 @@
     if (id === "screen-complete") triggerReveal();
     if (id === "screen-accumulated") renderAccumulated();
     if (id === "screen-final") createConfetti();
+    if (id === "screen-puzzle") {
+      state.activeDay = PUZZLE_DAY;
+      state.selectedDay = PUZZLE_DAY;
+      state.puzzleCurrentIndex = 0;
+      state.puzzleWon = false;
+      if (refs.puzzleGame) refs.puzzleGame.classList.remove("hidden");
+      if (refs.puzzleDone) refs.puzzleDone.classList.remove("visible");
+      renderPuzzle();
+    }
     if (id === "screen-album") {
-      if (getDayData(state.activeDay).type === "letter" && state.unlockedDay >= 2) {
-        state.activeDay = clamp(state.unlockedDay, 2, APP_CONFIG.totalDays);
+      const dayData = getDayData(state.activeDay);
+      if (dayData && dayData.type === "puzzle") {
+        state.activeDay = PUZZLE_DAY;
+        state.selectedDay = PUZZLE_DAY;
+        updateScreen("screen-puzzle");
+        return;
+      }
+      if (dayData && dayData.type === "letter" && state.unlockedDay >= 2) {
+        let candidate = clamp(state.unlockedDay, 2, APP_CONFIG.totalDays);
+        if (getDayData(candidate).type === "puzzle") {
+          if (candidate - 1 >= 2) candidate = candidate - 1;
+          else if (candidate + 1 <= state.unlockedDay) candidate = candidate + 1;
+        }
+        state.activeDay = candidate;
         state.selectedDay = state.activeDay;
         state.activeIndex = state.lastIndexByDay.get(state.activeDay) || 0;
       }
       renderAlbum();
     }
-    window.scrollTo(0, 0);
+    forceScrollReset();
+  }
+
+  function shuffleArray(a) {
+    for (let i = a.length - 1; i > 0; i -= 1) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  function renderPuzzle() {
+    if (!refs.puzzleGrid || !refs.puzzleCaption || !refs.puzzleNextBtn) return;
+    const dayData = getDayData(state.activeDay);
+    if (!dayData || dayData.type !== "puzzle" || !dayData.puzzleImages || !dayData.puzzleImages.length) return;
+
+    const idx = state.puzzleCurrentIndex;
+    const total = dayData.puzzleImages.length;
+    const imgSrc = dayData.puzzleImages[idx];
+    const caption = (dayData.puzzleCaptions && dayData.puzzleCaptions[idx]) || "";
+
+    if (refs.puzzleHeaderTitle) refs.puzzleHeaderTitle.textContent = `Puzzle ${idx + 1} de ${total}`;
+    refs.puzzleCaption.textContent = caption;
+    refs.puzzleCaption.classList.remove("visible");
+    refs.puzzleNextBtn.classList.remove("visible");
+    refs.puzzleNextBtn.textContent = (idx === total - 1) ? "Ver tu carta" : "Siguiente foto";
+
+    const size = PUZZLE_GRID_SIZE * PUZZLE_GRID_SIZE;
+    if (state.puzzleOrder.length !== size) {
+      state.puzzleOrder = shuffleArray(Array.from({ length: size }, (_, i) => i));
+    }
+    state.puzzleSelectedIndex = null;
+    state.puzzleWon = false;
+
+    const posPct = 100 / (PUZZLE_GRID_SIZE - 1);
+    refs.puzzleGrid.innerHTML = "";
+    for (let i = 0; i < size; i += 1) {
+      const piece = document.createElement("div");
+      piece.className = "puzzle-piece";
+      piece.dataset.index = String(i);
+      const slot = state.puzzleOrder[i];
+      const col = slot % PUZZLE_GRID_SIZE;
+      const row = Math.floor(slot / PUZZLE_GRID_SIZE);
+      piece.style.backgroundImage = `url('${imgSrc}')`;
+      piece.style.backgroundPosition = `${col * posPct}% ${row * posPct}%`;
+      piece.style.backgroundSize = `${PUZZLE_GRID_SIZE * 100}% ${PUZZLE_GRID_SIZE * 100}%`;
+      refs.puzzleGrid.appendChild(piece);
+    }
+  }
+
+  function checkPuzzleWin() {
+    const size = PUZZLE_GRID_SIZE * PUZZLE_GRID_SIZE;
+    for (let i = 0; i < size; i += 1) {
+      if (state.puzzleOrder[i] !== i) return false;
+    }
+    return true;
+  }
+
+  function onPuzzlePieceClick(index) {
+    if (state.puzzleWon) return;
+    const idx = Number(index);
+    if (state.puzzleSelectedIndex === null) {
+      state.puzzleSelectedIndex = idx;
+      refs.puzzleGrid.querySelectorAll(".puzzle-piece").forEach((el, i) => {
+        el.classList.toggle("selected", i === idx);
+      });
+      return;
+    }
+    if (state.puzzleSelectedIndex === idx) {
+      state.puzzleSelectedIndex = null;
+      refs.puzzleGrid.querySelectorAll(".puzzle-piece").forEach((el) => el.classList.remove("selected"));
+      return;
+    }
+    const a = state.puzzleSelectedIndex;
+    const b = idx;
+    [state.puzzleOrder[a], state.puzzleOrder[b]] = [state.puzzleOrder[b], state.puzzleOrder[a]];
+    state.puzzleSelectedIndex = null;
+    refs.puzzleGrid.querySelectorAll(".puzzle-piece").forEach((el) => el.classList.remove("selected"));
+
+    const size = PUZZLE_GRID_SIZE * PUZZLE_GRID_SIZE;
+    const dayData = getDayData(state.activeDay);
+    const imgSrc = dayData && dayData.puzzleImages ? dayData.puzzleImages[state.puzzleCurrentIndex] : "";
+    const posPct = 100 / (PUZZLE_GRID_SIZE - 1);
+    for (let i = 0; i < size; i += 1) {
+      const piece = refs.puzzleGrid.children[i];
+      const slot = state.puzzleOrder[i];
+      const col = slot % PUZZLE_GRID_SIZE;
+      const row = Math.floor(slot / PUZZLE_GRID_SIZE);
+      piece.style.backgroundImage = `url('${imgSrc}')`;
+      piece.style.backgroundPosition = `${col * posPct}% ${row * posPct}%`;
+    }
+
+    if (checkPuzzleWin()) {
+      state.puzzleWon = true;
+      playSound("open");
+      triggerHaptic("envelope-open");
+      refs.puzzleCaption.classList.add("visible");
+      refs.puzzleNextBtn.classList.add("visible");
+    }
+  }
+
+  function onPuzzleNext() {
+    const dayData = getDayData(state.activeDay);
+    if (!dayData || dayData.type !== "puzzle") return;
+    const total = dayData.puzzleImages.length;
+    state.puzzleCurrentIndex += 1;
+    if (state.puzzleCurrentIndex >= total) {
+      state.completedByDay.add(state.activeDay);
+      saveProgress();
+      if (refs.puzzleGame) refs.puzzleGame.classList.add("hidden");
+      if (refs.puzzleDone) refs.puzzleDone.classList.remove("visible");
+      renderCompleteScreen();
+      showScreen("screen-complete");
+      return;
+    }
+    state.puzzleOrder = [];
+    renderPuzzle();
   }
 
   function triggerReveal() {
