@@ -66,6 +66,7 @@
   .heart-btn:focus-visible svg { filter:drop-shadow(0 0 0 #fff) drop-shadow(0 0 6px var(--accent-dark)); }
   @keyframes beat { 0%,100%{transform:scale(1)} 14%{transform:scale(1.08)} 28%{transform:scale(1)} 42%{transform:scale(1.06)} 56%{transform:scale(1)} }
 
+  .firma { margin-top:10px; font-family:'Cormorant Garamond',serif; font-style:italic; font-size:19px; color:var(--accent); z-index:2; }
   .counter { margin-top:22px; color:var(--text-light); font-size:14px; min-height:20px; z-index:2; text-align:center; }
 
   /* floating background hearts */
@@ -107,10 +108,11 @@
 </div>
 
 <div class="counter" id="counter"></div>
+<div class="firma">— Adrián 💗</div>
 
 <div class="special" id="special">
   <div>
-    <h2>Ya has leído todos 🥹</h2>
+    <h2>Ya los has leído todos 🥹</h2>
     <p>Pero que sepas que me quedan muchísimos más<br>que decirte en persona.</p>
     <button id="again">Volver a empezar</button>
   </div>
@@ -119,22 +121,71 @@
 <script>
   // ✏️ Edita aquí los mensajes (uno por línea, entre comillas y con coma al final)
   const MENSAJES = [
-    "Eres lo más bonito que me ha pasado.",
-    "Contigo hasta los lunes tienen sentido.",
-    "Me encanta cómo te ríes. Ojalá poder escucharlo ahora mismo.",
-    "Eres mi sitio favorito del mundo.",
-    "Te elegiría a ti, una y otra vez, en todas las vidas.",
-    "Qué suerte la mía de haberte encontrado.",
-    "Tú haces que todo sea más fácil y más bonito.",
-    "Cuando estoy contigo, el tiempo pasa demasiado rápido.",
-    "Me haces sentir en casa.",
-    "Eres preciosa, por dentro y por fuera.",
-    "Pienso en ti más de lo que te imaginas.",
-    "Estoy muy orgulloso de ti, michulita.",
-    "Tu abrazo es mi lugar seguro.",
-    "Gracias por ser exactamente como eres.",
-    "Si sonríes ahora, que sepas que lo he conseguido 😊",
-    "Te quiero muchísimo. Hoy, mañana y siempre.",
+    "Eres increíble y la mejor novia del mundo.",
+    "Para mí eres lo más espectacular que he visto, en casi todos los sentidos.",
+    "Eres una belleza que yo no he visto nada igual en mi vida.",
+    "Lo preciosa que eres por fuera y lo especial que eres por dentro.",
+    "Eres muy inteligente, sensible y empática.",
+    "Eres igual de guapa que de inteligente.",
+    "Te he visto despeinada, sobada, en pijama… y no ha habido segundo que no haya pensado que eres lo más bonito que hay.",
+    "Y la cara, yo no sé qué pasa, que cada día eres más bonita.",
+    "Más guapa que la más guapa, y la más guapa eres tú.",
+    "Da exactamente igual lo que hagas o lo que te pase: más bonita no puedes estar.",
+    "Te vas igual de bonita que siempre, porque no sabes ser de otra forma.",
+    "Si eres preciosa, se te tiene que decir todas las veces que haga falta y punto.",
+    "Mira que eres mona y preciosa, incluso llorando.",
+    "Tú sí que eres bonita, mi dorito fibrado mojado en salsa de belleza.",
+    "Rencorosa, preciosa, orgullosa, talentosa, misteriosa, poderosa… olgaseosa.",
+    "Tú ya eres gigante y vas a seguir creciendo sin parar, michula.",
+    "Sé lo mucho que eres, lo mucho que sientes y lo muchísimo que vales. Lo acepto todo y lo adoro todo.",
+    "Vales muchísimo y lo tengo muy claro.",
+    "Eres lo mejor que hay en esta vida estresada.",
+    "Tú sí que eres lo mejor que hay en el mundo entero, mi bonita suave.",
+    "Así te quiero ver siempre: bien feliz y mirándome con esos ojos largos como el Nilo.",
+    "No seas tan dura contigo misma: que tengas una mala época no significa que dejes de ser un 10.",
+    "En los días que te sientas mejor, yo lo celebro contigo. Y en los días que te sientas un poco peor, yo te recuerdo todo lo bueno, que créeme que es muchísimo.",
+    "Ya te digo yo si puedes con todo.",
+    "No te dejes pisotear, Olga. No podrán contigo.",
+    "Estate tranquila, que seguro que te sale como siempre.",
+    "Solo tienes que ser tú: eres atenta y cuidona, eres detallista, lo ves todo y lo tienes todo en cuenta.",
+    "Yo te veo bonita siempre, y créeme que te veo de verdad: con todo lo que eres, todo lo bueno que eres, que tienes y que haces.",
+    "Van a flipar contigo, lo tengo clarísimo.",
+    "Eres muy autoexigente contigo misma, y eso te hace ser mejor en todos los sentidos.",
+    "Te lo has currado, porque vales mucho.",
+    "Te adoro, michulita. Todo está bien y a mejor, como siempre.",
+    "Nos espera una vida maravillosa.",
+    "Contigo al lado no le tengo miedo a nada.",
+    "Aquí estoy siempre.",
+    "Yo te voy a dar mi calor, mi mano y mi todo siempre, michulita. En todos los momentos voy a estar para ti.",
+    "Estoy para ti y tienes todo mi apoyo, energía y ganas para que puedas estar lo mejor posible.",
+    "Aunque esté a lo mío y con los míos, siempre estoy para ti.",
+    "Sabes que me puedes contar lo que sea y desahogarte si lo necesitas.",
+    "Para ti saco tiempo y energía de donde sea.",
+    "Los abrazos fuertes te los voy a dar, ahora y siempre.",
+    "Por muy liado que vaya, siempre estoy pendiente de ti.",
+    "Estoy para ti siempre, Olga. Ahora más que nunca.",
+    "Sé que nos tenemos el uno al otro y que siempre queremos lo mejor. Somos así, y juntos aún más.",
+    "Eres el amor de mi vida, la mujer de mis sueños y mi compañera pa' todo y pa' siempre.",
+    "Te amo todo lo que se puede amar a alguien.",
+    "Claro que eres mi persona favorita.",
+    "Para mí eres de lo mejor que tengo, de lo más importante y de lo que más quiero.",
+    "Te quiero con todo lo que eres, cada uno de tus pensamientos.",
+    "Te quiero así, tal cual. Sin nada más ni nada menos.",
+    "No sabes lo afortunado y lo feliz que me siento por estar contigo.",
+    "Me entiendes y me cuidas, me alegras la vida y me haces sentir muy afortunado.",
+    "Contigo tengo la mejor rutina de todas, porque estar a tu lado es lo que mejor me sienta.",
+    "Desde que estoy contigo estoy mucho mejor en todos los sentidos.",
+    "Contigo me calmo y desconecto del ruido que tengo dentro y fuera.",
+    "Yo me veo contigo para siempre.",
+    "Yo quiero mi vida a tu lado: cuanto más tiempo y más cerca, mejor.",
+    "Te quiero mucho, por si no te lo he dicho hoy.",
+    "Te quiero pasiempre, desde las dos a la una.",
+    "Da igual coja, manca o tuerta: yo me quedo contigo siempre.",
+    "Para mí eres michulita y miamor, sobre todo.",
+    "Eres la mejor, gracias por tanto.",
+    "Cuánto te quiero, qué suerte tengo de tenerte cerca.",
+    "Mientras sea a tu lado, yo soy lo más feliz que puedo ser.",
+    "Qué ganas de todos los besos, de todas las risas y de todos los abrazos colgones.",
   ];
 
   const EMOJIS = ["💖","💗","💕","🌸","✨","💘","🥰","💞"];
