@@ -6,6 +6,8 @@
 <meta name="theme-color" content="#2A0614">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <title>El bote de Olga</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Ctext y=%22.9em%22 font-size=%2290%22%3E%F0%9F%90%B0%3C/text%3E%3C/svg%3E">
+<meta name="apple-mobile-web-app-title" content="El bote">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Fraunces:ital,wght@0,600;0,700;1,500;1,600&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
@@ -95,7 +97,7 @@
     background: linear-gradient(105deg, rgba(255, 230, 240, .26), rgba(255, 230, 240, .08) 45%, rgba(255, 230, 240, .18));
     border: 2.5px solid rgba(255, 214, 230, .5);
     box-shadow: inset 0 -16px 40px rgba(238, 111, 165, .25), inset 0 10px 22px rgba(255, 255, 255, .1), 0 22px 40px -14px rgba(0, 0, 0, .6);
-    -webkit-backdrop-filter: blur(2px); backdrop-filter: blur(2px); }
+  }
   .shine { position: absolute; z-index: 4; border-radius: 20px; background: rgba(255, 255, 255, .55); pointer-events: none; }
   .shine.a { left: 26px; top: 84px; width: 13px; height: 150px; }
   .shine.b { left: 46px; top: 96px; width: 6px; height: 54px; opacity: .6; }
@@ -240,6 +242,36 @@
   .flyer { position: fixed; z-index: 45; width: 46px; height: 28px; margin: -14px 0 0 -23px; border-radius: 4px; pointer-events: none; box-shadow: 0 4px 10px rgba(0, 0, 0, .4); }
   .flyer::after { content: ""; position: absolute; left: 50%; top: 2px; bottom: 2px; width: 1.5px; background: rgba(58, 10, 28, .18); }
 
+  /* ---------- papelitos variados dentro del bote ---------- */
+  .slip.roll { border-radius: 10px; height: 15px; background-image: repeating-linear-gradient(90deg, rgba(255, 255, 255, .35) 0 3px, transparent 3px 8px) !important; }
+  .slip.roll::after { left: auto; right: 5px; width: 6px; top: 1px; bottom: 1px; border-radius: 6px; background: rgba(58, 10, 28, .12); }
+  .slip.heart { width: auto; height: auto; background: none !important; box-shadow: none; font-size: 20px; line-height: 1; filter: drop-shadow(0 2px 0 rgba(58, 10, 28, .25)); }
+  .slip.heart::after { display: none; }
+  .rise { position: fixed; z-index: 3; pointer-events: none; color: var(--pink-2); font-size: 14px; animation: rise 3.2s ease-out forwards; }
+  @keyframes rise { 0% { opacity: 0; transform: translate(0, 0) scale(.6); } 15% { opacity: .9; } 100% { opacity: 0; transform: translate(var(--x), -150px) scale(1.1) rotate(var(--r)); } }
+
+  /* ---------- conejito dormido ---------- */
+  .zzz { position: absolute; right: 2px; top: 6%; font-family: var(--hand); font-weight: 700; font-size: 22px; color: var(--pink-2); opacity: 0; pointer-events: none; }
+  .bunny.sleep .zzz { opacity: 1; }
+  .bunny.sleep .zzz span { display: inline-block; animation: zz 2.4s ease-in-out infinite; }
+  .bunny.sleep .zzz span:nth-child(2) { animation-delay: .4s; font-size: .8em; }
+  .bunny.sleep .zzz span:nth-child(3) { animation-delay: .8s; font-size: .6em; }
+  @keyframes zz { 0% { opacity: 0; transform: translate(0, 6px); } 40% { opacity: 1; } 100% { opacity: 0; transform: translate(10px, -16px); } }
+  .bunny.sleep .eyes { display: none; }
+  .bunny.sleep .happy-eyes { display: inline; transform: scaleY(-1); transform-box: fill-box; transform-origin: 50% 50%; }
+  .bunny.sleep svg { animation: breathe 3s ease-in-out infinite; }
+  @keyframes breathe { 50% { transform: scale(1.02, .98) translateY(1px); } }
+
+  /* ---------- fechas ---------- */
+  .ndate { margin-top: 18px; text-align: center; font-family: var(--hand); font-size: 20px; color: var(--ink-2); opacity: 0; animation: wIn .6s 1s forwards; }
+  .pin .pd { display: block; margin-top: 8px; font-family: var(--hand); font-size: 15px; color: var(--ink-2); }
+  .note.long p { font-size: clamp(25px, 7vw, 31px); }
+  .note.xlong p { font-size: clamp(22px, 6.1vw, 27px); }
+  .act.icon { flex: 0 0 56px; font-size: 20px; }
+
+  .rain { position: fixed; top: -40px; z-index: 65; pointer-events: none; font-size: 22px; animation: rain linear forwards; }
+  @keyframes rain { to { transform: translateY(110vh) rotate(var(--r)); } }
+
   /* ================= efectos ================= */
   .spark { position: fixed; z-index: 60; pointer-events: none; transform: translate(-50%, -50%); font-size: var(--s); color: var(--c);
     animation: spark 1s cubic-bezier(.2, 1.1, .4, 1) forwards; }
@@ -261,6 +293,7 @@
 <!-- ================= conejito ================= -->
 <div class="bunny" id="bunny" role="button" aria-label="Conejito">
   <div class="bubble" id="bubble"></div>
+  <div class="zzz" aria-hidden="true"><span>z</span><span>z</span><span>z</span></div>
   <svg viewBox="0 0 200 270" aria-hidden="true">
     <!-- orejas -->
     <g class="ear ear-l"><ellipse cx="74" cy="52" rx="18" ry="50" fill="#FFF6F4" transform="rotate(-14 74 52)"/><ellipse cx="74" cy="58" rx="8.5" ry="35" fill="#F7A9C9" transform="rotate(-14 74 58)"/></g>
@@ -343,13 +376,15 @@
     <div class="washi"></div>
     <span class="new-tag" id="nNew">nueva ☺️</span>
     <p id="nText"></p>
+    <div class="ndate" id="nDate"></div>
     <div class="bigh" id="bigh">💗</div>
   </article>
   <div class="acts">
     <button class="act fav" id="mFav">♡ guardar</button>
     <button class="act main" id="mNext">otra 🫙</button>
+    <button class="act icon" id="mReply" aria-label="Contestarle por WhatsApp">💬</button>
   </div>
-  <div class="m-hint" id="mHint">doble toque para guardar · desliza para otra</div>
+  <div class="m-hint" id="mHint"></div>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -359,318 +394,307 @@
    Todas las notitas son mensajes literales de Adrián en el chat.
    ========================================================= */
 const NOTAS = [
-  {"c": "b", "t": "Preciosa no es que estés es que eres"},
-  {"c": "b", "t": "Más guapa que la más guapa, y la más guapa eres tú"},
-  {"c": "b", "t": "Pero de verdad te digo que yo te he visto en esas, despeinada, sobada en pijama… y no ha habido segundo que no haya pensado que eres lo más bonito que hay"},
-  {"c": "b", "t": "Y la cara yo no se que pasa que cada día eres más bonita"},
-  {"c": "b", "t": "Tu da exactamente igual lo que hagas o lo que te pase que más bonita no puedes estar"},
-  {"c": "b", "t": "Te vas igual de bonita que siempre porque no sabes ser de otra forma"},
-  {"c": "b", "t": "Si eres preciosa se te tiene que decir todas las veces que haga falta y punto"},
-  {"c": "b", "t": "Pero mira que eres mona y preciosa incluso llorando"},
-  {"c": "b", "t": "Pero eres una belleza que yo no he visto nada igual en mi vida"},
-  {"c": "b", "t": "Pero para mí eres lo más espectacular que he visto, en casi todos los sentidos"},
-  {"c": "b", "t": "De lo preciosa que eres por fuera y lo especial que eres por dentro"},
-  {"c": "b", "t": "Ni un poquito de maquillaje te hace falta para estar bonita"},
-  {"c": "b", "t": "Más chula que chula, más bonita que ninguna"},
-  {"c": "b", "t": "Pocas cosas bonitas te digo para todo lo bonita que tú eres"},
-  {"c": "b", "t": "Preciosa es poco ya"},
-  {"c": "b", "t": "Aunque no te vea se que estás preciosa"},
-  {"c": "b", "t": "Carita de cansada pero preciosa"},
-  {"c": "b", "t": "Pero aún y así… ni durmiendo regular estás ni un poco menos bonita"},
-  {"c": "b", "t": "Mira como se peina la chica más bonita que he visto nunca"},
-  {"c": "b", "t": "Si para mi es la mujer más preciosa que he visto"},
-  {"c": "b", "t": "Estás preciosa así, carita de cansada pero me encanta como me miras con la media sonrisa y la manita encima"},
-  {"c": "b", "t": "Las rodillas más bonitas que yo vi en mi vida"},
-  {"c": "b", "t": "Como puedes estar tan bonita ya de buena mañana"},
-  {"c": "b", "t": "Es que hueles increíble siempre"},
-  {"c": "b", "t": "Yo guapa te veo siempre, eso es un hecho indiscutible, y no te lo digo por decir, lo pienso de verdad"},
-  {"c": "b", "t": "Y no me voy a cansar de repetirlo, tú guapa preciosa estás siempre, no ha habido día que haya dicho uy… hoy un poco menos"},
-  {"c": "b", "t": "Pero incluso de vagabunda eres la más bonita de las calles"},
-  {"c": "b", "t": "A mi me gusta el look, con lo guapa que eres te puedes poner lo que quieras"},
-  {"c": "b", "t": "Que eres psicóloga y modelo y que eres igual de guapa que de inteligente"},
-  {"c": "b", "t": "Mejor descansada que cansada, pero de lo que no te cansas es de estar siempre preciosa"},
-  {"c": "b", "t": "Eres preciosa Olga, las trenzas te dan un toque pero lleves como lleves el pelo eso no cambia"},
-  {"c": "b", "t": "Yo te veo bonita siempre y creeme que se que te veo de verdad, con todo lo que eres, todo lo bueno que eres, que tienes y que haces"},
-  {"c": "b", "t": "Tú si que eres preciosa, que ni una operación te quita esa cara bonita"},
-  {"c": "b", "t": "Siempre estás preciosa, pero así aún mucho más"},
-  {"c": "b", "t": "Pero que preciosa que estás 😩"},
-  {"c": "b", "t": "Que bonita que eres"},
-  {"c": "b", "t": "Estás preciosa Olga 🥰"},
-  {"c": "b", "t": "Pa que luego digas que no estás preciosa siempre…"},
-  {"c": "b", "t": "Y que eres preciosa da igual como cuando y donde"},
-  {"c": "b", "t": "Tu guapaza estás siempre, aunque sea recién despertada"},
-  {"c": "b", "t": "Pero siempre te veo bonita"},
-  {"c": "b", "t": "Yo lo que te veo es preciosa como siempre"},
-  {"c": "b", "t": "Pero que preciosa y que salvaje estás, antes en el vídeo, ahora y siempre, te lo escribo para que este cochecito te lo recuerde"},
-  {"c": "b", "t": "Si es que más bonita guapa bella preciosa no puedes ser"},
-  {"c": "b", "t": "Eres bonita bella preciosa"},
-  {"c": "b", "t": "Eres bonita eres preciosa y eres increíble"},
-  {"c": "b", "t": "Tu bien bonita como siempre"},
-  {"c": "b", "t": "Guapa y chulita siempre… y buena también aunque te quieras hacer la mala"},
-  {"c": "b", "t": "Tu si que eres la más guapa de todo el mundo"},
-  {"c": "b", "t": "Tu si que eres preciosa miniña"},
-  {"c": "a", "t": "No seas tan dura contigo misma, que tengas una mala época encima por algo que no es ni tu culpa no significa que dejes de ser un 10"},
-  {"c": "a", "t": "En los días que te sientas mejor yo lo celebro contigo y en los días que te sientas un poco peor yo te recuerdo todo lo bueno que creeme que es muchísimo"},
-  {"c": "a", "t": "Ya te digo si puedes con todo"},
-  {"c": "a", "t": "No te dejes pisotear Olga no podrán contigo"},
-  {"c": "a", "t": "Tú cuídate mucho, dale un repaso a todo esto y estáte tranquila que seguro que te sale como siempre"},
-  {"c": "a", "t": "Se te da muy bien Olga, solo tienes que ser tú, ya eres atenta y cuidona, te sale solo, eres detallista, lo ves todo y lo tienes todo en cuenta"},
-  {"c": "a", "t": "Van a flipar contigo, lo tengo clarísimo"},
-  {"c": "a", "t": "Eres muy autoexigente contigo misma, y está muy bien porque te hace ser mejor en todos los sentidos"},
-  {"c": "a", "t": "Te lo has currado, porque vales mucho, los comentarios y la nota son solo un reflejo de todo el buen trabajo que haces ahí"},
-  {"c": "a", "t": "Pero eres muy inteligente, sensible y empática"},
-  {"c": "a", "t": "Estoy totalmente seguro de que eres una máquina y una profesional en lo tuyo"},
-  {"c": "a", "t": "Se te notaba nerviosa pero ya lo tienes miamor"},
-  {"c": "a", "t": "Tu ya eres gigante y vas a seguir creciendo sin parar michula"},
-  {"c": "a", "t": "Eres lista y te conoces bastante, seguro que lo acabas viendo"},
-  {"c": "a", "t": "No es que exageres es que sientes como sientes y eres muy sensible"},
-  {"c": "a", "t": "Se que a veces te cuesta un poco de más pero también se que eres muy funcional y que a medida que te vayas conociendo lo vas a ser aún más"},
-  {"c": "a", "t": "A descansar que lo mereces y lo necesitas"},
-  {"c": "a", "t": "Y no te pongas triste michulita porfa"},
-  {"c": "a", "t": "Tú hoy duerme y descansa como te mereces, que has tenido una semana muy movida. Y así mañana nos pillamos con energía y recuperamos todas las horas que queramos"},
-  {"c": "a", "t": "Sal de la cama preciosa, fuera te espera un mundo lleno de oportunidades"},
-  {"c": "a", "t": "Y lo más importante es que tú estés contenta y satisfecha con como ayudas a los chavales, es lo más bonito también"},
-  {"c": "a", "t": "Piensa en lo mejor para ti sobre todo"},
-  {"c": "a", "t": "Te adoro michulita, aunque hayan sido un par de dias intensos y emocionales todo está bien y a mejor como siempre"},
-  {"c": "a", "t": "Y aún y así veo que has sacado energía para entrenar … eres una bestia"},
-  {"c": "a", "t": "Vales muchísimo y lo tengo muy claro"},
-  {"c": "a", "t": "Se lo mucho que eres, lo mucho que sientes y lo muchísimo que vales, lo acepto todo y lo adoro todo"},
-  {"c": "a", "t": "Pero ahora ya relajadita meditación y a descansar como una reina"},
-  {"c": "a", "t": "Un trámite Olga, que te diga lo increíble que eres y lo bien que lo has hecho"},
-  {"c": "a", "t": "Gracias a ti también Olga, vales mucho y quiero que tú lo sientas"},
-  {"c": "a", "t": "Bueno pero ya te vas conociendo y aún te queda, son cosas normales. Eres lista y reconoces lo que te pasa que ya es mucho"},
-  {"c": "a", "t": "Y sinceramente por como eres lo llevas mejor de lo que me imaginaba"},
-  {"c": "a", "t": "Descansa y cuídate mucho"},
-  {"c": "a", "t": "Está bien, que tengas un buen día y cuídate mucho porfa. Te quiero"},
-  {"c": "a", "t": "Puedes estar cansada y feliz"},
-  {"c": "a", "t": "Ojalá duermas bien, descanses y se te cure esa espaldota. Ya tengo ganas de verte michicle, te veo en un rato. Te quiero"},
-  {"c": "a", "t": "Tú ahora descansa y ya mañana bien fresca te lo miras todo y me vas diciendo"},
-  {"c": "a", "t": "Pues el día que te mereces ni más ni menos, descansadita, bien alimentada y con una buena compañía gustosa"},
-  {"c": "a", "t": "Ya sabes que también es muy importante descansar, si el cuerpo pide descanso hay que dárselo"},
-  {"c": "a", "t": "A comer mucho y a descansar y estar tranquila bajo la lluvia"},
-  {"c": "e", "t": "Y otra vez te lo digo, aquí estoy siempre"},
-  {"c": "e", "t": "Yo te voy a dar mi calor mi mano y mi todo siempre michulita, en todos los momentos voy a estar para ti"},
-  {"c": "e", "t": "Estoy para ti y tienes todo mi apoyo, energía y ganas para que puedas estar lo mejor que puedas estar en todos los sentidos"},
-  {"c": "e", "t": "Pero aunque esté a lo mío y con los míos siempre estoy para ti"},
-  {"c": "e", "t": "Y no te cierres conmigo porfa, sabes que me puedes contar lo que sea y desahogarte si lo necesitas"},
-  {"c": "e", "t": "Si necesitas evadirte un poco, salir de tu casa, hablar, no hablar, lo que sea que quieras puedes contar conmigo"},
-  {"c": "e", "t": "pero para ti saco tiempo y energía de donde sea"},
-  {"c": "e", "t": "Los abrazos fuertes te los voy a dar, ahora y siempre"},
-  {"c": "e", "t": "Pero si quiero decirte que nunca te ignoro ni obvio nada de lo que me dices, por muy liado que pueda ir siempre estoy pendiente de ti y de todo lo que me dices"},
-  {"c": "e", "t": "Se que debes estar triste y muy cansada. Solo espero que puedas descansar y relajarte lo máximo posible. Estoy para ti siempre Olga, ahora más que nunca. Te quiero"},
-  {"c": "e", "t": "Se que nos tenemos el uno al otro y que siempre queremos lo mejor, somos así y juntos aún más"},
-  {"c": "e", "t": "quiero que sepas que si necesitas algo puedes contar siempre conmigo"},
-  {"c": "e", "t": "Pero todo lo que hago lo hago porque te quiero y me sale solo cuidarte"},
-  {"c": "e", "t": "Pues puedes estar muy tranquila, solo me apetece tratarte bien y cuidarte"},
-  {"c": "e", "t": "No te voy a romper el corazón, puedes estar tranquila"},
-  {"c": "e", "t": "si te apetece hablar me lo puedes decir, yo siempre estoy dispuesto"},
-  {"c": "e", "t": "Pero no te preocupes, te guardo un abrazo gran reserva"},
-  {"c": "e", "t": "Abrazos vas a tener no te preocupes"},
-  {"c": "e", "t": "Nada más te vea te voy a dar un abrazo bien fuerte, vente preparada"},
-  {"c": "e", "t": "Que cosas me dices miamor… pero te voy a quitar el frio para el resto de tu vida"},
-  {"c": "e", "t": "Michulita y tuchulito contra lo que sea"},
-  {"c": "e", "t": "Normal… jo, debes estar bien nerviosa, ojalá poder ir contigo para quitarte un poco de estrés"},
-  {"c": "e", "t": "Pues normalmente no preciosa, pero por ti como si me tengo que ir con el carrito este hasta portugal"},
-  {"c": "e", "t": "Me metería en un tren podrido como este durante horas solo para darte un abrazo"},
-  {"c": "e", "t": "Para servirte en todo lo que pueda miamor"},
-  {"c": "e", "t": "Un poquito sí, pero estando contigo todo es mucho más fácil mi secre"},
-  {"c": "e", "t": "Igual que tu te preocupas de como estoy y quieres que esté lo mejor posible a mi me pasa igual"},
-  {"c": "e", "t": "Si lo se, a mi me pasa igual contigo, me gusta saber como te sientes y lo que te pasa, siempre"},
-  {"c": "e", "t": "Te entiendo totalmente, se que no es fácil ni una situación en la que te sientes cómoda, siempre estoy pero ahora más que nunca"},
-  {"c": "e", "t": "Sabes que cualquier cosa me puedes contar, hablar o lo que sea, y si no quieres igualmente estoy aquí para lo que sea"},
-  {"c": "e", "t": "Está bien, pero me puedes contar y desahogarte si en algún momento lo necesitas, o lo que sea, ya lo sabes"},
-  {"c": "e", "t": "Me puedes contar cuando quieras o si quieres hablar lo que sea"},
-  {"c": "e", "t": "Ya te se ya, me las puedes contar siempre que quieras, que me gusta mucho"},
-  {"c": "e", "t": "Yo te escribo miamor no te preocupes, o te canto o lo que tú desees"},
-  {"c": "e", "t": "Y aquí te recibo siempre, aunque sean abrazos de lucha grecorromana"},
-  {"c": "e", "t": "Yo a ti te quiero cerca siempre"},
-  {"c": "e", "t": "Te doy un abrazo y una calentada si la necesitas"},
-  {"c": "e", "t": "Estás temblorosa? Te daba un abrazo fuerte bajo la manta"},
-  {"c": "e", "t": "Jo me sabe fatal que estés así, tengo ganas de abrazarte suave"},
-  {"c": "e", "t": "Y el abrazo me lo apunto para cuando te vea"},
-  {"c": "e", "t": "Te guardo un abrazo ubicador para la próxima"},
-  {"c": "e", "t": "Sea lo que sea lo voy a recibir encantado y te vas a llevar un abrazo bien fuerte a cambio"},
-  {"c": "e", "t": "Y tanto que durarán, a la mínima te abrazo fuerte para sellar la tregua al momento"},
-  {"c": "q", "t": "Te amo todo lo que se puede amar a alguien"},
-  {"c": "q", "t": "Eres el amor de mi vida, la mujer de mis sueños y mi compañera pa todo y pa siempre"},
-  {"c": "q", "t": "Claro que eres mi persona favorita"},
-  {"c": "q", "t": "Para mí eres de lo mejor que tengo, de lo más importante y de lo que más quiero"},
-  {"c": "q", "t": "Cada uno es como es y yo te quiero con todo lo que eres, cada uno de tus pensamientos"},
-  {"c": "q", "t": "Lo tengo muy presente, se como eres y lo tengo totalmente aceptado, me gustas y te quiero así tal cual. Sin nada más ni nada menos"},
-  {"c": "q", "t": "Te quiero mucho, por si no te lo he dicho hoy"},
-  {"c": "q", "t": "Te quiero pasiempre desde las dos a la una"},
-  {"c": "q", "t": "Cuanto te quiero, que suerte tengo de tenerte cerca"},
-  {"c": "q", "t": "Te quiero michulita"},
-  {"c": "q", "t": "Te re adoro miniña bonita"},
-  {"c": "q", "t": "No es mucho mi estilo pero contigo no puedo evitarlo, te adoro en todos los sentidos y me derrito por ti"},
-  {"c": "q", "t": "Estoy más enchochao que nunca, sensible y con ganas de estar contigo"},
-  {"c": "q", "t": "Yo también te quiero mucho Olga, desde ya hace y cada vez más"},
-  {"c": "q", "t": "Claro que te quiero Olga, no te he dejado de querer nunca"},
-  {"c": "q", "t": "Te valoro y te quiero mucho y espero que eso también te llegue"},
-  {"c": "q", "t": "te quiero preciosa eres la mejor"},
-  {"c": "q", "t": "Gracias por este amor miamor"},
-  {"c": "q", "t": "Me encantas tú y me encanta todo lo que haces y me haces"},
-  {"c": "q", "t": "Es que a parte es algo que es super evidente que me encantas desde siempre"},
-  {"c": "q", "t": "Me encantas en muchos sentidos Olga 🫠"},
-  {"c": "q", "t": "Seguramente ya debes estar durmiendo o a punto, yo solo paso por aquí para decirte que eres la mejor, que te amo y que tengo muchas ganas de verte"},
-  {"c": "q", "t": "Felices 10 mesecitos por cierto michulita , ojalá otros 100 otros 1000 y otros 10000"},
-  {"c": "q", "t": "Para mí eres michulita y miamor sobre todo"},
-  {"c": "q", "t": "Eres increíble y la mejor novia del mundo"},
-  {"c": "q", "t": "Que aquí está tu chulito pre marido enamorado para recordarte lo bien que estamos juntos"},
-  {"c": "q", "t": "Pero soy tu tonto miamor"},
-  {"c": "q", "t": "Pero ya voy a cenar algo y a descansar estos ojitos enamorados de la mujer más increíble y especial que hay"},
-  {"c": "q", "t": "Tú si que eres bonita miamor, que me tienes feliz y enamorado"},
-  {"c": "q", "t": "Me se cae la baba contigo"},
-  {"c": "q", "t": "Te quiero mucho miamor me haces muy feliz"},
-  {"c": "q", "t": "Te quiero Olga, perdona por no saber estar a la altura a veces. Te mereces y quiero darte lo mejor"},
-  {"c": "q", "t": "Y que yo también te quiero Olga, y te lo voy a decir mucho durante estos días"},
-  {"c": "q", "t": "Y con todo lo que haya, porque así lo quiero, porque te quiero a ti, tal y como eres y con todo lo que eres"},
-  {"c": "q", "t": "Para mí eres el amor de mi vida y te lo digo porque así lo siento hasta ahora"},
-  {"c": "q", "t": "Yo te lo voy a seguir diciendo y demostrando, se lo mucho que vales y quiero seguir estando a tu lado para darte y hacerte sentir lo mejor"},
-  {"c": "q", "t": "Te quiero confesar que hoy he sentido aún más de lo que ya había sentido por ti, y no es solo por este sentimiento de añoranza anticipada"},
-  {"c": "q", "t": "Será el clima o la luna o este amor que me tiene suspirando"},
-  {"c": "q", "t": "Para mi siempre eres miamor bonito y chocolatao"},
-  {"c": "q", "t": "Para mi eres muy importante y es gran parte de lo que soy"},
-  {"c": "q", "t": "Te quiero bonita, que te vaya bien el vuelo ❤️‍🔥"},
-  {"c": "q", "t": "Y yo a ti miamor 🥰"},
-  {"c": "q", "t": "Mwuah para ti tambien miamor"},
-  {"c": "q", "t": "Para esto y para mucho más Olga, eres miamor"},
-  {"c": "q", "t": "Y yo a ti Olga, está siendo una semana intensa, necesito estar contigo y sentir la calma"},
-  {"c": "q", "t": "Y te digo todo lo que me gustas y lo que te quiero"},
-  {"c": "q", "t": "Y que te quiero así sin más también"},
-  {"c": "q", "t": "Lo que te quiero yo a ti mi mergoli…"},
-  {"c": "n", "t": "No sabes lo afortunado y lo feliz que me siento por estar contigo"},
-  {"c": "n", "t": "Y yo contigo Olga, me entiendes y me cuidas, me alegras la vida y me haces sentir muy afortunado"},
-  {"c": "n", "t": "Contigo tengo la mejor rutina de todas aunque no haga nada, porque estar a tu lado es lo que mejor me sienta"},
-  {"c": "n", "t": "Desde que estoy contigo estoy mucho mejor en todos los sentidos"},
-  {"c": "n", "t": "Yo también me gusto mucho así, contigo me calmo y desconecto del ruido que tengo dentro y fuera"},
-  {"c": "n", "t": "Yo me veo contigo para siempre"},
-  {"c": "n", "t": "Yo quiero mi vida a tu lado, cuanto más tiempo y más cerca mejor"},
-  {"c": "n", "t": "Da igual como luzca, coja manca o tuerta, yo me quedo contigo siempre"},
-  {"c": "n", "t": "Mientras sea así a tu lado yo soy lo más feliz que puedo ser"},
-  {"c": "n", "t": "Que ganas de esos 3 besos, de todas las risas, todos los abrazos colgones y todo lo que venga a tu lado este año ❤️"},
-  {"c": "n", "t": "Y que nos espera una vida maravillosa"},
-  {"c": "n", "t": "Yo también confio y contigo al lado tampoco le tengo miedo a nada"},
-  {"c": "n", "t": "Se me pasa el tiempo volando contigo no me doy ni cuenta"},
-  {"c": "n", "t": "Y me rio mucho contigo, es algo que me encanta que sea así"},
-  {"c": "n", "t": "Que no me canso de ninguna de las dos… podría estar horas mirándote y hablando contigo de cualquier cosa"},
-  {"c": "n", "t": "Y esta tarde en tu cama contigo cerca y tus caricias era como estar en una nube, prefiero 5 minutos así que una noche de sueño"},
-  {"c": "n", "t": "Cómodo tranquilo y a gusto estoy siempre contigo"},
-  {"c": "n", "t": "Créeme que lo haces muy bien, me siento muy cuidado, se que te importo y que solo quieres lo mejor para mi"},
-  {"c": "n", "t": "Ya te lo he dicho alguna vez, pero gracias por como eres conmigo, como me tratas y como me haces ser mejor"},
-  {"c": "n", "t": "Gracias a ti también, estoy mejor gracias a ti, desde hace mucho y ahora aún más"},
-  {"c": "n", "t": "Por esto y por todo, me calmas y me haces ver las cosas más claras"},
-  {"c": "n", "t": "Gracias a ti por ser como eres, por como me tratas y por todo esto bonito que tenemos"},
-  {"c": "n", "t": "Yo quiero todo lo que sea contigo"},
-  {"c": "n", "t": "Mis planes quiero que sean contigo, no voy a hacer otros"},
-  {"c": "n", "t": "Si estás cerca yo feliz estoy siempre"},
-  {"c": "n", "t": "Y yo contigo también, hasta las cosas más normales y aburridas"},
-  {"c": "n", "t": "Se vienen muchos más findes primaverales, de cocinitas y abrazos bañados por atardeceres pastelosos"},
-  {"c": "n", "t": "Un finde tranquilo de los nuestros, nuestros bagels buenos nuestras series y pelis y nuestros abrazos colgones"},
-  {"c": "n", "t": "Cada vez mejor michulita, aún nos queda mucho a los dos, a cada uno con lo suyo y juntos en lo nuestro"},
-  {"c": "n", "t": "Si ya tenía recuerdos preciosos por allí, ahora que algunos son contigo ya mejoran lo que parecía inmejorable"},
-  {"c": "n", "t": "Me encanta que se vaya a cumplir mi sueño de estar contigo en parís"},
-  {"c": "n", "t": "Contigo cerca tampoco necesito mucho más créeme"},
-  {"c": "n", "t": "No desconecto de ninguna forma mejor que estando contigo te lo juro"},
-  {"c": "n", "t": "Yo contigo es como mejor estoy y eso es un hecho totalmente objetivo y demostrable"},
-  {"c": "n", "t": "Se nos ve bien enamorados"},
-  {"c": "n", "t": "Incluso como nos miramos enamorados siempre"},
-  {"c": "n", "t": "Tengo muy buena rutina de sueño últimamente, en gran parte gracias a ti jeje"},
-  {"c": "n", "t": "He dormido muy bien esta semana, y estando contigo se me va todo el cansancio"},
-  {"c": "n", "t": "Yo me pongo a pensar y se me hace raro haber llegado a este punto contigo, pero estoy extremadamente feliz, me gusta mucho que haya sido todo así"},
-  {"c": "n", "t": "Mira que pasamos horas pero ya quiero estar contigo otra vez"},
-  {"c": "n", "t": "Te pienso y te echo de menos después de estos días tan cerca"},
-  {"c": "n", "t": "Tengo ganas de abrazarte y acariciarte, reirnos y pasar nuestros ratos"},
-  {"c": "n", "t": "Sigo aquí pensando en ti y con ganas de verte"},
-  {"c": "n", "t": "Los abrazos me salen solos si te tengo cerca, el jugar siempre nos ha gustado"},
-  {"c": "n", "t": "Me lo paso muy bien contigo, me río mucho y estoy super a gusto hagamos lo que hagamos"},
-  {"c": "n", "t": "Siento que puedo ser yo y hablar de todo contigo estando muy relajado"},
-  {"c": "n", "t": "Es de verdad, me pasa como a ti… hay algunas cosas que me las como solo yo, pero estando contigo las digiero un poco mejor, y sé que también estás ahí"},
-  {"c": "n", "t": "Y gran parte de que me vaya bien es por ti, me haces estar mejor y eso me influye mucho"},
-  {"c": "n", "t": "Y yo suerte de tenerte a mi lado y poderte acompañar en todo. Para relajarte siempre que lo necesites y disfrutar todo lo que se pueda a tu lado"},
-  {"c": "n", "t": "Sabes que yo estando contigo me da igual donde y como, pero nos merecemos lo mejor, la vida que queremos y que va a llegar más pronto que tarde"},
-  {"c": "n", "t": "Que ganas tengo de estar contigo en galicia y saborear el preview de la vida que nos viene"},
-  {"c": "n", "t": "Ganas de estar contigo, de que cada vez que te veo se me pone el cuerpo diferente, como una sensación entre admiración y ganas de morderte fuerte"},
-  {"c": "n", "t": "Que bonita esta me gusta mucho como nos miramos"},
-  {"c": "n", "t": "Porque quiero y porque estar contigo como hemos estado hace un rato me deja un gusto y una felicidad en el cuerpo que no hay otra cosa que lo consiga"},
-  {"c": "n", "t": "Yo decido y quiero estar contigo y no miento cuando siempre te digo que el mayor tiempo posible"},
-  {"c": "n", "t": "Siempre te he dicho que es de mis momentos favoritos contigo, es algo tan sencillo pero que me gusta tanto…"},
-  {"c": "n", "t": "Afortunado contigo siempre"},
-  {"c": "n", "t": "Y contigo al lado ni te cuento, el más feliz y orgulloso de toda la península"},
-  {"c": "n", "t": "Pues sí, y te echo de menos de madrugada cerca también"},
-  {"c": "n", "t": "Que ya te echo de menos"},
-  {"c": "n", "t": "Yo ya echo de menos tus piececitos cerca de mi"},
-  {"c": "n", "t": "Gracias a ti también por ser como eres y por ser como eres conmigo"},
-  {"c": "n", "t": "Gracias por nada y en todo caso gracias a ti por muchas cosas pero sobre todo por ser tú y como me cuidas"},
-  {"c": "n", "t": "Eres la mejor, gracias por tanto"},
-  {"c": "n", "t": "Gracias miamor eres la mejor"},
-  {"c": "n", "t": "Que eres la mejor de las mejores"},
-  {"c": "n", "t": "Tu si que eres la mejor de todas"},
-  {"c": "n", "t": "Me ha gustado mucho el finde contigo, me lo he pasado muy bien y me ayuda mucho a desconectar"},
-  {"c": "n", "t": "Yo estoy encantado y feliz contigo, pase lo que pase"},
-  {"c": "n", "t": "Es que estaba ahí todo feliz viendo mi vida contigo"},
-  {"c": "n", "t": "Y aunque nos vayamos a ver a mi siempre me gusta verte y hablar contigo"},
-  {"c": "n", "t": "Ojalá muchos más allí y sobre todo contigo"},
-  {"c": "n", "t": "Y sobre todo contigo, sea donde sea, galicia está genial pero me da igual el lugar si estoy junto a tu piel suave cogiéndome del brazo para pasear"},
-  {"c": "m", "t": "Tu si que eres bonita, mi dorito fibrado mojado en salsa de belleza"},
-  {"c": "m", "t": "Rencorosa preciosa orgullosa talentosa misteriosa poderosa olgaseosa"},
-  {"c": "m", "t": "Tú si que eres bonita mi kim possible bollera pueblerina"},
-  {"c": "m", "t": "Bon día michicle de fresa"},
-  {"c": "m", "t": "Buenos días bombón de chocolate negro"},
-  {"c": "m", "t": "Buenos días mi lomo embuchao"},
-  {"c": "m", "t": "Buenos días mi papo palpitón"},
-  {"c": "m", "t": "Buenos días princesa madrugadora"},
-  {"c": "m", "t": "Buenos días mi gitanika de piel canela"},
-  {"c": "m", "t": "Buen día mi bonita sonrisita"},
-  {"c": "m", "t": "Buenos días miamorcito soñador"},
-  {"c": "m", "t": "Buenos días miniña bonita entera"},
-  {"c": "m", "t": "Buenos días chulita bonita"},
-  {"c": "m", "t": "Buenos días a la madrugadora más peinada"},
-  {"c": "m", "t": "Buenos días michicle dulce y sabroso"},
-  {"c": "m", "t": "Buenos días bomboncito de gluteo ☺️"},
-  {"c": "m", "t": "Estás preciosa mi huevito árabe reflejado"},
-  {"c": "m", "t": "Que bonita que ese migitanilla de mofletes coloraos"},
-  {"c": "m", "t": "Preciosa, bonita, espectacular leona salvaje carinovora, soy un pobre antilope despistado que merece ser deborado"},
-  {"c": "m", "t": "Tú eres mi agua fresca de manantial después de 4h de entreno georgiano en el día más caluroso del verano"},
-  {"c": "m", "t": "Eres tan puntual que hasta queriendo llegar tarde llegas temprano"},
-  {"c": "m", "t": "0% sobaco 100% michulita preciosa"},
-  {"c": "m", "t": "Te adoro michicle de fresa de rollo"},
-  {"c": "m", "t": "Y yo te quiero magdalena bizcocha chocolatona o como sea que te salga"},
-  {"c": "m", "t": "Yo tengo una foto mental tuya preciosa de ayer… 🫠"},
-  {"c": "m", "t": "Bonita estás siempre y eso es así y quien diga lo contrario le meto una torta que lo dejo ciego"},
-  {"c": "m", "t": "Este finde voy a ir a tu madre y a tu padre y les voy a preguntar directamente si eres guapa o no"},
-  {"c": "m", "t": "Eres la mas grande y tocha"},
-  {"c": "m", "t": "Contigo ya ves que soy un buenazo semicalzonazos … pero es lo que me sale, me derrito fácilmente"},
-  {"c": "m", "t": "Menos mal que te tengo sí… tú eres la memoriona de la relación"},
-  {"c": "m", "t": "Mirad chicos… hasta sus mordiscos de caiman echo de menos"},
-  {"c": "m", "t": "Pero tú eres mi fotógrafa estilista y consejera"},
-  {"c": "m", "t": "Ahora te leo y te admiro miamor"},
-  {"c": "m", "t": "Yo estoy atento y a la orden para todo lo que me diga michicle de fresa"},
-  {"c": "m", "t": "Pfff que rico, como me gusta todo eso en una terracita tranquila con la brisa pasando y delante mío la gitana más preciosa que hay"},
-  {"c": "m", "t": "Que eres la mejor pre esposa que existe"},
-  {"c": "m", "t": "Cenar pronto y empezar los días de vacaciones con el amor de mi vida que eres tú migitanilla de ojos largos"},
-  {"c": "m", "t": "Así te quiero ver siempre, bien feliz, vestida de rosa y mirándome con esos ojos largos como el nilo"},
-  {"c": "m", "t": "Tu si que eres lo mejor que hay en el mundo entero mibonita suave"},
-  {"c": "m", "t": "Eres lo mejor que hay en esta vida estresada"},
-  {"c": "m", "t": "Tu si que eres bonita miamor abrazable matutino nocturno y a cualquier hora del día, donde sea pero a tu ladito suave"},
-  {"c": "m", "t": "Eeeeesa es miniña descansada"},
-  {"c": "m", "t": "Mirala que chula que bonita y que dorada 🥰"},
-  {"c": "m", "t": "Que preciosa morena de biceps gigantes"},
-  {"c": "m", "t": "Hasta así cerca y monga eres bonita"},
-  {"c": "m", "t": "Ahora eres mi prometida claro"},
-  {"c": "m", "t": "Tú si que eres bonita michicle"},
-  {"c": "m", "t": "Tu si que eres mi perfecta"},
-  {"c": "m", "t": "Michina de ojos rojos"},
-  {"c": "m", "t": "Y eres un foco de esos potente que sirve solo para transatlánticos"},
-  {"c": "m", "t": "Pero bonita mentirosa que eres"},
-  {"c": "m", "t": "Una escapista de cara bonita"},
-  {"c": "m", "t": "Mírala que chula michicle rosado"},
-  {"c": "m", "t": "Gracias michula alisada"},
-  {"c": "m", "t": "Pues a seguir diciéndonos michulita"},
-  {"c": "m", "t": "Aaaaaahora sí, es michulita"},
-  {"c": "m", "t": "Que manía tengo con meter el dedo en el micro, pero el resumen es que eres lo más bonito que hay y que tengo ganas de morderte"},
-  {"c": "m", "t": "Tu si que eres bonita miamor"},
-  {"c": "m", "t": "Buenos días dormilona"}
+  {"c": "b", "t": "Preciosa no es que estés es que eres", "d": "2025-04-24"},
+  {"c": "b", "t": "Más guapa que la más guapa, y la más guapa eres tú", "d": "2026-05-06"},
+  {"c": "b", "t": "Pero de verdad te digo que yo te he visto en esas, despeinada, sobada en pijama… y no ha habido segundo que no haya pensado que eres lo más bonito que hay", "d": "2026-06-02"},
+  {"c": "b", "t": "Y la cara yo no se que pasa que cada día eres más bonita", "d": "2026-05-07"},
+  {"c": "b", "t": "Tu da exactamente igual lo que hagas o lo que te pase que más bonita no puedes estar", "d": "2026-06-02"},
+  {"c": "b", "t": "Te vas igual de bonita que siempre porque no sabes ser de otra forma", "d": "2026-05-31"},
+  {"c": "b", "t": "Si eres preciosa se te tiene que decir todas las veces que haga falta y punto", "d": "2026-05-18"},
+  {"c": "b", "t": "Pero mira que eres mona y preciosa incluso llorando", "d": "2025-05-19"},
+  {"c": "b", "t": "Pero eres una belleza que yo no he visto nada igual en mi vida", "d": "2026-05-13"},
+  {"c": "b", "t": "Pero para mí eres lo más espectacular que he visto, en casi todos los sentidos", "d": "2025-06-13"},
+  {"c": "b", "t": "De lo preciosa que eres por fuera y lo especial que eres por dentro", "d": "2026-01-20"},
+  {"c": "b", "t": "Ni un poquito de maquillaje te hace falta para estar bonita", "d": "2025-10-23"},
+  {"c": "b", "t": "Más chula que chula, más bonita que ninguna", "d": "2025-10-22"},
+  {"c": "b", "t": "Pocas cosas bonitas te digo para todo lo bonita que tú eres", "d": "2025-11-19"},
+  {"c": "b", "t": "Preciosa es poco ya", "d": "2025-11-20"},
+  {"c": "b", "t": "Aunque no te vea se que estás preciosa", "d": "2025-07-11"},
+  {"c": "b", "t": "Carita de cansada pero preciosa", "d": "2025-04-10"},
+  {"c": "b", "t": "Pero aún y así… ni durmiendo regular estás ni un poco menos bonita", "d": "2025-11-17"},
+  {"c": "b", "t": "Mira como se peina la chica más bonita que he visto nunca", "d": "2025-05-08"},
+  {"c": "b", "t": "Si para mi es la mujer más preciosa que he visto", "d": "2025-07-02"},
+  {"c": "b", "t": "Estás preciosa así, carita de cansada pero me encanta como me miras con la media sonrisa y la manita encima", "d": "2025-07-28"},
+  {"c": "b", "t": "Las rodillas más bonitas que yo vi en mi vida", "d": "2025-06-29"},
+  {"c": "b", "t": "Como puedes estar tan bonita ya de buena mañana", "d": "2025-08-15"},
+  {"c": "b", "t": "Es que hueles increíble siempre", "d": "2025-09-02"},
+  {"c": "b", "t": "Yo guapa te veo siempre, eso es un hecho indiscutible, y no te lo digo por decir, lo pienso de verdad", "d": "2024-12-09"},
+  {"c": "b", "t": "Y no me voy a cansar de repetirlo, tú guapa preciosa estás siempre, no ha habido día que haya dicho uy… hoy un poco menos", "d": "2024-12-11"},
+  {"c": "b", "t": "Pero incluso de vagabunda eres la más bonita de las calles", "d": "2025-06-11"},
+  {"c": "b", "t": "A mi me gusta el look, con lo guapa que eres te puedes poner lo que quieras", "d": "2025-08-12"},
+  {"c": "b", "t": "Que eres psicóloga y modelo y que eres igual de guapa que de inteligente", "d": "2026-05-10"},
+  {"c": "b", "t": "Mejor descansada que cansada, pero de lo que no te cansas es de estar siempre preciosa", "d": "2026-03-12"},
+  {"c": "b", "t": "Eres preciosa Olga, las trenzas te dan un toque pero lleves como lleves el pelo eso no cambia", "d": "2025-04-28"},
+  {"c": "b", "t": "Yo te veo bonita siempre y creeme que se que te veo de verdad, con todo lo que eres, todo lo bueno que eres, que tienes y que haces", "d": "2026-09-28"},
+  {"c": "b", "t": "Tú si que eres preciosa, que ni una operación te quita esa cara bonita", "d": "2025-07-11"},
+  {"c": "b", "t": "Siempre estás preciosa, pero así aún mucho más", "d": "2025-04-13"},
+  {"c": "b", "t": "Pero que preciosa que estás 😩", "d": "2025-04-23"},
+  {"c": "b", "t": "Que bonita que eres", "d": "2025-06-16"},
+  {"c": "b", "t": "Estás preciosa Olga 🥰", "d": "2025-06-13"},
+  {"c": "b", "t": "Pa que luego digas que no estás preciosa siempre…", "d": "2026-01-14"},
+  {"c": "b", "t": "Y que eres preciosa da igual como cuando y donde", "d": "2025-10-28"},
+  {"c": "b", "t": "Tu guapaza estás siempre, aunque sea recién despertada", "d": "2025-09-18"},
+  {"c": "b", "t": "Pero siempre te veo bonita", "d": "2024-11-12"},
+  {"c": "b", "t": "Yo lo que te veo es preciosa como siempre", "d": "2025-03-27"},
+  {"c": "b", "t": "Pero que preciosa y que salvaje estás, antes en el vídeo, ahora y siempre, te lo escribo para que este cochecito te lo recuerde", "d": "2025-12-10"},
+  {"c": "b", "t": "Si es que más bonita guapa bella preciosa no puedes ser", "d": "2026-07-06"},
+  {"c": "b", "t": "Eres bonita bella preciosa", "d": "2025-05-22"},
+  {"c": "b", "t": "Eres bonita eres preciosa y eres increíble", "d": "2026-02-10"},
+  {"c": "b", "t": "Tu bien bonita como siempre", "d": "2025-12-05"},
+  {"c": "b", "t": "Guapa y chulita siempre… y buena también aunque te quieras hacer la mala", "d": "2025-01-27"},
+  {"c": "b", "t": "Tu si que eres la más guapa de todo el mundo", "d": "2026-10-07"},
+  {"c": "b", "t": "Tu si que eres preciosa miniña", "d": "2025-07-28"},
+  {"c": "a", "t": "No seas tan dura contigo misma, que tengas una mala época encima por algo que no es ni tu culpa no significa que dejes de ser un 10", "d": "2025-07-24"},
+  {"c": "a", "t": "En los días que te sientas mejor yo lo celebro contigo y en los días que te sientas un poco peor yo te recuerdo todo lo bueno que creeme que es muchísimo", "d": "2026-09-28"},
+  {"c": "a", "t": "Ya te digo si puedes con todo", "d": "2025-08-31"},
+  {"c": "a", "t": "No te dejes pisotear Olga no podrán contigo", "d": "2026-09-15"},
+  {"c": "a", "t": "Tú cuídate mucho, dale un repaso a todo esto y estáte tranquila que seguro que te sale como siempre", "d": "2025-01-12"},
+  {"c": "a", "t": "Se te da muy bien Olga, solo tienes que ser tú, ya eres atenta y cuidona, te sale solo, eres detallista, lo ves todo y lo tienes todo en cuenta", "d": "2026-10-07"},
+  {"c": "a", "t": "Van a flipar contigo, lo tengo clarísimo", "d": "2025-06-22"},
+  {"c": "a", "t": "Eres muy autoexigente contigo misma, y está muy bien porque te hace ser mejor en todos los sentidos", "d": "2025-12-17"},
+  {"c": "a", "t": "Te lo has currado, porque vales mucho, los comentarios y la nota son solo un reflejo de todo el buen trabajo que haces ahí", "d": "2025-06-19"},
+  {"c": "a", "t": "Pero eres muy inteligente, sensible y empática", "d": "2025-10-21"},
+  {"c": "a", "t": "Estoy totalmente seguro de que eres una máquina y una profesional en lo tuyo", "d": "2025-10-21"},
+  {"c": "a", "t": "Se te notaba nerviosa pero ya lo tienes miamor", "d": "2026-01-30"},
+  {"c": "a", "t": "Tu ya eres gigante y vas a seguir creciendo sin parar michula", "d": "2026-04-19"},
+  {"c": "a", "t": "Eres lista y te conoces bastante, seguro que lo acabas viendo", "d": "2024-10-14"},
+  {"c": "a", "t": "No es que exageres es que sientes como sientes y eres muy sensible", "d": "2026-08-06"},
+  {"c": "a", "t": "Se que a veces te cuesta un poco de más pero también se que eres muy funcional y que a medida que te vayas conociendo lo vas a ser aún más", "d": "2026-05-27"},
+  {"c": "a", "t": "A descansar que lo mereces y lo necesitas", "d": "2025-10-08"},
+  {"c": "a", "t": "Y no te pongas triste michulita porfa", "d": "2025-12-21"},
+  {"c": "a", "t": "Tú hoy duerme y descansa como te mereces, que has tenido una semana muy movida. Y así mañana nos pillamos con energía y recuperamos todas las horas que queramos", "d": "2025-02-15"},
+  {"c": "a", "t": "Sal de la cama preciosa, fuera te espera un mundo lleno de oportunidades", "d": "2025-01-07"},
+  {"c": "a", "t": "Y lo más importante es que tú estés contenta y satisfecha con como ayudas a los chavales, es lo más bonito también", "d": "2025-06-19"},
+  {"c": "a", "t": "Piensa en lo mejor para ti sobre todo", "d": "2026-10-26"},
+  {"c": "a", "t": "Te adoro michulita, aunque hayan sido un par de dias intensos y emocionales todo está bien y a mejor como siempre", "d": "2026-03-01"},
+  {"c": "a", "t": "Y aún y así veo que has sacado energía para entrenar … eres una bestia", "d": "2026-07-28"},
+  {"c": "a", "t": "Vales muchísimo y lo tengo muy claro", "d": "2025-04-07"},
+  {"c": "a", "t": "Se lo mucho que eres, lo mucho que sientes y lo muchísimo que vales, lo acepto todo y lo adoro todo", "d": "2026-05-31"},
+  {"c": "a", "t": "Pero ahora ya relajadita meditación y a descansar como una reina", "d": "2025-05-14"},
+  {"c": "a", "t": "Un trámite Olga, que te diga lo increíble que eres y lo bien que lo has hecho", "d": "2025-12-15"},
+  {"c": "a", "t": "Gracias a ti también Olga, vales mucho y quiero que tú lo sientas", "d": "2026-03-10"},
+  {"c": "a", "t": "Bueno pero ya te vas conociendo y aún te queda, son cosas normales. Eres lista y reconoces lo que te pasa que ya es mucho", "d": "2024-11-15"},
+  {"c": "a", "t": "Y sinceramente por como eres lo llevas mejor de lo que me imaginaba", "d": "2025-07-24"},
+  {"c": "a", "t": "Descansa y cuídate mucho", "d": "2025-07-10"},
+  {"c": "a", "t": "Está bien, que tengas un buen día y cuídate mucho porfa. Te quiero", "d": "2026-03-23"},
+  {"c": "a", "t": "Puedes estar cansada y feliz", "d": "2026-10-14"},
+  {"c": "a", "t": "Ojalá duermas bien, descanses y se te cure esa espaldota. Ya tengo ganas de verte michicle, te veo en un rato. Te quiero", "d": "2026-04-10"},
+  {"c": "a", "t": "Tú ahora descansa y ya mañana bien fresca te lo miras todo y me vas diciendo", "d": "2025-05-16"},
+  {"c": "a", "t": "Pues el día que te mereces ni más ni menos, descansadita, bien alimentada y con una buena compañía gustosa", "d": "2024-12-30"},
+  {"c": "a", "t": "Ya sabes que también es muy importante descansar, si el cuerpo pide descanso hay que dárselo", "d": "2025-02-27"},
+  {"c": "a", "t": "A comer mucho y a descansar y estar tranquila bajo la lluvia", "d": "2025-12-20"},
+  {"c": "e", "t": "Y otra vez te lo digo, aquí estoy siempre", "d": "2025-07-09"},
+  {"c": "e", "t": "Yo te voy a dar mi calor mi mano y mi todo siempre michulita, en todos los momentos voy a estar para ti", "d": "2026-11-08"},
+  {"c": "e", "t": "Estoy para ti y tienes todo mi apoyo, energía y ganas para que puedas estar lo mejor que puedas estar en todos los sentidos", "d": "2026-11-08"},
+  {"c": "e", "t": "Pero aunque esté a lo mío y con los míos siempre estoy para ti", "d": "2026-04-08"},
+  {"c": "e", "t": "Y no te cierres conmigo porfa, sabes que me puedes contar lo que sea y desahogarte si lo necesitas", "d": "2025-10-23"},
+  {"c": "e", "t": "Si necesitas evadirte un poco, salir de tu casa, hablar, no hablar, lo que sea que quieras puedes contar conmigo", "d": "2025-10-23"},
+  {"c": "e", "t": "pero para ti saco tiempo y energía de donde sea", "d": "2025-04-10"},
+  {"c": "e", "t": "Los abrazos fuertes te los voy a dar, ahora y siempre", "d": "2026-07-15"},
+  {"c": "e", "t": "Pero si quiero decirte que nunca te ignoro ni obvio nada de lo que me dices, por muy liado que pueda ir siempre estoy pendiente de ti y de todo lo que me dices", "d": "2026-05-28"},
+  {"c": "e", "t": "Se que debes estar triste y muy cansada. Solo espero que puedas descansar y relajarte lo máximo posible. Estoy para ti siempre Olga, ahora más que nunca. Te quiero", "d": "2026-03-19"},
+  {"c": "e", "t": "Se que nos tenemos el uno al otro y que siempre queremos lo mejor, somos así y juntos aún más", "d": "2026-03-08"},
+  {"c": "e", "t": "quiero que sepas que si necesitas algo puedes contar siempre conmigo", "d": "2025-09-25"},
+  {"c": "e", "t": "Pero todo lo que hago lo hago porque te quiero y me sale solo cuidarte", "d": "2026-05-31"},
+  {"c": "e", "t": "Pues puedes estar muy tranquila, solo me apetece tratarte bien y cuidarte", "d": "2024-12-01"},
+  {"c": "e", "t": "No te voy a romper el corazón, puedes estar tranquila", "d": "2025-03-12"},
+  {"c": "e", "t": "si te apetece hablar me lo puedes decir, yo siempre estoy dispuesto", "d": "2025-08-01"},
+  {"c": "e", "t": "Pero no te preocupes, te guardo un abrazo gran reserva", "d": "2024-10-24"},
+  {"c": "e", "t": "Abrazos vas a tener no te preocupes", "d": "2025-01-15"},
+  {"c": "e", "t": "Nada más te vea te voy a dar un abrazo bien fuerte, vente preparada", "d": "2026-02-10"},
+  {"c": "e", "t": "Que cosas me dices miamor… pero te voy a quitar el frio para el resto de tu vida", "d": "2025-12-03"},
+  {"c": "e", "t": "Michulita y tuchulito contra lo que sea", "d": "2025-06-01"},
+  {"c": "e", "t": "Normal… jo, debes estar bien nerviosa, ojalá poder ir contigo para quitarte un poco de estrés", "d": "2026-03-02"},
+  {"c": "e", "t": "Pues normalmente no preciosa, pero por ti como si me tengo que ir con el carrito este hasta portugal", "d": "2025-10-07"},
+  {"c": "e", "t": "Me metería en un tren podrido como este durante horas solo para darte un abrazo", "d": "2025-07-20"},
+  {"c": "e", "t": "Para servirte en todo lo que pueda miamor", "d": "2026-05-10"},
+  {"c": "e", "t": "Un poquito sí, pero estando contigo todo es mucho más fácil mi secre", "d": "2026-10-08"},
+  {"c": "e", "t": "Igual que tu te preocupas de como estoy y quieres que esté lo mejor posible a mi me pasa igual", "d": "2026-11-05"},
+  {"c": "e", "t": "Si lo se, a mi me pasa igual contigo, me gusta saber como te sientes y lo que te pasa, siempre", "d": "2026-03-08"},
+  {"c": "e", "t": "Te entiendo totalmente, se que no es fácil ni una situación en la que te sientes cómoda, siempre estoy pero ahora más que nunca", "d": "2026-03-16"},
+  {"c": "e", "t": "Sabes que cualquier cosa me puedes contar, hablar o lo que sea, y si no quieres igualmente estoy aquí para lo que sea", "d": "2026-07-08"},
+  {"c": "e", "t": "Está bien, pero me puedes contar y desahogarte si en algún momento lo necesitas, o lo que sea, ya lo sabes", "d": "2026-01-12"},
+  {"c": "e", "t": "Me puedes contar cuando quieras o si quieres hablar lo que sea", "d": "2026-06-11"},
+  {"c": "e", "t": "Ya te se ya, me las puedes contar siempre que quieras, que me gusta mucho", "d": "2025-06-16"},
+  {"c": "e", "t": "Yo te escribo miamor no te preocupes, o te canto o lo que tú desees", "d": "2026-04-29"},
+  {"c": "e", "t": "Y aquí te recibo siempre, aunque sean abrazos de lucha grecorromana", "d": "2024-12-17"},
+  {"c": "e", "t": "Yo a ti te quiero cerca siempre", "d": "2026-04-08"},
+  {"c": "e", "t": "Te doy un abrazo y una calentada si la necesitas", "d": "2025-11-28"},
+  {"c": "e", "t": "Estás temblorosa? Te daba un abrazo fuerte bajo la manta", "d": "2024-10-19"},
+  {"c": "e", "t": "Jo me sabe fatal que estés así, tengo ganas de abrazarte suave", "d": "2025-01-10"},
+  {"c": "e", "t": "Y el abrazo me lo apunto para cuando te vea", "d": "2025-01-12"},
+  {"c": "e", "t": "Te guardo un abrazo ubicador para la próxima", "d": "2025-05-19"},
+  {"c": "e", "t": "Sea lo que sea lo voy a recibir encantado y te vas a llevar un abrazo bien fuerte a cambio", "d": "2026-03-12"},
+  {"c": "e", "t": "Y tanto que durarán, a la mínima te abrazo fuerte para sellar la tregua al momento", "d": "2025-04-27"},
+  {"c": "q", "t": "Te amo todo lo que se puede amar a alguien", "d": "2026-10-04"},
+  {"c": "q", "t": "Eres el amor de mi vida, la mujer de mis sueños y mi compañera pa todo y pa siempre", "d": "2026-09-27"},
+  {"c": "q", "t": "Claro que eres mi persona favorita", "d": "2026-02-11"},
+  {"c": "q", "t": "Para mí eres de lo mejor que tengo, de lo más importante y de lo que más quiero", "d": "2026-02-11"},
+  {"c": "q", "t": "Cada uno es como es y yo te quiero con todo lo que eres, cada uno de tus pensamientos", "d": "2026-08-06"},
+  {"c": "q", "t": "Lo tengo muy presente, se como eres y lo tengo totalmente aceptado, me gustas y te quiero así tal cual. Sin nada más ni nada menos", "d": "2026-03-25"},
+  {"c": "q", "t": "Te quiero mucho, por si no te lo he dicho hoy", "d": "2026-03-15"},
+  {"c": "q", "t": "Te quiero pasiempre desde las dos a la una", "d": "2026-09-08"},
+  {"c": "q", "t": "Cuanto te quiero, que suerte tengo de tenerte cerca", "d": "2025-07-28"},
+  {"c": "q", "t": "Te quiero michulita", "d": "2025-08-06"},
+  {"c": "q", "t": "Te re adoro miniña bonita", "d": "2025-10-26"},
+  {"c": "q", "t": "No es mucho mi estilo pero contigo no puedo evitarlo, te adoro en todos los sentidos y me derrito por ti", "d": "2026-03-12"},
+  {"c": "q", "t": "Estoy más enchochao que nunca, sensible y con ganas de estar contigo", "d": "2026-03-10"},
+  {"c": "q", "t": "Yo también te quiero mucho Olga, desde ya hace y cada vez más", "d": "2026-03-10"},
+  {"c": "q", "t": "Claro que te quiero Olga, no te he dejado de querer nunca", "d": "2026-06-10"},
+  {"c": "q", "t": "Te valoro y te quiero mucho y espero que eso también te llegue", "d": "2026-01-05"},
+  {"c": "q", "t": "te quiero preciosa eres la mejor", "d": "2026-10-09"},
+  {"c": "q", "t": "Gracias por este amor miamor", "d": "2026-05-07"},
+  {"c": "q", "t": "Me encantas tú y me encanta todo lo que haces y me haces", "d": "2025-06-14"},
+  {"c": "q", "t": "Es que a parte es algo que es super evidente que me encantas desde siempre", "d": "2026-08-05"},
+  {"c": "q", "t": "Me encantas en muchos sentidos Olga 🫠", "d": "2025-01-19"},
+  {"c": "q", "t": "Seguramente ya debes estar durmiendo o a punto, yo solo paso por aquí para decirte que eres la mejor, que te amo y que tengo muchas ganas de verte", "d": "2026-03-12"},
+  {"c": "q", "t": "Felices 10 mesecitos por cierto michulita , ojalá otros 100 otros 1000 y otros 10000", "d": "2025-10-06"},
+  {"c": "q", "t": "Para mí eres michulita y miamor sobre todo", "d": "2025-12-17"},
+  {"c": "q", "t": "Eres increíble y la mejor novia del mundo", "d": "2025-07-08"},
+  {"c": "q", "t": "Que aquí está tu chulito pre marido enamorado para recordarte lo bien que estamos juntos", "d": "2025-06-05"},
+  {"c": "q", "t": "Pero soy tu tonto miamor", "d": "2026-07-31"},
+  {"c": "q", "t": "Pero ya voy a cenar algo y a descansar estos ojitos enamorados de la mujer más increíble y especial que hay", "d": "2026-03-29"},
+  {"c": "q", "t": "Tú si que eres bonita miamor, que me tienes feliz y enamorado", "d": "2026-05-10"},
+  {"c": "q", "t": "Me se cae la baba contigo", "d": "2026-06-28"},
+  {"c": "q", "t": "Te quiero mucho miamor me haces muy feliz", "d": "2026-04-20"},
+  {"c": "q", "t": "Y que yo también te quiero Olga, y te lo voy a decir mucho durante estos días", "d": "2026-06-15"},
+  {"c": "q", "t": "Y con todo lo que haya, porque así lo quiero, porque te quiero a ti, tal y como eres y con todo lo que eres", "d": "2026-04-09"},
+  {"c": "q", "t": "Para mí eres el amor de mi vida y te lo digo porque así lo siento hasta ahora", "d": "2026-03-22"},
+  {"c": "q", "t": "Yo te lo voy a seguir diciendo y demostrando, se lo mucho que vales y quiero seguir estando a tu lado para darte y hacerte sentir lo mejor", "d": "2025-04-17"},
+  {"c": "q", "t": "Te quiero confesar que hoy he sentido aún más de lo que ya había sentido por ti, y no es solo por este sentimiento de añoranza anticipada", "d": "2025-05-25"},
+  {"c": "q", "t": "Será el clima o la luna o este amor que me tiene suspirando", "d": "2025-05-12"},
+  {"c": "q", "t": "Para mi siempre eres miamor bonito y chocolatao", "d": "2026-11-08"},
+  {"c": "q", "t": "Para mi eres muy importante y es gran parte de lo que soy", "d": "2025-09-08"},
+  {"c": "q", "t": "Y yo a ti miamor 🥰", "d": "2026-05-03"},
+  {"c": "q", "t": "Mwuah para ti tambien miamor", "d": "2026-05-14"},
+  {"c": "q", "t": "Para esto y para mucho más Olga, eres miamor", "d": "2026-09-17"},
+  {"c": "q", "t": "Y yo a ti Olga, está siendo una semana intensa, necesito estar contigo y sentir la calma", "d": "2026-03-05"},
+  {"c": "q", "t": "Y te digo todo lo que me gustas y lo que te quiero", "d": "2026-08-05"},
+  {"c": "q", "t": "Y que te quiero así sin más también", "d": "2025-07-30"},
+  {"c": "q", "t": "Lo que te quiero yo a ti mi mergoli…", "d": "2026-06-27"},
+  {"c": "n", "t": "No sabes lo afortunado y lo feliz que me siento por estar contigo", "d": "2025-06-13"},
+  {"c": "n", "t": "Y yo contigo Olga, me entiendes y me cuidas, me alegras la vida y me haces sentir muy afortunado", "d": "2026-02-24"},
+  {"c": "n", "t": "Contigo tengo la mejor rutina de todas aunque no haga nada, porque estar a tu lado es lo que mejor me sienta", "d": "2026-08-30"},
+  {"c": "n", "t": "Desde que estoy contigo estoy mucho mejor en todos los sentidos", "d": "2025-10-19"},
+  {"c": "n", "t": "Yo también me gusto mucho así, contigo me calmo y desconecto del ruido que tengo dentro y fuera", "d": "2025-02-23"},
+  {"c": "n", "t": "Yo me veo contigo para siempre", "d": "2026-10-04"},
+  {"c": "n", "t": "Yo quiero mi vida a tu lado, cuanto más tiempo y más cerca mejor", "d": "2026-10-14"},
+  {"c": "n", "t": "Da igual como luzca, coja manca o tuerta, yo me quedo contigo siempre", "d": "2025-04-09"},
+  {"c": "n", "t": "Mientras sea así a tu lado yo soy lo más feliz que puedo ser", "d": "2026-07-15"},
+  {"c": "n", "t": "Que ganas de esos 3 besos, de todas las risas, todos los abrazos colgones y todo lo que venga a tu lado este año ❤️", "d": "2026-01-01"},
+  {"c": "n", "t": "Y que nos espera una vida maravillosa", "d": "2026-10-04"},
+  {"c": "n", "t": "Yo también confio y contigo al lado tampoco le tengo miedo a nada", "d": "2026-10-04"},
+  {"c": "n", "t": "Se me pasa el tiempo volando contigo no me doy ni cuenta", "d": "2025-01-05"},
+  {"c": "n", "t": "Y me rio mucho contigo, es algo que me encanta que sea así", "d": "2025-05-24"},
+  {"c": "n", "t": "Que no me canso de ninguna de las dos… podría estar horas mirándote y hablando contigo de cualquier cosa", "d": "2025-02-02"},
+  {"c": "n", "t": "Y esta tarde en tu cama contigo cerca y tus caricias era como estar en una nube, prefiero 5 minutos así que una noche de sueño", "d": "2025-04-17"},
+  {"c": "n", "t": "Cómodo tranquilo y a gusto estoy siempre contigo", "d": "2025-01-07"},
+  {"c": "n", "t": "Créeme que lo haces muy bien, me siento muy cuidado, se que te importo y que solo quieres lo mejor para mi", "d": "2026-05-03"},
+  {"c": "n", "t": "Ya te lo he dicho alguna vez, pero gracias por como eres conmigo, como me tratas y como me haces ser mejor", "d": "2025-04-02"},
+  {"c": "n", "t": "Gracias a ti también, estoy mejor gracias a ti, desde hace mucho y ahora aún más", "d": "2026-03-16"},
+  {"c": "n", "t": "Por esto y por todo, me calmas y me haces ver las cosas más claras", "d": "2026-02-02"},
+  {"c": "n", "t": "Gracias a ti por ser como eres, por como me tratas y por todo esto bonito que tenemos", "d": "2025-10-19"},
+  {"c": "n", "t": "Yo quiero todo lo que sea contigo", "d": "2026-10-19"},
+  {"c": "n", "t": "Mis planes quiero que sean contigo, no voy a hacer otros", "d": "2026-04-09"},
+  {"c": "n", "t": "Si estás cerca yo feliz estoy siempre", "d": "2025-09-18"},
+  {"c": "n", "t": "Y yo contigo también, hasta las cosas más normales y aburridas", "d": "2025-05-13"},
+  {"c": "n", "t": "Se vienen muchos más findes primaverales, de cocinitas y abrazos bañados por atardeceres pastelosos", "d": "2025-03-29"},
+  {"c": "n", "t": "Un finde tranquilo de los nuestros, nuestros bagels buenos nuestras series y pelis y nuestros abrazos colgones", "d": "2026-07-08"},
+  {"c": "n", "t": "Cada vez mejor michulita, aún nos queda mucho a los dos, a cada uno con lo suyo y juntos en lo nuestro", "d": "2026-05-04"},
+  {"c": "n", "t": "Si ya tenía recuerdos preciosos por allí, ahora que algunos son contigo ya mejoran lo que parecía inmejorable", "d": "2025-11-25"},
+  {"c": "n", "t": "Me encanta que se vaya a cumplir mi sueño de estar contigo en parís", "d": "2026-10-26"},
+  {"c": "n", "t": "Contigo cerca tampoco necesito mucho más créeme", "d": "2025-05-12"},
+  {"c": "n", "t": "No desconecto de ninguna forma mejor que estando contigo te lo juro", "d": "2026-10-04"},
+  {"c": "n", "t": "Yo contigo es como mejor estoy y eso es un hecho totalmente objetivo y demostrable", "d": "2026-10-07"},
+  {"c": "n", "t": "Se nos ve bien enamorados", "d": "2025-06-30"},
+  {"c": "n", "t": "Incluso como nos miramos enamorados siempre", "d": "2026-07-16"},
+  {"c": "n", "t": "Tengo muy buena rutina de sueño últimamente, en gran parte gracias a ti jeje", "d": "2026-05-11"},
+  {"c": "n", "t": "He dormido muy bien esta semana, y estando contigo se me va todo el cansancio", "d": "2024-12-19"},
+  {"c": "n", "t": "Yo me pongo a pensar y se me hace raro haber llegado a este punto contigo, pero estoy extremadamente feliz, me gusta mucho que haya sido todo así", "d": "2024-12-08"},
+  {"c": "n", "t": "Mira que pasamos horas pero ya quiero estar contigo otra vez", "d": "2025-03-26"},
+  {"c": "n", "t": "Te pienso y te echo de menos después de estos días tan cerca", "d": "2025-10-06"},
+  {"c": "n", "t": "Tengo ganas de abrazarte y acariciarte, reirnos y pasar nuestros ratos", "d": "2025-12-23"},
+  {"c": "n", "t": "Sigo aquí pensando en ti y con ganas de verte", "d": "2025-02-06"},
+  {"c": "n", "t": "Los abrazos me salen solos si te tengo cerca, el jugar siempre nos ha gustado", "d": "2024-12-02"},
+  {"c": "n", "t": "Me lo paso muy bien contigo, me río mucho y estoy super a gusto hagamos lo que hagamos", "d": "2025-01-19"},
+  {"c": "n", "t": "Siento que puedo ser yo y hablar de todo contigo estando muy relajado", "d": "2025-01-19"},
+  {"c": "n", "t": "Es de verdad, me pasa como a ti… hay algunas cosas que me las como solo yo, pero estando contigo las digiero un poco mejor, y sé que también estás ahí", "d": "2025-01-11"},
+  {"c": "n", "t": "Y gran parte de que me vaya bien es por ti, me haces estar mejor y eso me influye mucho", "d": "2025-02-02"},
+  {"c": "n", "t": "Y yo suerte de tenerte a mi lado y poderte acompañar en todo. Para relajarte siempre que lo necesites y disfrutar todo lo que se pueda a tu lado", "d": "2026-10-27"},
+  {"c": "n", "t": "Sabes que yo estando contigo me da igual donde y como, pero nos merecemos lo mejor, la vida que queremos y que va a llegar más pronto que tarde", "d": "2026-02-24"},
+  {"c": "n", "t": "Que ganas tengo de estar contigo en galicia y saborear el preview de la vida que nos viene", "d": "2026-05-07"},
+  {"c": "n", "t": "Ganas de estar contigo, de que cada vez que te veo se me pone el cuerpo diferente, como una sensación entre admiración y ganas de morderte fuerte", "d": "2026-06-10"},
+  {"c": "n", "t": "Porque quiero y porque estar contigo como hemos estado hace un rato me deja un gusto y una felicidad en el cuerpo que no hay otra cosa que lo consiga", "d": "2025-02-16"},
+  {"c": "n", "t": "Yo decido y quiero estar contigo y no miento cuando siempre te digo que el mayor tiempo posible", "d": "2026-09-06"},
+  {"c": "n", "t": "Siempre te he dicho que es de mis momentos favoritos contigo, es algo tan sencillo pero que me gusta tanto…", "d": "2025-04-17"},
+  {"c": "n", "t": "Afortunado contigo siempre", "d": "2025-10-16"},
+  {"c": "n", "t": "Y contigo al lado ni te cuento, el más feliz y orgulloso de toda la península", "d": "2025-10-07"},
+  {"c": "n", "t": "Pues sí, y te echo de menos de madrugada cerca también", "d": "2024-11-07"},
+  {"c": "n", "t": "Que ya te echo de menos", "d": "2024-12-22"},
+  {"c": "n", "t": "Yo ya echo de menos tus piececitos cerca de mi", "d": "2026-07-27"},
+  {"c": "n", "t": "Gracias a ti también por ser como eres y por ser como eres conmigo", "d": "2026-02-24"},
+  {"c": "n", "t": "Gracias por nada y en todo caso gracias a ti por muchas cosas pero sobre todo por ser tú y como me cuidas", "d": "2025-11-23"},
+  {"c": "n", "t": "Eres la mejor, gracias por tanto", "d": "2026-02-02"},
+  {"c": "n", "t": "Gracias miamor eres la mejor", "d": "2026-09-25"},
+  {"c": "n", "t": "Que eres la mejor de las mejores", "d": "2026-07-27"},
+  {"c": "n", "t": "Tu si que eres la mejor de todas", "d": "2026-10-09"},
+  {"c": "n", "t": "Me ha gustado mucho el finde contigo, me lo he pasado muy bien y me ayuda mucho a desconectar", "d": "2026-07-20"},
+  {"c": "n", "t": "Yo estoy encantado y feliz contigo, pase lo que pase", "d": "2026-09-27"},
+  {"c": "n", "t": "Es que estaba ahí todo feliz viendo mi vida contigo", "d": "2026-09-15"},
+  {"c": "n", "t": "Y aunque nos vayamos a ver a mi siempre me gusta verte y hablar contigo", "d": "2025-08-01"},
+  {"c": "n", "t": "Ojalá muchos más allí y sobre todo contigo", "d": "2025-11-25"},
+  {"c": "n", "t": "Y sobre todo contigo, sea donde sea, galicia está genial pero me da igual el lugar si estoy junto a tu piel suave cogiéndome del brazo para pasear", "d": "2026-06-15"},
+  {"c": "m", "t": "Tu si que eres bonita, mi dorito fibrado mojado en salsa de belleza", "d": "2025-07-31"},
+  {"c": "m", "t": "Rencorosa preciosa orgullosa talentosa misteriosa poderosa olgaseosa", "d": "2025-01-14"},
+  {"c": "m", "t": "Tú si que eres bonita mi kim possible bollera pueblerina", "d": "2026-09-28"},
+  {"c": "m", "t": "Bon día michicle de fresa", "d": "2025-09-19"},
+  {"c": "m", "t": "Buenos días bombón de chocolate negro", "d": "2025-09-22"},
+  {"c": "m", "t": "Buenos días mi lomo embuchao", "d": "2026-04-01"},
+  {"c": "m", "t": "Buenos días mi papo palpitón", "d": "2025-06-27"},
+  {"c": "m", "t": "Buenos días princesa madrugadora", "d": "2025-07-02"},
+  {"c": "m", "t": "Buenos días mi gitanika de piel canela", "d": "2025-09-17"},
+  {"c": "m", "t": "Buen día mi bonita sonrisita", "d": "2025-10-09"},
+  {"c": "m", "t": "Buenos días miamorcito soñador", "d": "2025-12-02"},
+  {"c": "m", "t": "Buenos días miniña bonita entera", "d": "2025-11-15"},
+  {"c": "m", "t": "Buenos días chulita bonita", "d": "2025-07-04"},
+  {"c": "m", "t": "Buenos días a la madrugadora más peinada", "d": "2026-08-04"},
+  {"c": "m", "t": "Buenos días michicle dulce y sabroso", "d": "2025-10-10"},
+  {"c": "m", "t": "Buenos días bomboncito de gluteo ☺️", "d": "2025-02-21"},
+  {"c": "m", "t": "Estás preciosa mi huevito árabe reflejado", "d": "2025-12-01"},
+  {"c": "m", "t": "Que bonita que ese migitanilla de mofletes coloraos", "d": "2025-11-23"},
+  {"c": "m", "t": "Preciosa, bonita, espectacular leona salvaje carinovora, soy un pobre antilope despistado que merece ser deborado", "d": "2025-11-10"},
+  {"c": "m", "t": "Tú eres mi agua fresca de manantial después de 4h de entreno georgiano en el día más caluroso del verano", "d": "2025-03-02"},
+  {"c": "m", "t": "Eres tan puntual que hasta queriendo llegar tarde llegas temprano", "d": "2025-05-07"},
+  {"c": "m", "t": "0% sobaco 100% michulita preciosa", "d": "2025-07-09"},
+  {"c": "m", "t": "Te adoro michicle de fresa de rollo", "d": "2025-11-09"},
+  {"c": "m", "t": "Y yo te quiero magdalena bizcocha chocolatona o como sea que te salga", "d": "2026-05-31"},
+  {"c": "m", "t": "Yo tengo una foto mental tuya preciosa de ayer… 🫠", "d": "2025-01-03"},
+  {"c": "m", "t": "Bonita estás siempre y eso es así y quien diga lo contrario le meto una torta que lo dejo ciego", "d": "2026-02-10"},
+  {"c": "m", "t": "Este finde voy a ir a tu madre y a tu padre y les voy a preguntar directamente si eres guapa o no", "d": "2026-02-18"},
+  {"c": "m", "t": "Eres la mas grande y tocha", "d": "2025-05-29"},
+  {"c": "m", "t": "Contigo ya ves que soy un buenazo semicalzonazos … pero es lo que me sale, me derrito fácilmente", "d": "2024-12-30"},
+  {"c": "m", "t": "Menos mal que te tengo sí… tú eres la memoriona de la relación", "d": "2025-01-20"},
+  {"c": "m", "t": "Mirad chicos… hasta sus mordiscos de caiman echo de menos", "d": "2025-05-25"},
+  {"c": "m", "t": "Pero tú eres mi fotógrafa estilista y consejera", "d": "2025-12-16"},
+  {"c": "m", "t": "Ahora te leo y te admiro miamor", "d": "2026-04-29"},
+  {"c": "m", "t": "Yo estoy atento y a la orden para todo lo que me diga michicle de fresa", "d": "2025-10-30"},
+  {"c": "m", "t": "Pfff que rico, como me gusta todo eso en una terracita tranquila con la brisa pasando y delante mío la gitana más preciosa que hay", "d": "2025-06-19"},
+  {"c": "m", "t": "Que eres la mejor pre esposa que existe", "d": "2026-01-29"},
+  {"c": "m", "t": "Cenar pronto y empezar los días de vacaciones con el amor de mi vida que eres tú migitanilla de ojos largos", "d": "2026-06-15"},
+  {"c": "m", "t": "Así te quiero ver siempre, bien feliz, vestida de rosa y mirándome con esos ojos largos como el nilo", "d": "2026-05-04"},
+  {"c": "m", "t": "Tu si que eres lo mejor que hay en el mundo entero mibonita suave", "d": "2026-09-27"},
+  {"c": "m", "t": "Eres lo mejor que hay en esta vida estresada", "d": "2026-10-07"},
+  {"c": "m", "t": "Tu si que eres bonita miamor abrazable matutino nocturno y a cualquier hora del día, donde sea pero a tu ladito suave", "d": "2026-06-27"},
+  {"c": "m", "t": "Eeeeesa es miniña descansada", "d": "2025-05-09"},
+  {"c": "m", "t": "Que preciosa morena de biceps gigantes", "d": "2025-05-12"},
+  {"c": "m", "t": "Hasta así cerca y monga eres bonita", "d": "2026-02-10"},
+  {"c": "m", "t": "Ahora eres mi prometida claro", "d": "2024-12-05"},
+  {"c": "m", "t": "Tú si que eres bonita michicle", "d": "2026-04-30"},
+  {"c": "m", "t": "Tu si que eres mi perfecta", "d": "2026-09-27"},
+  {"c": "m", "t": "Mírala que chula michicle rosado", "d": "2026-01-19"},
+  {"c": "m", "t": "Que manía tengo con meter el dedo en el micro, pero el resumen es que eres lo más bonito que hay y que tengo ganas de morderte", "d": "2026-07-06"},
+  {"c": "m", "t": "Tu si que eres bonita miamor", "d": "2026-06-27"},
+  {"c": "m", "t": "Buenos días dormilona", "d": "2026-04-26"}
 ];
 
 const CATS = {
@@ -687,9 +711,11 @@ function greet() { const h = new Date().getHours(); return h >= 6 && h < 14 ? 'B
 
 /* ---------- utilidades ---------- */
 const $ = id => document.getElementById(id);
+const KEY = 'olga1-';
+try { if (/[?&#](reset|nuevo)\b/.test(location.href)) { Object.keys(localStorage).filter(k => k.startsWith(KEY)).forEach(k => localStorage.removeItem(k)); history.replaceState(null, '', location.pathname); } } catch {}
 const store = {
-  get(k, d) { try { const v = localStorage.getItem('bote-' + k); return v ? JSON.parse(v) : d; } catch { return d; } },
-  set(k, v) { try { localStorage.setItem('bote-' + k, JSON.stringify(v)); } catch {} },
+  get(k, d) { try { const v = localStorage.getItem(KEY + k); return v ? JSON.parse(v) : d; } catch { return d; } },
+  set(k, v) { try { localStorage.setItem(KEY + k, JSON.stringify(v)); } catch {} },
 };
 let opened = store.get('opened', []).filter(i => i < NOTAS.length);   // orden de apertura
 const favs = new Set(store.get('favs', []).filter(i => i < NOTAS.length));
@@ -708,6 +734,16 @@ function sparks(x, y, n = 10, spread = 90, chars) {
     s.style.cssText = `left:${x}px;top:${y}px;--dx:${Math.cos(a) * d}px;--dy:${Math.sin(a) * d}px;--r:${Math.random() * 80 - 40}deg;--s:${13 + Math.random() * 13}px;--c:${rand(['#EE6FA5', '#F7A9C9', '#A6CC45', '#FFD6E6', '#D9EBA8'])};animation-delay:${i * 15}ms`;
     document.body.appendChild(s);
     setTimeout(() => s.remove(), 1300);
+  }
+}
+const MESES = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
+const fdate = d => { const [y, m, dd] = d.split('-'); return `${+dd} ${MESES[+m - 1]} ${y}`; };
+function rain(n = 40) {
+  for (let i = 0; i < n; i++) {
+    const s = document.createElement('span'); s.className = 'rain';
+    s.textContent = rand(['💗', '🌸', '💕', '✨', '🍓', '💖', '🌷', '🐰']);
+    s.style.cssText = `left:${Math.random() * 100}vw;--r:${Math.random() * 360 - 180}deg;animation-duration:${2.4 + Math.random() * 2}s;animation-delay:${Math.random() * 1.2}s;font-size:${16 + Math.random() * 16}px`;
+    document.body.appendChild(s); setTimeout(() => s.remove(), 5200);
   }
 }
 function toast(msg) { const t = $('toast'); t.textContent = msg; t.classList.add('on'); clearTimeout(toast.h); toast.h = setTimeout(() => t.classList.remove('on'), 2600); }
@@ -804,13 +840,14 @@ function fillJar() {
   const n = left.length ? Math.max(1, Math.round(left.length / NOTAS.length * 40)) : 0;
   const rnd = (k, m) => ((k * 9301 + m * 49297) % 233280) / 233280;
   for (let k = 0; k < n; k++) {
-    const row = Math.floor(k / 4), col = k % 4;
+    const row = Math.floor(k / 4), col = k % 4, kind = rnd(k, 4);
     const s = document.createElement('i');
-    s.className = 'slip';
-    s.style.background = CATS[NOTAS[left[(k * 7) % left.length]].c].paper;
-    s.style.left = (8 + col * 46 + (row % 2 ? 14 : 0) + rnd(k, 1) * 8) + 'px';
-    s.style.bottom = (8 + row * 19 + rnd(k, 2) * 5) + 'px';
-    s.style.transform = `rotate(${rnd(k, 3) * 70 - 35}deg)`;
+    const paper = CATS[NOTAS[left[(k * 7) % left.length]].c].paper;
+    if (kind > .9) { s.className = 'slip heart'; s.textContent = '♥'; s.style.color = rand(['#EE6FA5', '#C2306B', '#A6CC45']); }
+    else { s.className = 'slip' + (kind > .62 ? ' roll' : ''); s.style.background = paper; s.style.width = (34 + rnd(k, 5) * 12) + 'px'; }
+    s.style.left = (6 + col * 47 + (row % 2 ? 14 : 0) + rnd(k, 1) * 10) + 'px';
+    s.style.bottom = (6 + row * 18 + rnd(k, 2) * 7) + 'px';
+    s.style.transform = `rotate(${rnd(k, 3) * 90 - 45}deg)`;
     glass.appendChild(s);
   }
   $('left').innerHTML = left.length ? `quedan <b>${left.length}</b> notitas dentro` : 'ya las has sacado todas 🥹';
@@ -848,7 +885,6 @@ async function draw() {
   if (!again) { opened.push(id); isOpen.add(id); save(); }
   openNote(id, { fresh: !again, list: null });
   if (again) toast('Ya las has sacado todas 🥹 pero releer también vale eh');
-  hop(); setTimeout(() => say(rand(BUNNY_LINES), 2200), 600);
   setTimeout(() => { jar.classList.remove('shake', 'pop'); jar.classList.add('idle'); }, 700);
   fillJar(); renderBoard(); busy = false;
 }
@@ -865,10 +901,12 @@ function openNote(id, { fresh, list }) {
   note.style.setProperty('--tc', c.tape);
   note.style.setProperty('--r', (Math.random() * 3 - 1.5).toFixed(1) + 'deg');
   $('nNew').style.display = fresh ? '' : 'none';
+  $('nDate').textContent = '— ' + fdate(NOTAS[id].d);
+  const L = NOTAS[id].t.length; note.classList.toggle('long', L > 105 && L <= 165); note.classList.toggle('xlong', L > 165);
   const p = $('nText'); p.innerHTML = '';
   NOTAS[id].t.split(' ').forEach((w, i) => { const s = document.createElement('span'); s.className = 'w'; s.style.setProperty('--i', Math.min(i, 40)); s.textContent = w; p.append(s, ' '); });
   $('mNext').textContent = list ? 'siguiente →' : 'otra 🫙';
-  $('mHint').textContent = list ? 'doble toque para guardar · desliza para cambiar' : 'doble toque para guardar · desliza para sacar otra';
+  $('mHint').textContent = list ? 'dos toques para guardar · desliza para cambiar' : 'dos toques para guardar · desliza para sacar otra';
   setFav();
   note.style.transition = ''; note.style.transform = ''; note.style.opacity = '';
   note.classList.remove('unfold'); void note.offsetWidth; note.classList.add('unfold');
@@ -896,6 +934,7 @@ async function closeNote() {
     const b = $('badge'); b.classList.remove('bump'); void b.offsetWidth; b.classList.add('bump');
   }
   modal.classList.remove('on');
+  if (!viewList) setTimeout(react, 250);
 }
 async function next(dir = 1) {
   note.classList.remove('unfold');
@@ -913,6 +952,7 @@ async function next(dir = 1) {
   }
 }
 $('mFav').onclick = () => toggleFav();
+$('mReply').onclick = () => { buzz(8); window.open('https://wa.me/?text=' + encodeURIComponent('🫙 «' + NOTAS[current].t + '» 🥹'), '_blank'); };
 $('mNext').onclick = () => next(1);
 $('mClose').onclick = closeNote;
 modal.addEventListener('pointerdown', e => { if (e.target === modal) closeNote(); });
@@ -928,6 +968,43 @@ modal.addEventListener('pointerdown', e => { if (e.target === modal) closeNote()
   };
   note.addEventListener('pointerup', end); note.addEventListener('pointercancel', end);
 }
+
+/* ---------- reacciones e hitos ---------- */
+const HITOS = { 1: 'La primera ☺️ quedan muchas más eh', 10: 'Ya llevas 10 eh 🥹', 25: '25 ya… tremendo', 50: 'Ufff 50 notitas 🫠', 100: '¡100! madre mía 😳', 150: '150, ya vas por la mitad ☺️', 200: '200 ya… pfff qué bonito todo 🥹', 250: '250, ya casi casi 🥺' };
+let saidHito = new Set(store.get('hitos', []));
+function react() {
+  const n = opened.length;
+  hop();
+  if (n === NOTAS.length && !saidHito.has(n)) {
+    saidHito.add(n); store.set('hitos', [...saidHito]);
+    rain(70); buzz([30, 60, 30, 60, 60]);
+    say('Ufff ya las has sacado todas 🥹 te quiere muchísimo eh', 5000); return;
+  }
+  if (HITOS[n] && !saidHito.has(n)) {
+    saidHito.add(n); store.set('hitos', [...saidHito]);
+    if (n >= 10) rain(n >= 100 ? 50 : 26);
+    say(HITOS[n], 3600); return;
+  }
+  if (Math.random() < .6) say(rand(BUNNY_LINES), 2400);
+}
+
+/* ---------- el conejito se duerme si no le haces caso ---------- */
+let lastAct = Date.now();
+document.addEventListener('pointerdown', () => {
+  lastAct = Date.now();
+  if (bunny.classList.contains('sleep')) { bunny.classList.remove('sleep'); hop(); say('Uy, me había quedado frito 😳', 2400); }
+}, true);
+setInterval(() => {
+  const onJar = !$('jarScreen').classList.contains('off');
+  if (onJar && bunny.classList.contains('corner') && !modal.classList.contains('on') && Date.now() - lastAct > 40000) bunny.classList.add('sleep');
+  // corazoncitos que salen del bote de vez en cuando
+  if (onJar && !modal.classList.contains('on') && document.visibilityState === 'visible' && opened.length < NOTAS.length && $('app').classList.contains('on')) {
+    const r = jar.getBoundingClientRect(), h = document.createElement('span');
+    h.className = 'rise'; h.textContent = rand(['♥', '✦', '♥', '✿']);
+    h.style.cssText = `left:${r.left + r.width / 2 + (Math.random() - .5) * 60}px;top:${r.top + 40}px;--x:${(Math.random() - .5) * 60}px;--r:${(Math.random() - .5) * 60}deg;color:${rand(['#F7A9C9', '#D9EBA8', '#EE6FA5'])}`;
+    document.body.appendChild(h); setTimeout(() => h.remove(), 3300);
+  }
+}, 2600);
 
 /* ---------- tablero ---------- */
 let bFilter = 'all';
@@ -949,6 +1026,7 @@ function renderBoard() {
     b.style.setProperty('--paper', c.paper); b.style.setProperty('--pc', c.pin);
     b.style.setProperty('--rot', (((i * 37) % 9) - 4) / 2.2 + 'deg');
     const p = document.createElement('p'); p.textContent = NOTAS[i].t; b.appendChild(p);
+    const dd = document.createElement('span'); dd.className = 'pd'; dd.textContent = fdate(NOTAS[i].d); b.appendChild(dd);
     if (favs.has(i)) { const h = document.createElement('span'); h.className = 'f'; h.textContent = '💗'; b.appendChild(h); }
     b.onclick = () => { buzz(6); openNote(i, { fresh: false, list }); };
     board.appendChild(b);
