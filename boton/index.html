@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+<meta name="theme-color" content="#2A0614">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>El bote de Olga</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Ctext y=%22.9em%22 font-size=%2290%22%3E%F0%9F%90%B0%3C/text%3E%3C/svg%3E">
+<meta name="apple-mobile-web-app-title" content="El bote">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Fraunces:ital,wght@0,600;0,700;1,500;1,600&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --night: #24050F;
+    --wine: #3A0A1C;
+    --burg: #5E1230;
+    --burg-2: #7C1C42;
+    --rose: #C2306B;
+    --pink: #EE6FA5;
+    --pink-2: #F7A9C9;
+    --blush: #FFD6E6;
+    --green: #2E5A1B;
+    --green-2: #4F8226;
+    --lime: #A6CC45;
+    --mint: #D9EBA8;
+    --cream: #FFF4EC;
+    --ink: #3A0A1C;
+    --ink-2: rgba(58, 10, 28, .6);
+    --safe-t: env(safe-area-inset-top, 0px);
+    --safe-b: env(safe-area-inset-bottom, 0px);
+    --display: 'Fraunces', Georgia, serif;
+    --ui: 'Nunito', system-ui, sans-serif;
+    --hand: 'Caveat', cursive;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; -webkit-user-select: none; user-select: none; }
+  html, body { height: 100%; overflow: hidden; overscroll-behavior: none; }
+  body { font-family: var(--ui); color: var(--cream); background: var(--night); touch-action: manipulation; }
+  button { font: inherit; color: inherit; border: none; background: none; cursor: pointer; }
+
+  /* ================= fondo ================= */
+  .sky { position: fixed; inset: 0; z-index: 0; overflow: hidden;
+    background:
+      radial-gradient(90% 55% at 50% -5%, rgba(238, 111, 165, .45), transparent 70%),
+      radial-gradient(80% 45% at 10% 105%, rgba(79, 130, 38, .55), transparent 70%),
+      radial-gradient(70% 40% at 100% 90%, rgba(194, 48, 107, .35), transparent 70%),
+      linear-gradient(180deg, var(--burg) 0%, var(--wine) 45%, var(--night) 100%); }
+  .sky::after { content: ""; position: absolute; inset: 0; opacity: .5;
+    background-image: radial-gradient(rgba(255, 214, 230, .14) 1.2px, transparent 1.4px); background-size: 26px 26px; }
+  .twinkle { position: absolute; color: var(--pink-2); font-size: 10px; animation: tw 3s ease-in-out infinite; }
+  @keyframes tw { 50% { opacity: .15; transform: scale(.5) rotate(40deg); } }
+  .grain { position: fixed; inset: 0; z-index: 90; pointer-events: none; opacity: .18; mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"); }
+
+  /* ================= estructura ================= */
+  .app { position: fixed; inset: 0; z-index: 2; opacity: 0; pointer-events: none; transition: opacity .8s; }
+  .app.on { opacity: 1; pointer-events: auto; }
+  .screen { position: absolute; inset: 0; padding: calc(18px + var(--safe-t)) 18px calc(104px + var(--safe-b));
+    transition: opacity .4s, transform .4s; }
+  .screen.off { opacity: 0; transform: translateY(16px); pointer-events: none; }
+
+  /* ================= pantalla del bote ================= */
+  #jarScreen { display: flex; flex-direction: column; align-items: center; text-align: center; }
+  .title { font-family: var(--display); font-style: italic; font-weight: 600; font-size: clamp(34px, 9.5vw, 44px); line-height: 1; color: var(--blush); margin-top: 8px; }
+  .title b { font-style: normal; color: var(--pink); }
+  .sub { margin-top: 8px; font-size: 14px; font-weight: 700; color: rgba(255, 214, 230, .72); }
+  .sub b { color: var(--lime); }
+  .jar-area { position: relative; flex: 1; width: 100%; display: grid; place-items: center; min-height: 0; }
+  .tap-hint { position: absolute; bottom: 4px; left: 50%; transform: translateX(-50%); font-family: var(--hand); font-size: 26px; color: var(--pink-2); white-space: nowrap;
+    animation: nudge 1.6s ease-in-out infinite; pointer-events: none; transition: opacity .4s; }
+  @keyframes nudge { 50% { transform: translate(-50%, -6px); } }
+  .finger { position: absolute; font-size: 34px; pointer-events: none; animation: tapf 1.4s ease-in-out infinite; filter: drop-shadow(0 4px 6px rgba(0, 0, 0, .35)); transition: opacity .4s; }
+  @keyframes tapf { 0%, 100% { transform: translate(0, 0) scale(1); } 45% { transform: translate(-6px, -10px) scale(.88); } }
+
+  /* ---------- el bote ---------- */
+  .jar { position: relative; width: 236px; height: 310px; cursor: pointer; touch-action: manipulation; transform-origin: 50% 90%; }
+  .jar.idle { animation: idle 4s ease-in-out infinite; }
+  @keyframes idle { 0%, 84%, 100% { transform: none; } 88% { transform: rotate(-3deg); } 92% { transform: rotate(3deg); } 96% { transform: rotate(-1.5deg); } }
+  .jar.shake { animation: shake .6s cubic-bezier(.3, 1.6, .5, 1); }
+  @keyframes shake { 15% { transform: rotate(-8deg) scale(1.03, .97); } 35% { transform: rotate(7deg) scale(.98, 1.04); } 55% { transform: rotate(-4deg); } 75% { transform: rotate(2deg); } }
+  .jar:active { transform: scale(.97); }
+  .jar-glow { position: absolute; left: 50%; bottom: -8px; width: 260px; height: 60px; transform: translateX(-50%); border-radius: 50%;
+    background: radial-gradient(closest-side, rgba(238, 111, 165, .55), transparent); filter: blur(6px); z-index: 0; }
+  .lid-wrap { position: absolute; left: 50%; top: 14px; width: 156px; transform: translateX(-50%); z-index: 5; transition: transform .25s; }
+  .jar.pop .lid-wrap { animation: lid .7s cubic-bezier(.3, 1.6, .5, 1); }
+  @keyframes lid { 30% { transform: translate(-50%, -30px) rotate(-14deg); } 70% { transform: translate(-50%, -6px) rotate(4deg); } }
+  .lid { height: 36px; border-radius: 12px 12px 9px 9px;
+    background: linear-gradient(180deg, #9A2C55, var(--burg) 70%, #4A0D24);
+    box-shadow: inset 0 3px 0 rgba(255, 255, 255, .18), inset 0 -5px 0 rgba(0, 0, 0, .2), 0 5px 10px rgba(0, 0, 0, .35); position: relative; }
+  .lid::before { content: ""; position: absolute; left: 10px; right: 10px; top: 9px; bottom: 9px; border-radius: 3px;
+    background: repeating-linear-gradient(90deg, rgba(255, 255, 255, .1) 0 3px, transparent 3px 9px); }
+  .bow { position: absolute; left: 50%; top: -22px; width: 74px; transform: translateX(-50%); filter: drop-shadow(0 3px 3px rgba(0, 0, 0, .3)); }
+  .neck { position: absolute; left: 50%; top: 46px; width: 146px; height: 18px; transform: translateX(-50%); border-radius: 7px; z-index: 3;
+    background: rgba(255, 230, 240, .22); border: 2.5px solid rgba(255, 214, 230, .45); }
+  .glass { position: absolute; left: 10px; right: 10px; top: 58px; bottom: 0; z-index: 2; border-radius: 40px 40px 52px 52px; overflow: hidden;
+    background: linear-gradient(105deg, rgba(255, 230, 240, .26), rgba(255, 230, 240, .08) 45%, rgba(255, 230, 240, .18));
+    border: 2.5px solid rgba(255, 214, 230, .5);
+    box-shadow: inset 0 -16px 40px rgba(238, 111, 165, .25), inset 0 10px 22px rgba(255, 255, 255, .1), 0 22px 40px -14px rgba(0, 0, 0, .6);
+  }
+  .shine { position: absolute; z-index: 4; border-radius: 20px; background: rgba(255, 255, 255, .55); pointer-events: none; }
+  .shine.a { left: 26px; top: 84px; width: 13px; height: 150px; }
+  .shine.b { left: 46px; top: 96px; width: 6px; height: 54px; opacity: .6; }
+  .shine.c { right: 26px; top: 120px; width: 6px; height: 90px; opacity: .25; }
+  .slip { position: absolute; width: 40px; height: 24px; border-radius: 4px; box-shadow: 0 2px 0 rgba(58, 10, 28, .25); transition: transform .5s cubic-bezier(.3, 1.4, .5, 1), opacity .3s; }
+  .slip::after { content: ""; position: absolute; left: 50%; top: 2px; bottom: 2px; width: 1.5px; background: rgba(58, 10, 28, .14); }
+  .slip.gone { opacity: 0; transform: translateY(-160px) scale(.5) !important; }
+  .tag { position: absolute; right: -6px; top: 64px; z-index: 6; transform-origin: 10px 0; animation: sway 3.4s ease-in-out infinite; pointer-events: none; }
+  @keyframes sway { 50% { transform: rotate(6deg); } }
+  .tag .string { position: absolute; left: 8px; top: -14px; width: 2px; height: 22px; background: var(--lime); transform: rotate(-30deg); }
+  .tag .card { margin-top: 6px; padding: 6px 12px 4px 16px; border-radius: 4px 10px 10px 4px; background: var(--lime); color: var(--green);
+    font-family: var(--hand); font-weight: 700; font-size: 22px; line-height: 1; transform: rotate(14deg); box-shadow: 0 4px 10px rgba(0, 0, 0, .3); position: relative; }
+  .tag .card::before { content: ""; position: absolute; left: 5px; top: 50%; width: 6px; height: 6px; margin-top: -3px; border-radius: 50%; background: var(--wine); }
+  .jar .label { position: absolute; left: 50%; bottom: 46px; z-index: 5; transform: translateX(-50%) rotate(-3deg); pointer-events: none;
+    padding: 8px 18px 6px; border-radius: 10px; background: var(--cream); color: var(--burg); box-shadow: 0 6px 14px rgba(0, 0, 0, .3);
+    font-family: var(--display); font-style: italic; font-weight: 600; font-size: 20px; white-space: nowrap; }
+  .jar .label small { display: block; font-family: var(--ui); font-style: normal; font-size: 10px; font-weight: 800; letter-spacing: .18em; text-transform: uppercase; color: var(--rose); margin-bottom: 1px; }
+
+  /* ================= conejito ================= */
+  .bunny { position: fixed; z-index: 30; left: 50%; bottom: 24%; width: 210px; transform: translateX(-50%);
+    transition: left .9s cubic-bezier(.5, 0, .3, 1), bottom .9s cubic-bezier(.5, 0, .3, 1), width .9s cubic-bezier(.5, 0, .3, 1), transform .9s cubic-bezier(.5, 0, .3, 1), opacity .4s; cursor: pointer; }
+  .bunny svg { width: 100%; display: block; overflow: visible; filter: drop-shadow(0 14px 18px rgba(0, 0, 0, .45)); }
+  .bunny.enter svg { animation: hopIn 2.1s cubic-bezier(.4, 0, .4, 1) both; }
+  @keyframes hopIn {
+    0% { transform: translateX(170%) translateY(0); } 12% { transform: translateX(130%) translateY(-34px); } 24% { transform: translateX(95%) translateY(0) scale(1.04, .94); }
+    36% { transform: translateX(62%) translateY(-34px); } 48% { transform: translateX(32%) translateY(0) scale(1.04, .94); } 62% { transform: translateX(8%) translateY(-28px); }
+    78% { transform: translateX(0) translateY(0) scale(1.06, .92); } 88% { transform: translateY(-6px); } 100% { transform: none; } }
+  .bunny.corner { left: 4px; bottom: calc(80px + var(--safe-b)); width: 96px; transform: none; }
+  .bunny.hidden { opacity: 0; pointer-events: none; }
+  .bunny.hop svg { animation: hop .55s cubic-bezier(.3, 1.6, .5, 1); }
+  @keyframes hop { 0% { transform: scale(1.06, .9); } 40% { transform: translateY(-26px) scale(.96, 1.05); } 75% { transform: scale(1.05, .93); } }
+  .ear { transform-box: fill-box; transform-origin: 50% 100%; }
+  .ear-l { animation: earL 4.5s ease-in-out infinite; }
+  .ear-r { animation: earR 4.5s ease-in-out infinite; }
+  @keyframes earL { 0%, 70%, 100% { transform: rotate(0); } 76% { transform: rotate(-12deg); } 84% { transform: rotate(4deg); } }
+  @keyframes earR { 0%, 80%, 100% { transform: rotate(0); } 86% { transform: rotate(14deg); } 92% { transform: rotate(-4deg); } }
+  .eyes { transform-box: fill-box; transform-origin: 50% 50%; animation: blink 4s infinite; }
+  @keyframes blink { 0%, 92%, 100% { transform: scaleY(1); } 95% { transform: scaleY(.1); } }
+  .bunny.happy .eyes { display: none; }
+  .bunny .happy-eyes { display: none; }
+  .bunny.happy .happy-eyes { display: inline; }
+  .held { transition: opacity .3s, transform .5s; }
+  .bunny.give .held { transform: translateY(-14px); }
+  .bunny.gave .held { opacity: 0; }
+  .bunny.gave .paws-hold { display: none; }
+  .bunny .paws-rest { display: none; }
+  .bunny.gave .paws-rest { display: inline; }
+
+  .bubble { position: absolute; left: 50%; bottom: 100%; margin-bottom: 4px; transform: translateX(-50%) scale(.6); opacity: 0; transform-origin: 50% 100%;
+    width: max-content; max-width: min(300px, 82vw); padding: 12px 16px; border-radius: 20px; background: var(--cream); color: var(--ink);
+    font-weight: 800; font-size: 16px; line-height: 1.3; text-align: center; box-shadow: 0 12px 26px -8px rgba(0, 0, 0, .5);
+    transition: opacity .3s, transform .4s cubic-bezier(.3, 1.6, .5, 1); pointer-events: none; }
+  .bubble::after { content: ""; position: absolute; left: 50%; top: 100%; margin-left: -9px; border: 9px solid transparent; border-top-color: var(--cream); }
+  .bubble.on { opacity: 1; transform: translateX(-50%) scale(1); }
+  .bubble em { font-style: normal; color: var(--rose); }
+  .bunny.corner .bubble { left: 18px; transform: translateX(0) scale(.6); transform-origin: 0 100%; font-size: 14px; padding: 9px 13px; max-width: 220px; }
+  .bunny.corner .bubble.on { transform: translateX(0) scale(1); }
+  .bunny.corner .bubble::after { left: 34px; }
+
+  /* ================= intro ================= */
+  .intro { position: fixed; inset: 0; z-index: 25; display: flex; flex-direction: column; align-items: center; justify-content: flex-end;
+    padding: 0 22px calc(30px + var(--safe-b)); transition: opacity .6s; }
+  .intro.off { opacity: 0; pointer-events: none; }
+  .intro .top { position: absolute; top: calc(48px + var(--safe-t)); left: 0; right: 0; text-align: center; padding: 0 20px; }
+  .intro .top .k { font-size: 12px; font-weight: 800; letter-spacing: .24em; text-transform: uppercase; color: var(--pink-2); opacity: .8; }
+  .intro .top h1 { font-family: var(--display); font-style: italic; font-weight: 600; font-size: clamp(40px, 11vw, 54px); line-height: 1; color: var(--blush); margin-top: 10px; }
+  .intro .top h1 b { font-style: normal; color: var(--pink); }
+  .intro-btn { height: 58px; padding: 0 30px; border-radius: 999px; background: var(--pink); color: var(--wine); font-weight: 800; font-size: 17px;
+    box-shadow: 0 14px 30px -10px rgba(238, 111, 165, .7), inset 0 -4px 0 rgba(0, 0, 0, .12); transition: transform .15s, opacity .4s; }
+  .intro-btn:active { transform: scale(.95); }
+  .intro-btn.ghost { background: transparent; color: var(--pink-2); box-shadow: none; height: 44px; font-size: 14px; }
+  .intro .skip { opacity: 0; }
+
+  /* ================= navegación ================= */
+  .nav { position: fixed; left: 50%; bottom: calc(14px + var(--safe-b)); transform: translateX(-50%); z-index: 20;
+    display: flex; gap: 6px; padding: 6px; border-radius: 999px; background: rgba(36, 5, 15, .72);
+    -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); border: 1px solid rgba(255, 214, 230, .14); box-shadow: 0 14px 30px -10px rgba(0, 0, 0, .6); }
+  .nav button { position: relative; display: flex; align-items: center; gap: 8px; height: 52px; padding: 0 20px; border-radius: 999px;
+    font-weight: 800; font-size: 15px; color: rgba(255, 214, 230, .7); transition: background .3s, color .3s; }
+  .nav button .i { font-size: 20px; transition: transform .35s cubic-bezier(.3, 1.8, .5, 1); }
+  .nav button.on { background: var(--pink); color: var(--wine); }
+  .nav button.on .i { transform: scale(1.15) rotate(-8deg); }
+  .badge { position: absolute; top: 2px; right: 6px; min-width: 20px; height: 20px; padding: 0 6px; border-radius: 10px; background: var(--lime); color: var(--green);
+    font-size: 11px; font-weight: 800; line-height: 20px; text-align: center; font-style: normal; }
+  .badge:empty { display: none; }
+  .badge.bump { animation: bump .55s cubic-bezier(.3, 1.8, .5, 1); }
+  @keyframes bump { 40% { transform: scale(1.6); } }
+
+  /* ================= tablero ================= */
+  #boardScreen { overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; touch-action: pan-y; }
+  .b-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; margin: 8px 2px 14px; }
+  .b-head h2 { font-family: var(--display); font-style: italic; font-weight: 600; font-size: 38px; line-height: 1; color: var(--blush); }
+  .b-head h2 b { font-style: normal; color: var(--lime); }
+  .b-head span { font-family: var(--hand); font-size: 20px; color: var(--pink-2); white-space: nowrap; }
+  .seg { display: inline-flex; padding: 4px; border-radius: 999px; background: rgba(255, 214, 230, .08); border: 1px solid rgba(255, 214, 230, .14); margin-bottom: 20px; }
+  .seg button { height: 38px; padding: 0 16px; border-radius: 999px; font-weight: 800; font-size: 14px; color: rgba(255, 214, 230, .72); transition: all .25s; }
+  .seg button.on { background: var(--cream); color: var(--burg); }
+  .board { columns: 2; column-gap: 14px; }
+  .pin { break-inside: avoid; display: block; width: 100%; margin-bottom: 18px; padding: 22px 13px 12px; border-radius: 4px; text-align: left; position: relative;
+    background: var(--paper); color: var(--ink); box-shadow: 0 10px 18px -10px rgba(0, 0, 0, .6); transform: rotate(var(--rot));
+    transition: transform .25s cubic-bezier(.3, 1.6, .5, 1); }
+  .pin:active { transform: rotate(0) scale(.96); }
+  .pin.new { animation: pinIn .7s cubic-bezier(.2, 1.4, .4, 1); }
+  @keyframes pinIn { from { transform: translateY(-40px) scale(.6) rotate(-12deg); opacity: 0; } }
+  .pin::before { content: ""; position: absolute; top: -6px; left: 50%; width: 16px; height: 16px; margin-left: -8px; border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, #fff8, transparent 40%), var(--pc); box-shadow: 0 3px 4px rgba(0, 0, 0, .35); }
+  .pin p { font-family: var(--hand); font-weight: 600; font-size: 21px; line-height: 1.05; }
+  .pin .f { position: absolute; right: 7px; bottom: 4px; font-size: 13px; }
+  .empty { text-align: center; padding: 50px 20px; color: rgba(255, 214, 230, .75); font-weight: 700; font-size: 15px; line-height: 1.5; column-span: all; }
+  .empty div { font-size: 54px; margin-bottom: 10px; }
+
+  /* ================= notita abierta ================= */
+  .modal { position: fixed; inset: 0; z-index: 40; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px;
+    padding: calc(20px + var(--safe-t)) 20px calc(20px + var(--safe-b));
+    background: rgba(36, 5, 15, .62); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); opacity: 0; pointer-events: none; transition: opacity .3s; }
+  .modal.on { opacity: 1; pointer-events: auto; }
+  .note { position: relative; width: min(380px, 100%); min-height: 290px; padding: 54px 26px 30px; border-radius: 6px; background: var(--paper); color: var(--ink);
+    box-shadow: 0 30px 60px -20px rgba(0, 0, 0, .7); display: flex; flex-direction: column; justify-content: center; touch-action: none; transform: rotate(var(--r, -1deg));
+    background-image: repeating-linear-gradient(transparent 0 37px, rgba(94, 18, 48, .09) 37px 38px); background-position: 0 24px; }
+  .note.unfold { animation: unfold .75s cubic-bezier(.2, 1.3, .4, 1) both; }
+  @keyframes unfold { 0% { transform: scale(.25, .06) rotate(8deg); opacity: .6; } 35% { transform: scale(.9, .1) rotate(-3deg); opacity: 1; }
+    100% { transform: rotate(var(--r, -1deg)); } }
+  .note .washi { position: absolute; top: -12px; left: 50%; width: 110px; height: 28px; transform: translateX(-50%) rotate(-3deg); background: var(--tc); opacity: .85;
+    background-image: repeating-linear-gradient(45deg, rgba(255, 255, 255, .25) 0 5px, transparent 5px 10px); }
+  .note .new-tag { position: absolute; top: 18px; right: 20px; font-family: var(--hand); font-size: 22px; font-weight: 700; color: var(--rose); transform: rotate(6deg); }
+  .note p { font-family: var(--hand); font-weight: 600; font-size: clamp(30px, 8.4vw, 38px); line-height: 1.05; text-align: center; text-wrap: balance; }
+  .note p .w { display: inline-block; opacity: 0; transform: translateY(10px) rotate(4deg); animation: wIn .5s cubic-bezier(.2, 1.4, .4, 1) forwards; animation-delay: calc(.45s + var(--i) * 45ms); }
+  @keyframes wIn { to { opacity: 1; transform: none; } }
+  .note .bigh { position: absolute; left: 50%; top: 50%; font-size: 120px; transform: translate(-50%, -50%) scale(0); opacity: 0; pointer-events: none; }
+  .note .bigh.go { animation: bigh .9s cubic-bezier(.2, 1.5, .4, 1); }
+  @keyframes bigh { 30% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; } 70% { transform: translate(-50%, -50%) scale(.95); opacity: 1; } 100% { transform: translate(-50%, -90%) scale(1.2); opacity: 0; } }
+  .acts { display: flex; gap: 10px; width: min(380px, 100%); }
+  .act { flex: 1; height: 56px; border-radius: 18px; display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    background: rgba(255, 214, 230, .12); color: var(--blush); border: 1px solid rgba(255, 214, 230, .2); font-weight: 800; font-size: 16px; transition: transform .15s, background .25s, color .25s; }
+  .act:active { transform: scale(.94); }
+  .act.fav.on { background: var(--pink); color: var(--wine); border-color: var(--pink); }
+  .act.main { background: var(--lime); color: var(--green); border-color: var(--lime); }
+  .close { position: absolute; top: calc(16px + var(--safe-t)); right: 16px; width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center;
+    background: rgba(255, 214, 230, .12); color: var(--blush); font-size: 18px; font-weight: 800; }
+  .m-hint { font-size: 12.5px; font-weight: 700; color: rgba(255, 214, 230, .6); text-align: center; }
+
+  .flyer { position: fixed; z-index: 45; width: 46px; height: 28px; margin: -14px 0 0 -23px; border-radius: 4px; pointer-events: none; box-shadow: 0 4px 10px rgba(0, 0, 0, .4); }
+  .flyer::after { content: ""; position: absolute; left: 50%; top: 2px; bottom: 2px; width: 1.5px; background: rgba(58, 10, 28, .18); }
+
+  /* ---------- papelitos variados dentro del bote ---------- */
+  .slip.roll { border-radius: 10px; height: 15px; background-image: repeating-linear-gradient(90deg, rgba(255, 255, 255, .35) 0 3px, transparent 3px 8px) !important; }
+  .slip.roll::after { left: auto; right: 5px; width: 6px; top: 1px; bottom: 1px; border-radius: 6px; background: rgba(58, 10, 28, .12); }
+  .slip.heart { width: auto; height: auto; background: none !important; box-shadow: none; font-size: 20px; line-height: 1; filter: drop-shadow(0 2px 0 rgba(58, 10, 28, .25)); }
+  .slip.heart::after { display: none; }
+  .rise { position: fixed; z-index: 3; pointer-events: none; color: var(--pink-2); font-size: 14px; animation: rise 3.2s ease-out forwards; }
+  @keyframes rise { 0% { opacity: 0; transform: translate(0, 0) scale(.6); } 15% { opacity: .9; } 100% { opacity: 0; transform: translate(var(--x), -150px) scale(1.1) rotate(var(--r)); } }
+
+  /* ---------- conejito dormido ---------- */
+  .zzz { position: absolute; right: 2px; top: 6%; font-family: var(--hand); font-weight: 700; font-size: 22px; color: var(--pink-2); opacity: 0; pointer-events: none; }
+  .bunny.sleep .zzz { opacity: 1; }
+  .bunny.sleep .zzz span { display: inline-block; animation: zz 2.4s ease-in-out infinite; }
+  .bunny.sleep .zzz span:nth-child(2) { animation-delay: .4s; font-size: .8em; }
+  .bunny.sleep .zzz span:nth-child(3) { animation-delay: .8s; font-size: .6em; }
+  @keyframes zz { 0% { opacity: 0; transform: translate(0, 6px); } 40% { opacity: 1; } 100% { opacity: 0; transform: translate(10px, -16px); } }
+  .bunny.sleep .eyes { display: none; }
+  .bunny.sleep .happy-eyes { display: inline; transform: scaleY(-1); transform-box: fill-box; transform-origin: 50% 50%; }
+  .bunny.sleep svg { animation: breathe 3s ease-in-out infinite; }
+  @keyframes breathe { 50% { transform: scale(1.02, .98) translateY(1px); } }
+
+  /* ---------- fechas ---------- */
+  .ndate { margin-top: 18px; text-align: center; font-family: var(--hand); font-size: 20px; color: var(--ink-2); opacity: 0; animation: wIn .6s 1s forwards; }
+  .pin .pd { display: block; margin-top: 8px; font-family: var(--hand); font-size: 15px; color: var(--ink-2); }
+  .note.long p { font-size: clamp(25px, 7vw, 31px); }
+  .note.xlong p { font-size: clamp(22px, 6.1vw, 27px); }
+  .act.icon { flex: 0 0 56px; font-size: 20px; }
+
+  .rain { position: fixed; top: -40px; z-index: 65; pointer-events: none; font-size: 22px; animation: rain linear forwards; }
+  @keyframes rain { to { transform: translateY(110vh) rotate(var(--r)); } }
+
+  /* ================= efectos ================= */
+  .spark { position: fixed; z-index: 60; pointer-events: none; transform: translate(-50%, -50%); font-size: var(--s); color: var(--c);
+    animation: spark 1s cubic-bezier(.2, 1.1, .4, 1) forwards; }
+  @keyframes spark { 0% { opacity: 0; transform: translate(-50%, -50%) scale(.2); }
+    25% { opacity: 1; transform: translate(calc(-50% + var(--dx) * .45), calc(-50% + var(--dy) * .45)) scale(1.15) rotate(var(--r)); }
+    100% { opacity: 0; transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy) - 30px)) scale(.6) rotate(var(--r)); } }
+  .toast { position: fixed; left: 50%; top: calc(16px + var(--safe-t)); z-index: 70; transform: translate(-50%, -160%); padding: 12px 18px; border-radius: 16px;
+    background: var(--cream); color: var(--burg); font-weight: 800; font-size: 14px; text-align: center; width: max-content; max-width: calc(100% - 32px);
+    box-shadow: 0 14px 30px -10px rgba(0, 0, 0, .6); transition: transform .45s cubic-bezier(.3, 1.4, .5, 1); }
+  .toast.on { transform: translate(-50%, 0); }
+
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; } }
+</style>
+</head>
+<body>
+<div class="sky" id="sky" aria-hidden="true"></div>
+<div class="grain" aria-hidden="true"></div>
+
+<!-- ================= conejito ================= -->
+<div class="bunny" id="bunny" role="button" aria-label="Conejito">
+  <div class="bubble" id="bubble"></div>
+  <div class="zzz" aria-hidden="true"><span>z</span><span>z</span><span>z</span></div>
+  <svg viewBox="0 0 200 270" aria-hidden="true">
+    <!-- orejas -->
+    <g class="ear ear-l"><ellipse cx="74" cy="52" rx="18" ry="50" fill="#FFF6F4" transform="rotate(-14 74 52)"/><ellipse cx="74" cy="58" rx="8.5" ry="35" fill="#F7A9C9" transform="rotate(-14 74 58)"/></g>
+    <g class="ear ear-r"><ellipse cx="126" cy="52" rx="18" ry="50" fill="#FFF6F4" transform="rotate(14 126 52)"/><ellipse cx="126" cy="58" rx="8.5" ry="35" fill="#F7A9C9" transform="rotate(14 126 58)"/>
+      <g transform="translate(140 84) rotate(18)"><path d="M0 0 C-12 -10 -18 4 -6 4 Z M0 0 C12 -10 18 4 6 4 Z" fill="#A6CC45"/><circle r="3.5" fill="#4F8226"/></g></g>
+    <!-- cuerpo -->
+    <ellipse cx="100" cy="206" rx="54" ry="48" fill="#FFF6F4"/>
+    <ellipse cx="100" cy="214" rx="32" ry="30" fill="#FFE9EE"/>
+    <ellipse cx="72" cy="252" rx="22" ry="12" fill="#FFF6F4"/><ellipse cx="128" cy="252" rx="22" ry="12" fill="#FFF6F4"/>
+    <ellipse cx="72" cy="254" rx="9" ry="5" fill="#F7A9C9"/><ellipse cx="128" cy="254" rx="9" ry="5" fill="#F7A9C9"/>
+    <!-- bote pequeño en brazos -->
+    <g class="held">
+      <rect x="70" y="164" width="60" height="10" rx="4" fill="#7C1C42"/>
+      <path d="M68 176 h64 v50 q0 14 -14 14 h-36 q-14 0 -14 -14 z" fill="rgba(255,230,240,.55)" stroke="#F7A9C9" stroke-width="2.5"/>
+      <rect x="76" y="196" width="14" height="9" rx="2" fill="#F7A9C9" transform="rotate(-18 83 200)"/>
+      <rect x="96" y="204" width="14" height="9" rx="2" fill="#D9EBA8" transform="rotate(12 103 208)"/>
+      <rect x="108" y="190" width="14" height="9" rx="2" fill="#FFD6E6" transform="rotate(-8 115 195)"/>
+      <rect x="82" y="214" width="14" height="9" rx="2" fill="#EE6FA5" transform="rotate(20 89 218)"/>
+      <path d="M90 160 c-6 -8 -16 -2 -8 4 z M110 160 c6 -8 16 -2 8 4 z" fill="#EE6FA5"/><circle cx="100" cy="161" r="3.5" fill="#C2306B"/>
+      <rect x="74" y="182" width="5" height="34" rx="3" fill="rgba(255,255,255,.6)"/>
+    </g>
+    <g class="paws-hold"><ellipse cx="66" cy="200" rx="13" ry="11" fill="#FFF6F4"/><ellipse cx="134" cy="200" rx="13" ry="11" fill="#FFF6F4"/></g>
+    <g class="paws-rest"><ellipse cx="80" cy="196" rx="12" ry="10" fill="#FFF6F4"/><ellipse cx="120" cy="196" rx="12" ry="10" fill="#FFF6F4"/></g>
+    <!-- cabeza -->
+    <ellipse cx="100" cy="122" rx="60" ry="53" fill="#FFF6F4"/>
+    <ellipse cx="64" cy="140" rx="12" ry="7.5" fill="#F7A9C9" opacity=".85"/><ellipse cx="136" cy="140" rx="12" ry="7.5" fill="#F7A9C9" opacity=".85"/>
+    <g class="eyes"><ellipse cx="78" cy="121" rx="8.5" ry="10.5" fill="#3A0A1C"/><ellipse cx="122" cy="121" rx="8.5" ry="10.5" fill="#3A0A1C"/>
+      <circle cx="81" cy="116" r="3.4" fill="#fff"/><circle cx="125" cy="116" r="3.4" fill="#fff"/><circle cx="75.5" cy="125" r="1.5" fill="#fff"/><circle cx="119.5" cy="125" r="1.5" fill="#fff"/></g>
+    <g class="happy-eyes" fill="none" stroke="#3A0A1C" stroke-width="4" stroke-linecap="round"><path d="M70 123 q8 -10 16 0"/><path d="M114 123 q8 -10 16 0"/></g>
+    <path d="M95 133 q5 -4 10 0 q-5 6 -10 0z" fill="#E2457F"/>
+    <path d="M100 137 v4 M100 141 q-5 5 -9 1 M100 141 q5 5 9 1" fill="none" stroke="#3A0A1C" stroke-width="2.2" stroke-linecap="round"/>
+  </svg>
+</div>
+
+<!-- ================= intro ================= -->
+<div class="intro" id="intro">
+  <div class="top"><div class="k">✦ tienes una visita ✦</div><h1>para <b>Olga</b></h1></div>
+  <button class="intro-btn" id="introBtn" style="opacity:0">siguiente</button>
+</div>
+
+<!-- ================= app ================= -->
+<div class="app" id="app">
+  <section class="screen" id="jarScreen">
+    <h1 class="title">el bote de <b>Olga</b></h1>
+    <p class="sub" id="left"></p>
+    <div class="jar-area">
+      <div class="jar idle" id="jar" role="button" tabindex="0" aria-label="Sacar una notita del bote">
+        <div class="jar-glow"></div>
+        <div class="lid-wrap">
+          <svg class="bow" viewBox="0 0 74 34"><path d="M37 17 C26 2 6 2 6 13 C6 25 26 25 37 17 Z" fill="#EE6FA5"/><path d="M37 17 C48 2 68 2 68 13 C68 25 48 25 37 17 Z" fill="#EE6FA5"/><path d="M14 10 C18 8 24 10 28 14" stroke="#FFD6E6" stroke-width="2" fill="none" opacity=".7"/><path d="M34 17 L25 34 L31 32 L37 21 Z M40 17 L49 34 L43 32 L37 21 Z" fill="#C2306B"/><circle cx="37" cy="17" r="6" fill="#C2306B"/></svg>
+          <div class="lid"></div>
+        </div>
+        <div class="neck"></div>
+        <div class="glass" id="glass"></div>
+        <div class="shine a"></div><div class="shine b"></div><div class="shine c"></div>
+        <div class="tag"><div class="string"></div><div class="card">ábreme</div></div>
+        <div class="label"><small>notitas para</small>michulita ♡</div>
+      </div>
+      <span class="finger" id="finger" style="right:6%;top:72%">👆</span>
+      <div class="tap-hint" id="tapHint">toca el bote ☺️</div>
+    </div>
+  </section>
+
+  <section class="screen off" id="boardScreen">
+    <div class="b-head"><h2>tu <b>tablero</b></h2><span id="bCount"></span></div>
+    <div class="seg" id="seg"><button class="on" data-f="all">todas</button><button data-f="fav">♡ guardadas</button></div>
+    <div class="board" id="board"></div>
+  </section>
+</div>
+
+<nav class="nav" id="nav" style="opacity:0;pointer-events:none">
+  <button class="on" data-s="jarScreen"><span class="i">🫙</span>bote</button>
+  <button data-s="boardScreen" id="boardTab"><span class="i">📌</span>tablero<i class="badge" id="badge"></i></button>
+</nav>
+
+<!-- ================= notita ================= -->
+<div class="modal" id="modal" role="dialog" aria-modal="true">
+  <button class="close" id="mClose" aria-label="Cerrar">✕</button>
+  <article class="note" id="note">
+    <div class="washi"></div>
+    <span class="new-tag" id="nNew">nueva ☺️</span>
+    <p id="nText"></p>
+    <div class="ndate" id="nDate"></div>
+    <div class="bigh" id="bigh">💗</div>
+  </article>
+  <div class="acts">
+    <button class="act fav" id="mFav">♡ guardar</button>
+    <button class="act main" id="mNext">otra 🫙</button>
+    <button class="act icon" id="mReply" aria-label="Contestarle por WhatsApp">💬</button>
+  </div>
+  <div class="m-hint" id="mHint"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* =========================================================
+   Todas las notitas son mensajes literales de Adrián en el chat.
+   ========================================================= */
+const NOTAS = [
+  {"c": "b", "t": "Preciosa no es que estés es que eres", "d": "2025-04-24"},
+  {"c": "b", "t": "Más guapa que la más guapa, y la más guapa eres tú", "d": "2026-05-06"},
+  {"c": "b", "t": "Pero de verdad te digo que yo te he visto en esas, despeinada, sobada en pijama… y no ha habido segundo que no haya pensado que eres lo más bonito que hay", "d": "2026-06-02"},
+  {"c": "b", "t": "Y la cara yo no se que pasa que cada día eres más bonita", "d": "2026-05-07"},
+  {"c": "b", "t": "Tu da exactamente igual lo que hagas o lo que te pase que más bonita no puedes estar", "d": "2026-06-02"},
+  {"c": "b", "t": "Te vas igual de bonita que siempre porque no sabes ser de otra forma", "d": "2026-05-31"},
+  {"c": "b", "t": "Si eres preciosa se te tiene que decir todas las veces que haga falta y punto", "d": "2026-05-18"},
+  {"c": "b", "t": "Pero mira que eres mona y preciosa incluso llorando", "d": "2025-05-19"},
+  {"c": "b", "t": "Pero eres una belleza que yo no he visto nada igual en mi vida", "d": "2026-05-13"},
+  {"c": "b", "t": "Pero para mí eres lo más espectacular que he visto, en casi todos los sentidos", "d": "2025-06-13"},
+  {"c": "b", "t": "De lo preciosa que eres por fuera y lo especial que eres por dentro", "d": "2026-01-20"},
+  {"c": "b", "t": "Ni un poquito de maquillaje te hace falta para estar bonita", "d": "2025-10-23"},
+  {"c": "b", "t": "Más chula que chula, más bonita que ninguna", "d": "2025-10-22"},
+  {"c": "b", "t": "Pocas cosas bonitas te digo para todo lo bonita que tú eres", "d": "2025-11-19"},
+  {"c": "b", "t": "Preciosa es poco ya", "d": "2025-11-20"},
+  {"c": "b", "t": "Aunque no te vea se que estás preciosa", "d": "2025-07-11"},
+  {"c": "b", "t": "Carita de cansada pero preciosa", "d": "2025-04-10"},
+  {"c": "b", "t": "Pero aún y así… ni durmiendo regular estás ni un poco menos bonita", "d": "2025-11-17"},
+  {"c": "b", "t": "Mira como se peina la chica más bonita que he visto nunca", "d": "2025-05-08"},
+  {"c": "b", "t": "Si para mi es la mujer más preciosa que he visto", "d": "2025-07-02"},
+  {"c": "b", "t": "Estás preciosa así, carita de cansada pero me encanta como me miras con la media sonrisa y la manita encima", "d": "2025-07-28"},
+  {"c": "b", "t": "Las rodillas más bonitas que yo vi en mi vida", "d": "2025-06-29"},
+  {"c": "b", "t": "Como puedes estar tan bonita ya de buena mañana", "d": "2025-08-15"},
+  {"c": "b", "t": "Es que hueles increíble siempre", "d": "2025-09-02"},
+  {"c": "b", "t": "Yo guapa te veo siempre, eso es un hecho indiscutible, y no te lo digo por decir, lo pienso de verdad", "d": "2024-12-09"},
+  {"c": "b", "t": "Y no me voy a cansar de repetirlo, tú guapa preciosa estás siempre, no ha habido día que haya dicho uy… hoy un poco menos", "d": "2024-12-11"},
+  {"c": "b", "t": "Pero incluso de vagabunda eres la más bonita de las calles", "d": "2025-06-11"},
+  {"c": "b", "t": "A mi me gusta el look, con lo guapa que eres te puedes poner lo que quieras", "d": "2025-08-12"},
+  {"c": "b", "t": "Que eres psicóloga y modelo y que eres igual de guapa que de inteligente", "d": "2026-05-10"},
+  {"c": "b", "t": "Mejor descansada que cansada, pero de lo que no te cansas es de estar siempre preciosa", "d": "2026-03-12"},
+  {"c": "b", "t": "Eres preciosa Olga, las trenzas te dan un toque pero lleves como lleves el pelo eso no cambia", "d": "2025-04-28"},
+  {"c": "b", "t": "Yo te veo bonita siempre y creeme que se que te veo de verdad, con todo lo que eres, todo lo bueno que eres, que tienes y que haces", "d": "2026-09-28"},
+  {"c": "b", "t": "Tú si que eres preciosa, que ni una operación te quita esa cara bonita", "d": "2025-07-11"},
+  {"c": "b", "t": "Siempre estás preciosa, pero así aún mucho más", "d": "2025-04-13"},
+  {"c": "b", "t": "Pero que preciosa que estás 😩", "d": "2025-04-23"},
+  {"c": "b", "t": "Que bonita que eres", "d": "2025-06-16"},
+  {"c": "b", "t": "Estás preciosa Olga 🥰", "d": "2025-06-13"},
+  {"c": "b", "t": "Pa que luego digas que no estás preciosa siempre…", "d": "2026-01-14"},
+  {"c": "b", "t": "Y que eres preciosa da igual como cuando y donde", "d": "2025-10-28"},
+  {"c": "b", "t": "Tu guapaza estás siempre, aunque sea recién despertada", "d": "2025-09-18"},
+  {"c": "b", "t": "Pero siempre te veo bonita", "d": "2024-11-12"},
+  {"c": "b", "t": "Yo lo que te veo es preciosa como siempre", "d": "2025-03-27"},
+  {"c": "b", "t": "Pero que preciosa y que salvaje estás, antes en el vídeo, ahora y siempre, te lo escribo para que este cochecito te lo recuerde", "d": "2025-12-10"},
+  {"c": "b", "t": "Si es que más bonita guapa bella preciosa no puedes ser", "d": "2026-07-06"},
+  {"c": "b", "t": "Eres bonita bella preciosa", "d": "2025-05-22"},
+  {"c": "b", "t": "Eres bonita eres preciosa y eres increíble", "d": "2026-02-10"},
+  {"c": "b", "t": "Tu bien bonita como siempre", "d": "2025-12-05"},
+  {"c": "b", "t": "Guapa y chulita siempre… y buena también aunque te quieras hacer la mala", "d": "2025-01-27"},
+  {"c": "b", "t": "Tu si que eres la más guapa de todo el mundo", "d": "2026-10-07"},
+  {"c": "b", "t": "Tu si que eres preciosa miniña", "d": "2025-07-28"},
+  {"c": "a", "t": "No seas tan dura contigo misma, que tengas una mala época encima por algo que no es ni tu culpa no significa que dejes de ser un 10", "d": "2025-07-24"},
+  {"c": "a", "t": "En los días que te sientas mejor yo lo celebro contigo y en los días que te sientas un poco peor yo te recuerdo todo lo bueno que creeme que es muchísimo", "d": "2026-09-28"},
+  {"c": "a", "t": "Ya te digo si puedes con todo", "d": "2025-08-31"},
+  {"c": "a", "t": "No te dejes pisotear Olga no podrán contigo", "d": "2026-09-15"},
+  {"c": "a", "t": "Tú cuídate mucho, dale un repaso a todo esto y estáte tranquila que seguro que te sale como siempre", "d": "2025-01-12"},
+  {"c": "a", "t": "Se te da muy bien Olga, solo tienes que ser tú, ya eres atenta y cuidona, te sale solo, eres detallista, lo ves todo y lo tienes todo en cuenta", "d": "2026-10-07"},
+  {"c": "a", "t": "Van a flipar contigo, lo tengo clarísimo", "d": "2025-06-22"},
+  {"c": "a", "t": "Eres muy autoexigente contigo misma, y está muy bien porque te hace ser mejor en todos los sentidos", "d": "2025-12-17"},
+  {"c": "a", "t": "Te lo has currado, porque vales mucho, los comentarios y la nota son solo un reflejo de todo el buen trabajo que haces ahí", "d": "2025-06-19"},
+  {"c": "a", "t": "Pero eres muy inteligente, sensible y empática", "d": "2025-10-21"},
+  {"c": "a", "t": "Estoy totalmente seguro de que eres una máquina y una profesional en lo tuyo", "d": "2025-10-21"},
+  {"c": "a", "t": "Se te notaba nerviosa pero ya lo tienes miamor", "d": "2026-01-30"},
+  {"c": "a", "t": "Tu ya eres gigante y vas a seguir creciendo sin parar michula", "d": "2026-04-19"},
+  {"c": "a", "t": "Eres lista y te conoces bastante, seguro que lo acabas viendo", "d": "2024-10-14"},
+  {"c": "a", "t": "No es que exageres es que sientes como sientes y eres muy sensible", "d": "2026-08-06"},
+  {"c": "a", "t": "Se que a veces te cuesta un poco de más pero también se que eres muy funcional y que a medida que te vayas conociendo lo vas a ser aún más", "d": "2026-05-27"},
+  {"c": "a", "t": "A descansar que lo mereces y lo necesitas", "d": "2025-10-08"},
+  {"c": "a", "t": "Y no te pongas triste michulita porfa", "d": "2025-12-21"},
+  {"c": "a", "t": "Tú hoy duerme y descansa como te mereces, que has tenido una semana muy movida. Y así mañana nos pillamos con energía y recuperamos todas las horas que queramos", "d": "2025-02-15"},
+  {"c": "a", "t": "Sal de la cama preciosa, fuera te espera un mundo lleno de oportunidades", "d": "2025-01-07"},
+  {"c": "a", "t": "Y lo más importante es que tú estés contenta y satisfecha con como ayudas a los chavales, es lo más bonito también", "d": "2025-06-19"},
+  {"c": "a", "t": "Piensa en lo mejor para ti sobre todo", "d": "2026-10-26"},
+  {"c": "a", "t": "Te adoro michulita, aunque hayan sido un par de dias intensos y emocionales todo está bien y a mejor como siempre", "d": "2026-03-01"},
+  {"c": "a", "t": "Y aún y así veo que has sacado energía para entrenar … eres una bestia", "d": "2026-07-28"},
+  {"c": "a", "t": "Vales muchísimo y lo tengo muy claro", "d": "2025-04-07"},
+  {"c": "a", "t": "Se lo mucho que eres, lo mucho que sientes y lo muchísimo que vales, lo acepto todo y lo adoro todo", "d": "2026-05-31"},
+  {"c": "a", "t": "Pero ahora ya relajadita meditación y a descansar como una reina", "d": "2025-05-14"},
+  {"c": "a", "t": "Un trámite Olga, que te diga lo increíble que eres y lo bien que lo has hecho", "d": "2025-12-15"},
+  {"c": "a", "t": "Gracias a ti también Olga, vales mucho y quiero que tú lo sientas", "d": "2026-03-10"},
+  {"c": "a", "t": "Bueno pero ya te vas conociendo y aún te queda, son cosas normales. Eres lista y reconoces lo que te pasa que ya es mucho", "d": "2024-11-15"},
+  {"c": "a", "t": "Y sinceramente por como eres lo llevas mejor de lo que me imaginaba", "d": "2025-07-24"},
+  {"c": "a", "t": "Descansa y cuídate mucho", "d": "2025-07-10"},
+  {"c": "a", "t": "Está bien, que tengas un buen día y cuídate mucho porfa. Te quiero", "d": "2026-03-23"},
+  {"c": "a", "t": "Puedes estar cansada y feliz", "d": "2026-10-14"},
+  {"c": "a", "t": "Ojalá duermas bien, descanses y se te cure esa espaldota. Ya tengo ganas de verte michicle, te veo en un rato. Te quiero", "d": "2026-04-10"},
+  {"c": "a", "t": "Tú ahora descansa y ya mañana bien fresca te lo miras todo y me vas diciendo", "d": "2025-05-16"},
+  {"c": "a", "t": "Pues el día que te mereces ni más ni menos, descansadita, bien alimentada y con una buena compañía gustosa", "d": "2024-12-30"},
+  {"c": "a", "t": "Ya sabes que también es muy importante descansar, si el cuerpo pide descanso hay que dárselo", "d": "2025-02-27"},
+  {"c": "a", "t": "A comer mucho y a descansar y estar tranquila bajo la lluvia", "d": "2025-12-20"},
+  {"c": "e", "t": "Y otra vez te lo digo, aquí estoy siempre", "d": "2025-07-09"},
+  {"c": "e", "t": "Yo te voy a dar mi calor mi mano y mi todo siempre michulita, en todos los momentos voy a estar para ti", "d": "2026-11-08"},
+  {"c": "e", "t": "Estoy para ti y tienes todo mi apoyo, energía y ganas para que puedas estar lo mejor que puedas estar en todos los sentidos", "d": "2026-11-08"},
+  {"c": "e", "t": "Pero aunque esté a lo mío y con los míos siempre estoy para ti", "d": "2026-04-08"},
+  {"c": "e", "t": "Y no te cierres conmigo porfa, sabes que me puedes contar lo que sea y desahogarte si lo necesitas", "d": "2025-10-23"},
+  {"c": "e", "t": "Si necesitas evadirte un poco, salir de tu casa, hablar, no hablar, lo que sea que quieras puedes contar conmigo", "d": "2025-10-23"},
+  {"c": "e", "t": "pero para ti saco tiempo y energía de donde sea", "d": "2025-04-10"},
+  {"c": "e", "t": "Los abrazos fuertes te los voy a dar, ahora y siempre", "d": "2026-07-15"},
+  {"c": "e", "t": "Pero si quiero decirte que nunca te ignoro ni obvio nada de lo que me dices, por muy liado que pueda ir siempre estoy pendiente de ti y de todo lo que me dices", "d": "2026-05-28"},
+  {"c": "e", "t": "Se que debes estar triste y muy cansada. Solo espero que puedas descansar y relajarte lo máximo posible. Estoy para ti siempre Olga, ahora más que nunca. Te quiero", "d": "2026-03-19"},
+  {"c": "e", "t": "Se que nos tenemos el uno al otro y que siempre queremos lo mejor, somos así y juntos aún más", "d": "2026-03-08"},
+  {"c": "e", "t": "quiero que sepas que si necesitas algo puedes contar siempre conmigo", "d": "2025-09-25"},
+  {"c": "e", "t": "Pero todo lo que hago lo hago porque te quiero y me sale solo cuidarte", "d": "2026-05-31"},
+  {"c": "e", "t": "Pues puedes estar muy tranquila, solo me apetece tratarte bien y cuidarte", "d": "2024-12-01"},
+  {"c": "e", "t": "No te voy a romper el corazón, puedes estar tranquila", "d": "2025-03-12"},
+  {"c": "e", "t": "si te apetece hablar me lo puedes decir, yo siempre estoy dispuesto", "d": "2025-08-01"},
+  {"c": "e", "t": "Pero no te preocupes, te guardo un abrazo gran reserva", "d": "2024-10-24"},
+  {"c": "e", "t": "Abrazos vas a tener no te preocupes", "d": "2025-01-15"},
+  {"c": "e", "t": "Nada más te vea te voy a dar un abrazo bien fuerte, vente preparada", "d": "2026-02-10"},
+  {"c": "e", "t": "Que cosas me dices miamor… pero te voy a quitar el frio para el resto de tu vida", "d": "2025-12-03"},
+  {"c": "e", "t": "Michulita y tuchulito contra lo que sea", "d": "2025-06-01"},
+  {"c": "e", "t": "Normal… jo, debes estar bien nerviosa, ojalá poder ir contigo para quitarte un poco de estrés", "d": "2026-03-02"},
+  {"c": "e", "t": "Pues normalmente no preciosa, pero por ti como si me tengo que ir con el carrito este hasta portugal", "d": "2025-10-07"},
+  {"c": "e", "t": "Me metería en un tren podrido como este durante horas solo para darte un abrazo", "d": "2025-07-20"},
+  {"c": "e", "t": "Para servirte en todo lo que pueda miamor", "d": "2026-05-10"},
+  {"c": "e", "t": "Un poquito sí, pero estando contigo todo es mucho más fácil mi secre", "d": "2026-10-08"},
+  {"c": "e", "t": "Igual que tu te preocupas de como estoy y quieres que esté lo mejor posible a mi me pasa igual", "d": "2026-11-05"},
+  {"c": "e", "t": "Si lo se, a mi me pasa igual contigo, me gusta saber como te sientes y lo que te pasa, siempre", "d": "2026-03-08"},
+  {"c": "e", "t": "Te entiendo totalmente, se que no es fácil ni una situación en la que te sientes cómoda, siempre estoy pero ahora más que nunca", "d": "2026-03-16"},
+  {"c": "e", "t": "Sabes que cualquier cosa me puedes contar, hablar o lo que sea, y si no quieres igualmente estoy aquí para lo que sea", "d": "2026-07-08"},
+  {"c": "e", "t": "Está bien, pero me puedes contar y desahogarte si en algún momento lo necesitas, o lo que sea, ya lo sabes", "d": "2026-01-12"},
+  {"c": "e", "t": "Me puedes contar cuando quieras o si quieres hablar lo que sea", "d": "2026-06-11"},
+  {"c": "e", "t": "Ya te se ya, me las puedes contar siempre que quieras, que me gusta mucho", "d": "2025-06-16"},
+  {"c": "e", "t": "Yo te escribo miamor no te preocupes, o te canto o lo que tú desees", "d": "2026-04-29"},
+  {"c": "e", "t": "Y aquí te recibo siempre, aunque sean abrazos de lucha grecorromana", "d": "2024-12-17"},
+  {"c": "e", "t": "Yo a ti te quiero cerca siempre", "d": "2026-04-08"},
+  {"c": "e", "t": "Te doy un abrazo y una calentada si la necesitas", "d": "2025-11-28"},
+  {"c": "e", "t": "Estás temblorosa? Te daba un abrazo fuerte bajo la manta", "d": "2024-10-19"},
+  {"c": "e", "t": "Jo me sabe fatal que estés así, tengo ganas de abrazarte suave", "d": "2025-01-10"},
+  {"c": "e", "t": "Y el abrazo me lo apunto para cuando te vea", "d": "2025-01-12"},
+  {"c": "e", "t": "Te guardo un abrazo ubicador para la próxima", "d": "2025-05-19"},
+  {"c": "e", "t": "Sea lo que sea lo voy a recibir encantado y te vas a llevar un abrazo bien fuerte a cambio", "d": "2026-03-12"},
+  {"c": "e", "t": "Y tanto que durarán, a la mínima te abrazo fuerte para sellar la tregua al momento", "d": "2025-04-27"},
+  {"c": "q", "t": "Te amo todo lo que se puede amar a alguien", "d": "2026-10-04"},
+  {"c": "q", "t": "Eres el amor de mi vida, la mujer de mis sueños y mi compañera pa todo y pa siempre", "d": "2026-09-27"},
+  {"c": "q", "t": "Claro que eres mi persona favorita", "d": "2026-02-11"},
+  {"c": "q", "t": "Para mí eres de lo mejor que tengo, de lo más importante y de lo que más quiero", "d": "2026-02-11"},
+  {"c": "q", "t": "Cada uno es como es y yo te quiero con todo lo que eres, cada uno de tus pensamientos", "d": "2026-08-06"},
+  {"c": "q", "t": "Lo tengo muy presente, se como eres y lo tengo totalmente aceptado, me gustas y te quiero así tal cual. Sin nada más ni nada menos", "d": "2026-03-25"},
+  {"c": "q", "t": "Te quiero mucho, por si no te lo he dicho hoy", "d": "2026-03-15"},
+  {"c": "q", "t": "Te quiero pasiempre desde las dos a la una", "d": "2026-09-08"},
+  {"c": "q", "t": "Cuanto te quiero, que suerte tengo de tenerte cerca", "d": "2025-07-28"},
+  {"c": "q", "t": "Te quiero michulita", "d": "2025-08-06"},
+  {"c": "q", "t": "Te re adoro miniña bonita", "d": "2025-10-26"},
+  {"c": "q", "t": "No es mucho mi estilo pero contigo no puedo evitarlo, te adoro en todos los sentidos y me derrito por ti", "d": "2026-03-12"},
+  {"c": "q", "t": "Estoy más enchochao que nunca, sensible y con ganas de estar contigo", "d": "2026-03-10"},
+  {"c": "q", "t": "Yo también te quiero mucho Olga, desde ya hace y cada vez más", "d": "2026-03-10"},
+  {"c": "q", "t": "Claro que te quiero Olga, no te he dejado de querer nunca", "d": "2026-06-10"},
+  {"c": "q", "t": "Te valoro y te quiero mucho y espero que eso también te llegue", "d": "2026-01-05"},
+  {"c": "q", "t": "te quiero preciosa eres la mejor", "d": "2026-10-09"},
+  {"c": "q", "t": "Gracias por este amor miamor", "d": "2026-05-07"},
+  {"c": "q", "t": "Me encantas tú y me encanta todo lo que haces y me haces", "d": "2025-06-14"},
+  {"c": "q", "t": "Es que a parte es algo que es super evidente que me encantas desde siempre", "d": "2026-08-05"},
+  {"c": "q", "t": "Me encantas en muchos sentidos Olga 🫠", "d": "2025-01-19"},
+  {"c": "q", "t": "Seguramente ya debes estar durmiendo o a punto, yo solo paso por aquí para decirte que eres la mejor, que te amo y que tengo muchas ganas de verte", "d": "2026-03-12"},
+  {"c": "q", "t": "Felices 10 mesecitos por cierto michulita , ojalá otros 100 otros 1000 y otros 10000", "d": "2025-10-06"},
+  {"c": "q", "t": "Para mí eres michulita y miamor sobre todo", "d": "2025-12-17"},
+  {"c": "q", "t": "Eres increíble y la mejor novia del mundo", "d": "2025-07-08"},
+  {"c": "q", "t": "Que aquí está tu chulito pre marido enamorado para recordarte lo bien que estamos juntos", "d": "2025-06-05"},
+  {"c": "q", "t": "Pero soy tu tonto miamor", "d": "2026-07-31"},
+  {"c": "q", "t": "Pero ya voy a cenar algo y a descansar estos ojitos enamorados de la mujer más increíble y especial que hay", "d": "2026-03-29"},
+  {"c": "q", "t": "Tú si que eres bonita miamor, que me tienes feliz y enamorado", "d": "2026-05-10"},
+  {"c": "q", "t": "Me se cae la baba contigo", "d": "2026-06-28"},
+  {"c": "q", "t": "Te quiero mucho miamor me haces muy feliz", "d": "2026-04-20"},
+  {"c": "q", "t": "Y que yo también te quiero Olga, y te lo voy a decir mucho durante estos días", "d": "2026-06-15"},
+  {"c": "q", "t": "Y con todo lo que haya, porque así lo quiero, porque te quiero a ti, tal y como eres y con todo lo que eres", "d": "2026-04-09"},
+  {"c": "q", "t": "Para mí eres el amor de mi vida y te lo digo porque así lo siento hasta ahora", "d": "2026-03-22"},
+  {"c": "q", "t": "Yo te lo voy a seguir diciendo y demostrando, se lo mucho que vales y quiero seguir estando a tu lado para darte y hacerte sentir lo mejor", "d": "2025-04-17"},
+  {"c": "q", "t": "Te quiero confesar que hoy he sentido aún más de lo que ya había sentido por ti, y no es solo por este sentimiento de añoranza anticipada", "d": "2025-05-25"},
+  {"c": "q", "t": "Será el clima o la luna o este amor que me tiene suspirando", "d": "2025-05-12"},
+  {"c": "q", "t": "Para mi siempre eres miamor bonito y chocolatao", "d": "2026-11-08"},
+  {"c": "q", "t": "Para mi eres muy importante y es gran parte de lo que soy", "d": "2025-09-08"},
+  {"c": "q", "t": "Y yo a ti miamor 🥰", "d": "2026-05-03"},
+  {"c": "q", "t": "Mwuah para ti tambien miamor", "d": "2026-05-14"},
+  {"c": "q", "t": "Para esto y para mucho más Olga, eres miamor", "d": "2026-09-17"},
+  {"c": "q", "t": "Y yo a ti Olga, está siendo una semana intensa, necesito estar contigo y sentir la calma", "d": "2026-03-05"},
+  {"c": "q", "t": "Y te digo todo lo que me gustas y lo que te quiero", "d": "2026-08-05"},
+  {"c": "q", "t": "Y que te quiero así sin más también", "d": "2025-07-30"},
+  {"c": "q", "t": "Lo que te quiero yo a ti mi mergoli…", "d": "2026-06-27"},
+  {"c": "n", "t": "No sabes lo afortunado y lo feliz que me siento por estar contigo", "d": "2025-06-13"},
+  {"c": "n", "t": "Y yo contigo Olga, me entiendes y me cuidas, me alegras la vida y me haces sentir muy afortunado", "d": "2026-02-24"},
+  {"c": "n", "t": "Contigo tengo la mejor rutina de todas aunque no haga nada, porque estar a tu lado es lo que mejor me sienta", "d": "2026-08-30"},
+  {"c": "n", "t": "Desde que estoy contigo estoy mucho mejor en todos los sentidos", "d": "2025-10-19"},
+  {"c": "n", "t": "Yo también me gusto mucho así, contigo me calmo y desconecto del ruido que tengo dentro y fuera", "d": "2025-02-23"},
+  {"c": "n", "t": "Yo me veo contigo para siempre", "d": "2026-10-04"},
+  {"c": "n", "t": "Yo quiero mi vida a tu lado, cuanto más tiempo y más cerca mejor", "d": "2026-10-14"},
+  {"c": "n", "t": "Da igual como luzca, coja manca o tuerta, yo me quedo contigo siempre", "d": "2025-04-09"},
+  {"c": "n", "t": "Mientras sea así a tu lado yo soy lo más feliz que puedo ser", "d": "2026-07-15"},
+  {"c": "n", "t": "Que ganas de esos 3 besos, de todas las risas, todos los abrazos colgones y todo lo que venga a tu lado este año ❤️", "d": "2026-01-01"},
+  {"c": "n", "t": "Y que nos espera una vida maravillosa", "d": "2026-10-04"},
+  {"c": "n", "t": "Yo también confio y contigo al lado tampoco le tengo miedo a nada", "d": "2026-10-04"},
+  {"c": "n", "t": "Se me pasa el tiempo volando contigo no me doy ni cuenta", "d": "2025-01-05"},
+  {"c": "n", "t": "Y me rio mucho contigo, es algo que me encanta que sea así", "d": "2025-05-24"},
+  {"c": "n", "t": "Que no me canso de ninguna de las dos… podría estar horas mirándote y hablando contigo de cualquier cosa", "d": "2025-02-02"},
+  {"c": "n", "t": "Y esta tarde en tu cama contigo cerca y tus caricias era como estar en una nube, prefiero 5 minutos así que una noche de sueño", "d": "2025-04-17"},
+  {"c": "n", "t": "Cómodo tranquilo y a gusto estoy siempre contigo", "d": "2025-01-07"},
+  {"c": "n", "t": "Créeme que lo haces muy bien, me siento muy cuidado, se que te importo y que solo quieres lo mejor para mi", "d": "2026-05-03"},
+  {"c": "n", "t": "Ya te lo he dicho alguna vez, pero gracias por como eres conmigo, como me tratas y como me haces ser mejor", "d": "2025-04-02"},
+  {"c": "n", "t": "Gracias a ti también, estoy mejor gracias a ti, desde hace mucho y ahora aún más", "d": "2026-03-16"},
+  {"c": "n", "t": "Por esto y por todo, me calmas y me haces ver las cosas más claras", "d": "2026-02-02"},
+  {"c": "n", "t": "Gracias a ti por ser como eres, por como me tratas y por todo esto bonito que tenemos", "d": "2025-10-19"},
+  {"c": "n", "t": "Yo quiero todo lo que sea contigo", "d": "2026-10-19"},
+  {"c": "n", "t": "Mis planes quiero que sean contigo, no voy a hacer otros", "d": "2026-04-09"},
+  {"c": "n", "t": "Si estás cerca yo feliz estoy siempre", "d": "2025-09-18"},
+  {"c": "n", "t": "Y yo contigo también, hasta las cosas más normales y aburridas", "d": "2025-05-13"},
+  {"c": "n", "t": "Se vienen muchos más findes primaverales, de cocinitas y abrazos bañados por atardeceres pastelosos", "d": "2025-03-29"},
+  {"c": "n", "t": "Un finde tranquilo de los nuestros, nuestros bagels buenos nuestras series y pelis y nuestros abrazos colgones", "d": "2026-07-08"},
+  {"c": "n", "t": "Cada vez mejor michulita, aún nos queda mucho a los dos, a cada uno con lo suyo y juntos en lo nuestro", "d": "2026-05-04"},
+  {"c": "n", "t": "Si ya tenía recuerdos preciosos por allí, ahora que algunos son contigo ya mejoran lo que parecía inmejorable", "d": "2025-11-25"},
+  {"c": "n", "t": "Me encanta que se vaya a cumplir mi sueño de estar contigo en parís", "d": "2026-10-26"},
+  {"c": "n", "t": "Contigo cerca tampoco necesito mucho más créeme", "d": "2025-05-12"},
+  {"c": "n", "t": "No desconecto de ninguna forma mejor que estando contigo te lo juro", "d": "2026-10-04"},
+  {"c": "n", "t": "Yo contigo es como mejor estoy y eso es un hecho totalmente objetivo y demostrable", "d": "2026-10-07"},
+  {"c": "n", "t": "Se nos ve bien enamorados", "d": "2025-06-30"},
+  {"c": "n", "t": "Incluso como nos miramos enamorados siempre", "d": "2026-07-16"},
+  {"c": "n", "t": "Tengo muy buena rutina de sueño últimamente, en gran parte gracias a ti jeje", "d": "2026-05-11"},
+  {"c": "n", "t": "He dormido muy bien esta semana, y estando contigo se me va todo el cansancio", "d": "2024-12-19"},
+  {"c": "n", "t": "Yo me pongo a pensar y se me hace raro haber llegado a este punto contigo, pero estoy extremadamente feliz, me gusta mucho que haya sido todo así", "d": "2024-12-08"},
+  {"c": "n", "t": "Mira que pasamos horas pero ya quiero estar contigo otra vez", "d": "2025-03-26"},
+  {"c": "n", "t": "Te pienso y te echo de menos después de estos días tan cerca", "d": "2025-10-06"},
+  {"c": "n", "t": "Tengo ganas de abrazarte y acariciarte, reirnos y pasar nuestros ratos", "d": "2025-12-23"},
+  {"c": "n", "t": "Sigo aquí pensando en ti y con ganas de verte", "d": "2025-02-06"},
+  {"c": "n", "t": "Los abrazos me salen solos si te tengo cerca, el jugar siempre nos ha gustado", "d": "2024-12-02"},
+  {"c": "n", "t": "Me lo paso muy bien contigo, me río mucho y estoy super a gusto hagamos lo que hagamos", "d": "2025-01-19"},
+  {"c": "n", "t": "Siento que puedo ser yo y hablar de todo contigo estando muy relajado", "d": "2025-01-19"},
+  {"c": "n", "t": "Es de verdad, me pasa como a ti… hay algunas cosas que me las como solo yo, pero estando contigo las digiero un poco mejor, y sé que también estás ahí", "d": "2025-01-11"},
+  {"c": "n", "t": "Y gran parte de que me vaya bien es por ti, me haces estar mejor y eso me influye mucho", "d": "2025-02-02"},
+  {"c": "n", "t": "Y yo suerte de tenerte a mi lado y poderte acompañar en todo. Para relajarte siempre que lo necesites y disfrutar todo lo que se pueda a tu lado", "d": "2026-10-27"},
+  {"c": "n", "t": "Sabes que yo estando contigo me da igual donde y como, pero nos merecemos lo mejor, la vida que queremos y que va a llegar más pronto que tarde", "d": "2026-02-24"},
+  {"c": "n", "t": "Que ganas tengo de estar contigo en galicia y saborear el preview de la vida que nos viene", "d": "2026-05-07"},
+  {"c": "n", "t": "Ganas de estar contigo, de que cada vez que te veo se me pone el cuerpo diferente, como una sensación entre admiración y ganas de morderte fuerte", "d": "2026-06-10"},
+  {"c": "n", "t": "Porque quiero y porque estar contigo como hemos estado hace un rato me deja un gusto y una felicidad en el cuerpo que no hay otra cosa que lo consiga", "d": "2025-02-16"},
+  {"c": "n", "t": "Yo decido y quiero estar contigo y no miento cuando siempre te digo que el mayor tiempo posible", "d": "2026-09-06"},
+  {"c": "n", "t": "Siempre te he dicho que es de mis momentos favoritos contigo, es algo tan sencillo pero que me gusta tanto…", "d": "2025-04-17"},
+  {"c": "n", "t": "Afortunado contigo siempre", "d": "2025-10-16"},
+  {"c": "n", "t": "Y contigo al lado ni te cuento, el más feliz y orgulloso de toda la península", "d": "2025-10-07"},
+  {"c": "n", "t": "Pues sí, y te echo de menos de madrugada cerca también", "d": "2024-11-07"},
+  {"c": "n", "t": "Que ya te echo de menos", "d": "2024-12-22"},
+  {"c": "n", "t": "Yo ya echo de menos tus piececitos cerca de mi", "d": "2026-07-27"},
+  {"c": "n", "t": "Gracias a ti también por ser como eres y por ser como eres conmigo", "d": "2026-02-24"},
+  {"c": "n", "t": "Gracias por nada y en todo caso gracias a ti por muchas cosas pero sobre todo por ser tú y como me cuidas", "d": "2025-11-23"},
+  {"c": "n", "t": "Eres la mejor, gracias por tanto", "d": "2026-02-02"},
+  {"c": "n", "t": "Gracias miamor eres la mejor", "d": "2026-09-25"},
+  {"c": "n", "t": "Que eres la mejor de las mejores", "d": "2026-07-27"},
+  {"c": "n", "t": "Tu si que eres la mejor de todas", "d": "2026-10-09"},
+  {"c": "n", "t": "Me ha gustado mucho el finde contigo, me lo he pasado muy bien y me ayuda mucho a desconectar", "d": "2026-07-20"},
+  {"c": "n", "t": "Yo estoy encantado y feliz contigo, pase lo que pase", "d": "2026-09-27"},
+  {"c": "n", "t": "Es que estaba ahí todo feliz viendo mi vida contigo", "d": "2026-09-15"},
+  {"c": "n", "t": "Y aunque nos vayamos a ver a mi siempre me gusta verte y hablar contigo", "d": "2025-08-01"},
+  {"c": "n", "t": "Ojalá muchos más allí y sobre todo contigo", "d": "2025-11-25"},
+  {"c": "n", "t": "Y sobre todo contigo, sea donde sea, galicia está genial pero me da igual el lugar si estoy junto a tu piel suave cogiéndome del brazo para pasear", "d": "2026-06-15"},
+  {"c": "m", "t": "Tu si que eres bonita, mi dorito fibrado mojado en salsa de belleza", "d": "2025-07-31"},
+  {"c": "m", "t": "Rencorosa preciosa orgullosa talentosa misteriosa poderosa olgaseosa", "d": "2025-01-14"},
+  {"c": "m", "t": "Tú si que eres bonita mi kim possible bollera pueblerina", "d": "2026-09-28"},
+  {"c": "m", "t": "Bon día michicle de fresa", "d": "2025-09-19"},
+  {"c": "m", "t": "Buenos días bombón de chocolate negro", "d": "2025-09-22"},
+  {"c": "m", "t": "Buenos días mi lomo embuchao", "d": "2026-04-01"},
+  {"c": "m", "t": "Buenos días mi papo palpitón", "d": "2025-06-27"},
+  {"c": "m", "t": "Buenos días princesa madrugadora", "d": "2025-07-02"},
+  {"c": "m", "t": "Buenos días mi gitanika de piel canela", "d": "2025-09-17"},
+  {"c": "m", "t": "Buen día mi bonita sonrisita", "d": "2025-10-09"},
+  {"c": "m", "t": "Buenos días miamorcito soñador", "d": "2025-12-02"},
+  {"c": "m", "t": "Buenos días miniña bonita entera", "d": "2025-11-15"},
+  {"c": "m", "t": "Buenos días chulita bonita", "d": "2025-07-04"},
+  {"c": "m", "t": "Buenos días a la madrugadora más peinada", "d": "2026-08-04"},
+  {"c": "m", "t": "Buenos días michicle dulce y sabroso", "d": "2025-10-10"},
+  {"c": "m", "t": "Buenos días bomboncito de gluteo ☺️", "d": "2025-02-21"},
+  {"c": "m", "t": "Estás preciosa mi huevito árabe reflejado", "d": "2025-12-01"},
+  {"c": "m", "t": "Que bonita que ese migitanilla de mofletes coloraos", "d": "2025-11-23"},
+  {"c": "m", "t": "Preciosa, bonita, espectacular leona salvaje carinovora, soy un pobre antilope despistado que merece ser deborado", "d": "2025-11-10"},
+  {"c": "m", "t": "Tú eres mi agua fresca de manantial después de 4h de entreno georgiano en el día más caluroso del verano", "d": "2025-03-02"},
+  {"c": "m", "t": "Eres tan puntual que hasta queriendo llegar tarde llegas temprano", "d": "2025-05-07"},
+  {"c": "m", "t": "0% sobaco 100% michulita preciosa", "d": "2025-07-09"},
+  {"c": "m", "t": "Te adoro michicle de fresa de rollo", "d": "2025-11-09"},
+  {"c": "m", "t": "Y yo te quiero magdalena bizcocha chocolatona o como sea que te salga", "d": "2026-05-31"},
+  {"c": "m", "t": "Yo tengo una foto mental tuya preciosa de ayer… 🫠", "d": "2025-01-03"},
+  {"c": "m", "t": "Bonita estás siempre y eso es así y quien diga lo contrario le meto una torta que lo dejo ciego", "d": "2026-02-10"},
+  {"c": "m", "t": "Este finde voy a ir a tu madre y a tu padre y les voy a preguntar directamente si eres guapa o no", "d": "2026-02-18"},
+  {"c": "m", "t": "Eres la mas grande y tocha", "d": "2025-05-29"},
+  {"c": "m", "t": "Contigo ya ves que soy un buenazo semicalzonazos … pero es lo que me sale, me derrito fácilmente", "d": "2024-12-30"},
+  {"c": "m", "t": "Menos mal que te tengo sí… tú eres la memoriona de la relación", "d": "2025-01-20"},
+  {"c": "m", "t": "Mirad chicos… hasta sus mordiscos de caiman echo de menos", "d": "2025-05-25"},
+  {"c": "m", "t": "Pero tú eres mi fotógrafa estilista y consejera", "d": "2025-12-16"},
+  {"c": "m", "t": "Ahora te leo y te admiro miamor", "d": "2026-04-29"},
+  {"c": "m", "t": "Yo estoy atento y a la orden para todo lo que me diga michicle de fresa", "d": "2025-10-30"},
+  {"c": "m", "t": "Pfff que rico, como me gusta todo eso en una terracita tranquila con la brisa pasando y delante mío la gitana más preciosa que hay", "d": "2025-06-19"},
+  {"c": "m", "t": "Que eres la mejor pre esposa que existe", "d": "2026-01-29"},
+  {"c": "m", "t": "Cenar pronto y empezar los días de vacaciones con el amor de mi vida que eres tú migitanilla de ojos largos", "d": "2026-06-15"},
+  {"c": "m", "t": "Así te quiero ver siempre, bien feliz, vestida de rosa y mirándome con esos ojos largos como el nilo", "d": "2026-05-04"},
+  {"c": "m", "t": "Tu si que eres lo mejor que hay en el mundo entero mibonita suave", "d": "2026-09-27"},
+  {"c": "m", "t": "Eres lo mejor que hay en esta vida estresada", "d": "2026-10-07"},
+  {"c": "m", "t": "Tu si que eres bonita miamor abrazable matutino nocturno y a cualquier hora del día, donde sea pero a tu ladito suave", "d": "2026-06-27"},
+  {"c": "m", "t": "Eeeeesa es miniña descansada", "d": "2025-05-09"},
+  {"c": "m", "t": "Que preciosa morena de biceps gigantes", "d": "2025-05-12"},
+  {"c": "m", "t": "Hasta así cerca y monga eres bonita", "d": "2026-02-10"},
+  {"c": "m", "t": "Ahora eres mi prometida claro", "d": "2024-12-05"},
+  {"c": "m", "t": "Tú si que eres bonita michicle", "d": "2026-04-30"},
+  {"c": "m", "t": "Tu si que eres mi perfecta", "d": "2026-09-27"},
+  {"c": "m", "t": "Mírala que chula michicle rosado", "d": "2026-01-19"},
+  {"c": "m", "t": "Que manía tengo con meter el dedo en el micro, pero el resumen es que eres lo más bonito que hay y que tengo ganas de morderte", "d": "2026-07-06"},
+  {"c": "m", "t": "Tu si que eres bonita miamor", "d": "2026-06-27"},
+  {"c": "m", "t": "Buenos días dormilona", "d": "2026-04-26"}
+];
+
+const CATS = {
+  b: { name: '🌸 lo bonita que eres', paper: '#FFE3EE', tape: '#EE6FA5', pin: '#EE6FA5' },
+  a: { name: '🌱 para días grises',   paper: '#EEF6D6', tape: '#A6CC45', pin: '#4F8226' },
+  e: { name: '🫶 aquí estoy',         paper: '#FFF1E6', tape: '#F7A9C9', pin: '#C2306B' },
+  q: { name: '💗 te quiero',          paper: '#FFD9E7', tape: '#C2306B', pin: '#7C1C42' },
+  n: { name: '🍓 tú y yo',            paper: '#FBE6EC', tape: '#7C1C42', pin: '#EE6FA5' },
+  m: { name: '🧸 motes y tonterías',  paper: '#E7F2C6', tape: '#4F8226', pin: '#A6CC45' },
+};
+const BUNNY_LINES = ['Ufff que bonita esa 🥹', 'Tremenda eh', 'Esa tal cual 🫠', 'Jeje esa me encanta', 'Créeme que lo piensa de verdad', 'Otra va, porfa 🥺', 'Guárdatela eh ☺️', 'Pfff que cosita 🥰', 'Madre mía 😳', 'Esa es de las buenas eh', 'Oye pues qué bonito todo 🥹', 'Ya sabes que es verdad ☺️'];
+const BUNNY_PET = ['Jeje cosquillas no porfa 😳', 'Oye pues un abrazo sí te doy 🥰', 'Va, saca otra ☺️', 'Ojalá una zanahoria ahora 🥺', 'Te quiere mucho eh, que me lo ha dicho 🤫', 'Ufff que suave eres 🫠'];
+function greet() { const h = new Date().getHours(); return h >= 6 && h < 14 ? 'Bon dia michulita ☺️' : h >= 14 && h < 21 ? 'Buenas tardes miniña ☺️' : 'Hola preciosa ☺️'; }
+
+/* ---------- utilidades ---------- */
+const $ = id => document.getElementById(id);
+const KEY = 'olga1-';
+try { if (/[?&#](reset|nuevo)\b/.test(location.href)) { Object.keys(localStorage).filter(k => k.startsWith(KEY)).forEach(k => localStorage.removeItem(k)); history.replaceState(null, '', location.pathname); } } catch {}
+const store = {
+  get(k, d) { try { const v = localStorage.getItem(KEY + k); return v ? JSON.parse(v) : d; } catch { return d; } },
+  set(k, v) { try { localStorage.setItem(KEY + k, JSON.stringify(v)); } catch {} },
+};
+let opened = store.get('opened', []).filter(i => i < NOTAS.length);   // orden de apertura
+const favs = new Set(store.get('favs', []).filter(i => i < NOTAS.length));
+const isOpen = new Set(opened);
+const save = () => { store.set('opened', opened); store.set('favs', [...favs]); };
+const rand = a => a[Math.random() * a.length | 0];
+const buzz = p => { try { navigator.vibrate && navigator.vibrate(p); } catch {} };
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+function sparks(x, y, n = 10, spread = 90, chars) {
+  for (let i = 0; i < n; i++) {
+    const s = document.createElement('span');
+    s.className = 'spark';
+    s.textContent = rand(chars || ['♥', '✦', '✿', '♥', '❀', '✧', '💗']);
+    const a = Math.random() * Math.PI * 2, d = 30 + Math.random() * spread;
+    s.style.cssText = `left:${x}px;top:${y}px;--dx:${Math.cos(a) * d}px;--dy:${Math.sin(a) * d}px;--r:${Math.random() * 80 - 40}deg;--s:${13 + Math.random() * 13}px;--c:${rand(['#EE6FA5', '#F7A9C9', '#A6CC45', '#FFD6E6', '#D9EBA8'])};animation-delay:${i * 15}ms`;
+    document.body.appendChild(s);
+    setTimeout(() => s.remove(), 1300);
+  }
+}
+const MESES = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
+const fdate = d => { const [y, m, dd] = d.split('-'); return `${+dd} ${MESES[+m - 1]} ${y}`; };
+function rain(n = 40) {
+  for (let i = 0; i < n; i++) {
+    const s = document.createElement('span'); s.className = 'rain';
+    s.textContent = rand(['💗', '🌸', '💕', '✨', '🍓', '💖', '🌷', '🐰']);
+    s.style.cssText = `left:${Math.random() * 100}vw;--r:${Math.random() * 360 - 180}deg;animation-duration:${2.4 + Math.random() * 2}s;animation-delay:${Math.random() * 1.2}s;font-size:${16 + Math.random() * 16}px`;
+    document.body.appendChild(s); setTimeout(() => s.remove(), 5200);
+  }
+}
+function toast(msg) { const t = $('toast'); t.textContent = msg; t.classList.add('on'); clearTimeout(toast.h); toast.h = setTimeout(() => t.classList.remove('on'), 2600); }
+
+/* ---------- cielo ---------- */
+for (let i = 0; i < 22; i++) {
+  const s = document.createElement('span'); s.className = 'twinkle'; s.textContent = rand(['✦', '✧', '·', '♥', '✦']);
+  s.style.cssText = `left:${Math.random() * 100}%;top:${Math.random() * 100}%;animation-delay:${-Math.random() * 3}s;font-size:${7 + Math.random() * 9}px;color:${rand(['#F7A9C9', '#D9EBA8', '#FFD6E6'])}`;
+  $('sky').appendChild(s);
+}
+document.addEventListener('pointerdown', e => {
+  if (e.target.closest('button, .jar, .note, .pin, .bunny, .nav, .seg')) return;
+  sparks(e.clientX, e.clientY, 4, 30);
+});
+
+/* ---------- conejito ---------- */
+const bunny = $('bunny'), bubble = $('bubble');
+function say(html, ms = 2600) {
+  bubble.innerHTML = html; bubble.classList.remove('on'); void bubble.offsetWidth; bubble.classList.add('on');
+  clearTimeout(say.h); if (ms) say.h = setTimeout(() => bubble.classList.remove('on'), ms);
+}
+function hop(happy = true) {
+  bunny.classList.remove('hop'); void bunny.offsetWidth; bunny.classList.add('hop');
+  if (happy) { bunny.classList.add('happy'); clearTimeout(hop.h); hop.h = setTimeout(() => bunny.classList.remove('happy'), 900); }
+}
+bunny.addEventListener('click', e => {
+  if (!bunny.classList.contains('corner')) return;
+  hop(); buzz(10);
+  const r = bunny.getBoundingClientRect(); sparks(r.left + r.width / 2, r.top + 30, 8, 60, ['💗', '💕', '✨']);
+  say(rand(BUNNY_PET), 2200);
+});
+
+/* ---------- intro: el conejito trae el bote ---------- */
+const intro = $('intro'), introBtn = $('introBtn');
+async function runIntro() {
+  bunny.classList.add('enter');
+  await sleep(2100);
+  bunny.classList.add('happy'); hop();
+  const steps = [
+    [greet().replace(/(michulita|miniña|preciosa)/, '<em>$1</em>'), 'apa, ¿y tú quién eres? 👀'],
+    ['Vengo de parte de <em>Adrián</em>, que me ha dicho que te traiga una cosita 🤫', '¿de adri? 🥹'],
+    ['Es un bote con cosas que te ha ido diciendo con el tiempo, pa que las tengas aquí recogidas 🥰', 'jo… 🥺'],
+    ['Pues nada, sacas una cuando te apetezca tocando el bote. Va, que te lo doy ☺️', 'porfa, dámelo 🫙'],
+  ];
+  for (const [txt, btn] of steps) {
+    say(txt, 0);
+    introBtn.textContent = btn;
+    introBtn.style.opacity = '1';
+    await new Promise(r => introBtn.onclick = () => { buzz(8); hop(); r(); });
+    introBtn.style.opacity = '0';
+    await sleep(250);
+  }
+  bubble.classList.remove('on');
+  await deliver(true);
+}
+
+async function deliver(full) {
+  bunny.classList.add('give');
+  await sleep(full ? 450 : 50);
+  const held = bunny.querySelector('.held').getBoundingClientRect();
+  bunny.classList.add('gave');
+  intro.classList.add('off');
+  $('app').classList.add('on');
+  const nav = $('nav'); nav.style.transition = 'opacity .6s .4s'; nav.style.opacity = '1'; nav.style.pointerEvents = 'auto';
+  // el bote vuela desde las patitas del conejito a su sitio
+  const jar = $('jar'), jr = jar.getBoundingClientRect();
+  const dx = (held.left + held.width / 2) - (jr.left + jr.width / 2), dy = (held.top + held.height / 2) - (jr.top + jr.height / 2);
+  const s = held.width / jr.width;
+  jar.animate([
+    { transform: `translate(${dx}px, ${dy}px) scale(${s})` },
+    { transform: `translate(${dx * .4}px, ${dy * .4 - 80}px) scale(${(s + 1) / 2}) rotate(-8deg)`, offset: .5 },
+    { transform: 'none' },
+  ], { duration: full ? 900 : 1, easing: 'cubic-bezier(.3, 1.2, .4, 1)' });
+  bunny.classList.add('corner');
+  bunny.classList.remove('enter');
+  if (full) {
+    await sleep(900);
+    const r = jar.getBoundingClientRect(); sparks(r.left + r.width / 2, r.top + r.height / 2, 22, 160);
+    buzz([20, 40, 20]);
+    await sleep(500);
+    say('Toca el bote va ☺️', 3200);
+  } else {
+    await sleep(900);
+    say(rand([greet(), greet().replace(' ☺️', '') + ', ¿sacamos una? ☺️', 'Ya te echaba de menos 🥺', 'Oye pues aquí sigo con el bote ☺️']), 3000);
+  }
+  store.set('delivered', 1);
+}
+
+/* ---------- el bote ---------- */
+const glass = $('glass'), jar = $('jar');
+function fillJar() {
+  glass.innerHTML = '';
+  const left = NOTAS.map((_, i) => i).filter(i => !isOpen.has(i));
+  const n = left.length ? Math.max(1, Math.round(left.length / NOTAS.length * 40)) : 0;
+  const rnd = (k, m) => ((k * 9301 + m * 49297) % 233280) / 233280;
+  for (let k = 0; k < n; k++) {
+    const row = Math.floor(k / 4), col = k % 4, kind = rnd(k, 4);
+    const s = document.createElement('i');
+    const paper = CATS[NOTAS[left[(k * 7) % left.length]].c].paper;
+    if (kind > .9) { s.className = 'slip heart'; s.textContent = '♥'; s.style.color = rand(['#EE6FA5', '#C2306B', '#A6CC45']); }
+    else { s.className = 'slip' + (kind > .62 ? ' roll' : ''); s.style.background = paper; s.style.width = (34 + rnd(k, 5) * 12) + 'px'; }
+    s.style.left = (6 + col * 47 + (row % 2 ? 14 : 0) + rnd(k, 1) * 10) + 'px';
+    s.style.bottom = (6 + row * 18 + rnd(k, 2) * 7) + 'px';
+    s.style.transform = `rotate(${rnd(k, 3) * 90 - 45}deg)`;
+    glass.appendChild(s);
+  }
+  $('left').innerHTML = left.length ? `quedan <b>${left.length}</b> notitas dentro` : 'ya las has sacado todas 🥹';
+  $('badge').textContent = opened.length || '';
+  $('bCount').textContent = `${opened.length} de ${NOTAS.length}`;
+}
+
+let busy = false;
+async function draw() {
+  if (busy) return; busy = true;
+  $('finger').style.opacity = '0'; $('tapHint').style.opacity = '0';
+  store.set('tapped', 1);
+  const left = NOTAS.map((_, i) => i).filter(i => !isOpen.has(i));
+  const again = !left.length;
+  const id = again ? rand(NOTAS.map((_, i) => i)) : rand(left);
+  // animación: el bote se sacude, la tapa salta y sale un papelito volando
+  jar.classList.remove('idle', 'shake', 'pop'); void jar.offsetWidth; jar.classList.add('shake', 'pop');
+  buzz([12, 40, 16]);
+  const slips = glass.querySelectorAll('.slip:not(.gone)'); if (slips.length) slips[slips.length - 1].classList.add('gone');
+  const jr = jar.getBoundingClientRect();
+  const sx = jr.left + jr.width / 2, sy = jr.top + 50;
+  sparks(sx, sy, 10, 70);
+  await sleep(160);
+  const f = document.createElement('div'); f.className = 'flyer'; f.style.background = CATS[NOTAS[id].c].paper;
+  f.style.left = sx + 'px'; f.style.top = sy + 'px';
+  document.body.appendChild(f);
+  const tx = innerWidth / 2 - sx, ty = innerHeight * .42 - sy;
+  await f.animate([
+    { transform: 'translate(0, 20px) scale(.6) rotate(0)', opacity: 0 },
+    { transform: 'translate(0, -40px) scale(1.2) rotate(-20deg)', opacity: 1, offset: .25 },
+    { transform: `translate(${tx * .5 + 40}px, ${ty - 120}px) scale(2) rotate(200deg)`, offset: .65 },
+    { transform: `translate(${tx}px, ${ty}px) scale(3.2) rotate(360deg)` },
+  ], { duration: 800, easing: 'cubic-bezier(.35, .1, .3, 1)' }).finished;
+  f.remove();
+  if (!again) { opened.push(id); isOpen.add(id); save(); }
+  openNote(id, { fresh: !again, list: null });
+  if (again) toast('Ya las has sacado todas 🥹 pero releer también vale eh');
+  setTimeout(() => { jar.classList.remove('shake', 'pop'); jar.classList.add('idle'); }, 700);
+  fillJar(); renderBoard(); busy = false;
+}
+jar.addEventListener('click', draw);
+jar.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); draw(); } });
+
+/* ---------- notita abierta ---------- */
+const modal = $('modal'), note = $('note');
+let current = -1, viewList = null;
+function openNote(id, { fresh, list }) {
+  current = id; viewList = list;
+  const c = CATS[NOTAS[id].c];
+  note.style.backgroundColor = c.paper;
+  note.style.setProperty('--tc', c.tape);
+  note.style.setProperty('--r', (Math.random() * 3 - 1.5).toFixed(1) + 'deg');
+  $('nNew').style.display = fresh ? '' : 'none';
+  $('nDate').textContent = '— ' + fdate(NOTAS[id].d);
+  const L = NOTAS[id].t.length; note.classList.toggle('long', L > 105 && L <= 165); note.classList.toggle('xlong', L > 165);
+  const p = $('nText'); p.innerHTML = '';
+  NOTAS[id].t.split(' ').forEach((w, i) => { const s = document.createElement('span'); s.className = 'w'; s.style.setProperty('--i', Math.min(i, 40)); s.textContent = w; p.append(s, ' '); });
+  $('mNext').textContent = list ? 'siguiente →' : 'otra 🫙';
+  $('mHint').textContent = list ? 'dos toques para guardar · desliza para cambiar' : 'dos toques para guardar · desliza para sacar otra';
+  setFav();
+  note.style.transition = ''; note.style.transform = ''; note.style.opacity = '';
+  note.classList.remove('unfold'); void note.offsetWidth; note.classList.add('unfold');
+  modal.classList.add('on');
+}
+function setFav() { const on = favs.has(current), b = $('mFav'); b.classList.toggle('on', on); b.textContent = on ? '♥ guardada' : '♡ guardar'; }
+function toggleFav(force) {
+  const on = force ?? !favs.has(current);
+  on ? favs.add(current) : favs.delete(current);
+  save(); setFav(); renderBoard();
+  if (on) {
+    const h = $('bigh'); h.classList.remove('go'); void h.offsetWidth; h.classList.add('go');
+    const r = note.getBoundingClientRect(); sparks(r.left + r.width / 2, r.top + r.height / 2, 14, 150, ['💗', '💕', '♥', '✨']); buzz(16);
+  }
+}
+async function closeNote() {
+  if (!modal.classList.contains('on')) return;
+  // la notita vuela al tablero
+  if (!viewList) {
+    const tb = $('boardTab').getBoundingClientRect(), nr = note.getBoundingClientRect();
+    note.classList.remove('unfold');
+    await note.animate([{ transform: 'rotate(var(--r))', opacity: 1 },
+      { transform: `translate(${tb.left + tb.width / 2 - (nr.left + nr.width / 2)}px, ${tb.top - (nr.top + nr.height / 2)}px) scale(.08) rotate(30deg)`, opacity: .3 }],
+      { duration: 480, easing: 'cubic-bezier(.5, 0, .7, .4)' }).finished.catch(() => {});
+    const b = $('badge'); b.classList.remove('bump'); void b.offsetWidth; b.classList.add('bump');
+  }
+  modal.classList.remove('on');
+  if (!viewList) setTimeout(react, 250);
+}
+async function next(dir = 1) {
+  note.classList.remove('unfold');
+  note.style.transition = 'transform .35s ease-in, opacity .35s';
+  note.style.transform = `translateX(${dir * 130}%) rotate(${dir * 22}deg)`; note.style.opacity = '0';
+  buzz(8);
+  await sleep(300);
+  if (viewList) {
+    const i = viewList.indexOf(current);
+    openNote(viewList[(i + (dir > 0 ? 1 : -1) + viewList.length) % viewList.length], { fresh: false, list: viewList });
+  } else {
+    modal.classList.remove('on');
+    await sleep(120);
+    draw();
+  }
+}
+$('mFav').onclick = () => toggleFav();
+$('mReply').onclick = () => { buzz(8); window.open('https://wa.me/?text=' + encodeURIComponent('🫙 «' + NOTAS[current].t + '» 🥹'), '_blank'); };
+$('mNext').onclick = () => next(1);
+$('mClose').onclick = closeNote;
+modal.addEventListener('pointerdown', e => { if (e.target === modal) closeNote(); });
+{
+  let d = null, last = 0;
+  note.addEventListener('pointerdown', e => { d = { x: e.clientX, y: e.clientY, dx: 0 }; note.classList.remove('unfold'); note.style.transition = 'none'; try { note.setPointerCapture(e.pointerId); } catch {} });
+  note.addEventListener('pointermove', e => { if (!d) return; d.dx = e.clientX - d.x; note.style.transform = `translate(${d.dx}px, ${(e.clientY - d.y) * .25}px) rotate(${d.dx / 15}deg)`; });
+  const end = () => {
+    if (!d) return; const dx = d.dx; d = null;
+    if (Math.abs(dx) > 90) return next(dx < 0 ? 1 : -1);
+    note.style.transition = 'transform .5s cubic-bezier(.3, 1.6, .5, 1)'; note.style.transform = 'rotate(var(--r))';
+    if (Math.abs(dx) < 6) { const t = Date.now(); if (t - last < 320) { toggleFav(true); last = 0; } else last = t; }
+  };
+  note.addEventListener('pointerup', end); note.addEventListener('pointercancel', end);
+}
+
+/* ---------- reacciones e hitos ---------- */
+const HITOS = { 1: 'La primera ☺️ quedan muchas más eh', 10: 'Ya llevas 10 eh 🥹', 25: '25 ya… tremendo', 50: 'Ufff 50 notitas 🫠', 100: '¡100! madre mía 😳', 150: '150, ya vas por la mitad ☺️', 200: '200 ya… pfff qué bonito todo 🥹', 250: '250, ya casi casi 🥺' };
+let saidHito = new Set(store.get('hitos', []));
+function react() {
+  const n = opened.length;
+  hop();
+  if (n === NOTAS.length && !saidHito.has(n)) {
+    saidHito.add(n); store.set('hitos', [...saidHito]);
+    rain(70); buzz([30, 60, 30, 60, 60]);
+    say('Ufff ya las has sacado todas 🥹 te quiere muchísimo eh', 5000); return;
+  }
+  if (HITOS[n] && !saidHito.has(n)) {
+    saidHito.add(n); store.set('hitos', [...saidHito]);
+    if (n >= 10) rain(n >= 100 ? 50 : 26);
+    say(HITOS[n], 3600); return;
+  }
+  if (Math.random() < .6) say(rand(BUNNY_LINES), 2400);
+}
+
+/* ---------- el conejito se duerme si no le haces caso ---------- */
+let lastAct = Date.now();
+document.addEventListener('pointerdown', () => {
+  lastAct = Date.now();
+  if (bunny.classList.contains('sleep')) { bunny.classList.remove('sleep'); hop(); say('Uy, me había quedado frito 😳', 2400); }
+}, true);
+setInterval(() => {
+  const onJar = !$('jarScreen').classList.contains('off');
+  if (onJar && bunny.classList.contains('corner') && !modal.classList.contains('on') && Date.now() - lastAct > 40000) bunny.classList.add('sleep');
+  // corazoncitos que salen del bote de vez en cuando
+  if (onJar && !modal.classList.contains('on') && document.visibilityState === 'visible' && opened.length < NOTAS.length && $('app').classList.contains('on')) {
+    const r = jar.getBoundingClientRect(), h = document.createElement('span');
+    h.className = 'rise'; h.textContent = rand(['♥', '✦', '♥', '✿']);
+    h.style.cssText = `left:${r.left + r.width / 2 + (Math.random() - .5) * 60}px;top:${r.top + 40}px;--x:${(Math.random() - .5) * 60}px;--r:${(Math.random() - .5) * 60}deg;color:${rand(['#F7A9C9', '#D9EBA8', '#EE6FA5'])}`;
+    document.body.appendChild(h); setTimeout(() => h.remove(), 3300);
+  }
+}, 2600);
+
+/* ---------- tablero ---------- */
+let bFilter = 'all';
+function renderBoard() {
+  const board = $('board');
+  const prev = new Set([...board.querySelectorAll('.pin')].map(p => +p.dataset.id));
+  board.innerHTML = '';
+  const list = [...opened].reverse().filter(i => bFilter === 'all' || favs.has(i));
+  if (!list.length) {
+    board.innerHTML = bFilter === 'fav'
+      ? '<div class="empty"><div>💗</div>Aún no has guardado ninguna.<br>Dale dos toques a la que te guste 🥰</div>'
+      : '<div class="empty"><div>🫙</div>Aquí se van quedando las que vayas sacando del bote ☺️</div>';
+    return;
+  }
+  list.forEach(i => {
+    const c = CATS[NOTAS[i].c], b = document.createElement('button');
+    b.className = 'pin' + (prev.size && !prev.has(i) ? ' new' : '');
+    b.dataset.id = i;
+    b.style.setProperty('--paper', c.paper); b.style.setProperty('--pc', c.pin);
+    b.style.setProperty('--rot', (((i * 37) % 9) - 4) / 2.2 + 'deg');
+    const p = document.createElement('p'); p.textContent = NOTAS[i].t; b.appendChild(p);
+    const dd = document.createElement('span'); dd.className = 'pd'; dd.textContent = fdate(NOTAS[i].d); b.appendChild(dd);
+    if (favs.has(i)) { const h = document.createElement('span'); h.className = 'f'; h.textContent = '💗'; b.appendChild(h); }
+    b.onclick = () => { buzz(6); openNote(i, { fresh: false, list }); };
+    board.appendChild(b);
+  });
+}
+$('seg').querySelectorAll('button').forEach(b => b.onclick = () => {
+  bFilter = b.dataset.f; buzz(6);
+  $('seg').querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b));
+  renderBoard();
+});
+
+/* ---------- navegación ---------- */
+document.querySelectorAll('.nav button').forEach(b => b.onclick = () => {
+  buzz(6);
+  document.querySelectorAll('.nav button').forEach(x => x.classList.toggle('on', x === b));
+  document.querySelectorAll('.screen').forEach(s => s.classList.toggle('off', s.id !== b.dataset.s));
+  bunny.classList.toggle('hidden', b.dataset.s !== 'jarScreen');
+});
+
+/* ---------- arranque ---------- */
+fillJar(); renderBoard();
+if (store.get('tapped', 0)) { $('finger').style.opacity = '0'; $('tapHint').style.opacity = '0'; }
+if (store.get('delivered', 0)) { intro.classList.add('off'); bunny.classList.add('give'); deliver(false); }
+else runIntro();
+</script>
+</body>
+</html>
