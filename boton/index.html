@@ -321,7 +321,7 @@
         <div class="label"><small>notitas para</small>michulita ♡</div>
       </div>
       <span class="finger" id="finger" style="right:6%;top:72%">👆</span>
-      <div class="tap-hint" id="tapHint">toca el bote ✨</div>
+      <div class="tap-hint" id="tapHint">toca el bote ☺️</div>
     </div>
   </section>
 
@@ -343,7 +343,7 @@
   <article class="note" id="note">
     <div class="washi"></div>
     <span class="ttag" id="nTag"></span>
-    <span class="new-tag" id="nNew">¡nueva!</span>
+    <span class="new-tag" id="nNew">nueva ☺️</span>
     <p id="nText"></p>
     <div class="bigh" id="bigh">💗</div>
   </article>
@@ -683,8 +683,9 @@ const CATS = {
   n: { name: '🍓 tú y yo',            paper: '#FBE6EC', tape: '#7C1C42', pin: '#EE6FA5' },
   m: { name: '🧸 motes y tonterías',  paper: '#E7F2C6', tape: '#4F8226', pin: '#A6CC45' },
 };
-const BUNNY_LINES = ['¡qué bonita esa! 🥹', 'esa me encanta 💗', '¡otra, otra!', '🐰💕', 'ya llevas un montón ✨', 'guárdala si te gusta ♡', 'qué suerte tienes eh', '*mueve las orejitas*', 'esa es de mis favoritas', '¡hop hop! 🐾'];
-const BUNNY_PET = ['¡hihi, cosquillas! 🐰', '*se pone rojito* 😳', '¡boop! 💗', 'saca una notita, anda 🫙', '¡te quiero mucho, Olga! (de parte de Adrián)', 'ñam ñam… ¿tienes zanahorias? 🥕'];
+const BUNNY_LINES = ['Ufff que bonita esa 🥹', 'Tremenda eh', 'Esa tal cual 🫠', 'Jeje esa me encanta', 'Créeme que lo piensa de verdad', 'Otra va, porfa 🥺', 'Guárdatela eh ☺️', 'Pfff que cosita 🥰', 'Madre mía 😳', 'Esa es de las buenas eh', 'Oye pues qué bonito todo 🥹', 'Ya sabes que es verdad ☺️'];
+const BUNNY_PET = ['Jeje cosquillas no porfa 😳', 'Oye pues un abrazo sí te doy 🥰', 'Va, saca otra ☺️', 'Ojalá una zanahoria ahora 🥺', 'Te quiere mucho eh, que me lo ha dicho 🤫', 'Ufff que suave eres 🫠'];
+function greet() { const h = new Date().getHours(); return h >= 6 && h < 14 ? 'Bon dia michulita ☺️' : h >= 14 && h < 21 ? 'Buenas tardes miniña ☺️' : 'Hola preciosa ☺️'; }
 
 /* ---------- utilidades ---------- */
 const $ = id => document.getElementById(id);
@@ -748,10 +749,10 @@ async function runIntro() {
   await sleep(2100);
   bunny.classList.add('happy'); hop();
   const steps = [
-    ['¡holi, <em>michulita</em>! 🐰', 'hola conejito 👋'],
-    ['te traigo un regalito de parte de <em>Adrián</em>…', '¿qué es? 👀'],
-    ['¡un bote lleno de notitas! 💌<br>son cosas bonitas que te ha ido diciendo', 'ooooh 🥹'],
-    ['saca una cuando quieras<br>tocando el bote ✨', '¡dámelo! 🫙'],
+    [greet().replace(/(michulita|miniña|preciosa)/, '<em>$1</em>'), 'apa, ¿y tú quién eres? 👀'],
+    ['Vengo de parte de <em>Adrián</em>, que me ha dicho que te traiga una cosita 🤫', '¿de adri? 🥹'],
+    ['Es un bote con cosas que te ha ido diciendo con el tiempo, pa que las tengas aquí recogidas 🥰', 'jo… 🥺'],
+    ['Pues nada, sacas una cuando te apetezca tocando el bote. Va, que te lo doy ☺️', 'porfa, dámelo 🫙'],
   ];
   for (const [txt, btn] of steps) {
     say(txt, 0);
@@ -789,10 +790,10 @@ async function deliver(full) {
     const r = jar.getBoundingClientRect(); sparks(r.left + r.width / 2, r.top + r.height / 2, 22, 160);
     buzz([20, 40, 20]);
     await sleep(500);
-    say('¡toca el bote! 👆', 3200);
+    say('Toca el bote va ☺️', 3200);
   } else {
     await sleep(900);
-    say(rand(['¡hola otra vez, michulita! 🐰', '¡holi! ¿sacamos una? 🫙', 'te estaba esperando 💗']), 3000);
+    say(rand([greet(), greet().replace(' ☺️', '') + ', ¿sacamos una? ☺️', 'Ya te echaba de menos 🥺', 'Oye pues aquí sigo con el bote ☺️']), 3000);
   }
   store.set('delivered', 1);
 }
@@ -814,7 +815,7 @@ function fillJar() {
     s.style.transform = `rotate(${rnd(k, 3) * 70 - 35}deg)`;
     glass.appendChild(s);
   }
-  $('left').innerHTML = left.length ? `quedan <b>${left.length}</b> notitas dentro` : '¡ya las has sacado todas! 🥹';
+  $('left').innerHTML = left.length ? `quedan <b>${left.length}</b> notitas dentro` : 'ya las has sacado todas 🥹';
   $('badge').textContent = opened.length || '';
   $('bCount').textContent = `${opened.length} de ${NOTAS.length}`;
 }
@@ -848,7 +849,7 @@ async function draw() {
   f.remove();
   if (!again) { opened.push(id); isOpen.add(id); save(); }
   openNote(id, { fresh: !again, list: null });
-  if (again) toast('Ya las habías sacado todas — ¡releer también vale! 💗');
+  if (again) toast('Ya las has sacado todas 🥹 pero releer también vale eh');
   hop(); setTimeout(() => say(rand(BUNNY_LINES), 2200), 600);
   setTimeout(() => { jar.classList.remove('shake', 'pop'); jar.classList.add('idle'); }, 700);
   fillJar(); renderBoard(); busy = false;
@@ -940,8 +941,8 @@ function renderBoard() {
   const list = [...opened].reverse().filter(i => bFilter === 'all' || favs.has(i));
   if (!list.length) {
     board.innerHTML = bFilter === 'fav'
-      ? '<div class="empty"><div>💗</div>Aún no has guardado ninguna.<br>Abre una notita y dale dos toques.</div>'
-      : '<div class="empty"><div>🫙</div>Aquí se irán quedando las notitas que saques del bote.</div>';
+      ? '<div class="empty"><div>💗</div>Aún no has guardado ninguna.<br>Dale dos toques a la que te guste 🥰</div>'
+      : '<div class="empty"><div>🫙</div>Aquí se van quedando las que vayas sacando del bote ☺️</div>';
     return;
   }
   list.forEach(i => {
