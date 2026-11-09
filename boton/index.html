@@ -220,7 +220,6 @@
     100% { transform: rotate(var(--r, -1deg)); } }
   .note .washi { position: absolute; top: -12px; left: 50%; width: 110px; height: 28px; transform: translateX(-50%) rotate(-3deg); background: var(--tc); opacity: .85;
     background-image: repeating-linear-gradient(45deg, rgba(255, 255, 255, .25) 0 5px, transparent 5px 10px); }
-  .note .ttag { position: absolute; top: 20px; left: 22px; font-size: 12px; font-weight: 800; color: var(--burg); background: rgba(94, 18, 48, .07); padding: 4px 10px; border-radius: 999px; }
   .note .new-tag { position: absolute; top: 18px; right: 20px; font-family: var(--hand); font-size: 22px; font-weight: 700; color: var(--rose); transform: rotate(6deg); }
   .note p { font-family: var(--hand); font-weight: 600; font-size: clamp(30px, 8.4vw, 38px); line-height: 1.05; text-align: center; text-wrap: balance; }
   .note p .w { display: inline-block; opacity: 0; transform: translateY(10px) rotate(4deg); animation: wIn .5s cubic-bezier(.2, 1.4, .4, 1) forwards; animation-delay: calc(.45s + var(--i) * 45ms); }
@@ -342,7 +341,6 @@
   <button class="close" id="mClose" aria-label="Cerrar">✕</button>
   <article class="note" id="note">
     <div class="washi"></div>
-    <span class="ttag" id="nTag"></span>
     <span class="new-tag" id="nNew">nueva ☺️</span>
     <p id="nText"></p>
     <div class="bigh" id="bigh">💗</div>
@@ -866,7 +864,6 @@ function openNote(id, { fresh, list }) {
   note.style.backgroundColor = c.paper;
   note.style.setProperty('--tc', c.tape);
   note.style.setProperty('--r', (Math.random() * 3 - 1.5).toFixed(1) + 'deg');
-  $('nTag').textContent = c.name;
   $('nNew').style.display = fresh ? '' : 'none';
   const p = $('nText'); p.innerHTML = '';
   NOTAS[id].t.split(' ').forEach((w, i) => { const s = document.createElement('span'); s.className = 'w'; s.style.setProperty('--i', Math.min(i, 40)); s.textContent = w; p.append(s, ' '); });
