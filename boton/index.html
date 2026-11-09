@@ -2,806 +2,1034 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
-<meta name="theme-color" content="#FFF4EA">
-<title>Notitas para michulita</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#FAF2E9">
+<title>Notitas para Olga</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --cream: #FFF4EA;
-    --paper: #FFFBF5;
-    --pink: #FF8DB9;
-    --pink-2: #FFC2DA;
-    --hot: #E8458B;
-    --lime: #B9DC5C;
-    --green: #4E7D2C;
-    --burgundy: #6E1634;
-    --burgundy-2: #8E2448;
-    --ink: #5A1129;
-    --ink-soft: rgba(90, 17, 41, .62);
-    --shadow: 0 10px 30px -10px rgba(110, 22, 52, .35);
-    --safe-t: env(safe-area-inset-top, 0px);
+    --bg: #FAF2E9;
+    --paper: #FFFBF6;
+    --burgundy: #5B1028;
+    --burgundy-2: #7E1D3F;
+    --wine: #3E0A1B;
+    --pink: #F49AC0;
+    --blush: #FBD9E6;
+    --hot: #D93A7E;
+    --lime: #B5D95A;
+    --lime-soft: #E6F2C0;
+    --green: #3F6B22;
+    --ink: #4A0E22;
+    --ink-2: rgba(74, 14, 34, .62);
+    --ink-3: rgba(74, 14, 34, .38);
+    --line: rgba(91, 16, 40, .12);
+    --shadow-s: 0 1px 2px rgba(91, 16, 40, .08), 0 6px 16px -8px rgba(91, 16, 40, .28);
+    --shadow-m: 0 2px 4px rgba(91, 16, 40, .06), 0 18px 40px -16px rgba(91, 16, 40, .38);
+    --serif: 'Instrument Serif', Georgia, serif;
+    --sans: 'Manrope', system-ui, sans-serif;
+    --hand: 'Caveat', cursive;
     --safe-b: env(safe-area-inset-bottom, 0px);
   }
-  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; -webkit-user-select: none; user-select: none; }
-  html, body { height: 100%; }
-  body { font-family: 'Fredoka', system-ui, sans-serif; color: var(--ink); background: var(--cream); overflow: hidden; overscroll-behavior: none; }
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--sans); color: var(--ink); background: var(--bg); overflow-x: hidden; min-height: 100vh;
+    -webkit-font-smoothing: antialiased; -webkit-user-select: none; user-select: none; }
   button { font: inherit; color: inherit; border: none; background: none; cursor: pointer; }
+  body.lock { overflow: hidden; }
 
-  /* ================= fondo ================= */
-  .bg { position: fixed; inset: 0; overflow: hidden; z-index: 0;
-    background-image: radial-gradient(rgba(110, 22, 52, .09) 1.2px, transparent 1.3px); background-size: 22px 22px; }
-  .blob { position: absolute; border-radius: 50%; filter: blur(46px); opacity: .55; animation: drift 18s ease-in-out infinite alternate; }
-  .blob.b1 { width: 340px; height: 340px; background: var(--pink); top: -90px; left: -110px; }
-  .blob.b2 { width: 300px; height: 300px; background: var(--lime); bottom: -60px; right: -100px; animation-duration: 22s; }
-  .blob.b3 { width: 220px; height: 220px; background: var(--pink-2); bottom: 22%; left: -80px; animation-duration: 26s; opacity: .45; }
-  @keyframes drift { to { transform: translate(40px, 50px) scale(1.12); } }
-  .doodle { position: absolute; opacity: .55; animation: bob 6s ease-in-out infinite alternate; }
-  @keyframes bob { to { transform: translateY(-12px) rotate(8deg); } }
+  /* ---------- atmósfera ---------- */
+  .aura { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+  .aura i { position: absolute; border-radius: 50%; filter: blur(60px); opacity: .5; animation: drift 20s ease-in-out infinite alternate; }
+  .aura i:nth-child(1) { width: 380px; height: 380px; background: var(--pink); top: -160px; left: -140px; }
+  .aura i:nth-child(2) { width: 300px; height: 300px; background: var(--lime); top: -120px; right: -150px; opacity: .38; animation-duration: 26s; }
+  .aura i:nth-child(3) { width: 260px; height: 260px; background: var(--blush); top: 55%; left: -150px; opacity: .55; animation-duration: 30s; }
+  @keyframes drift { to { transform: translate(50px, 70px) scale(1.15); } }
+  .grain { position: fixed; inset: 0; pointer-events: none; z-index: 100; opacity: .22; mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .35  0 0 0 0 .1  0 0 0 0 .18  0 0 0 .55 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"); }
 
-  .pop { position: fixed; z-index: 60; pointer-events: none; font-size: 22px; transform: translate(-50%, -50%);
-    animation: popup .9s cubic-bezier(.2, 1.3, .4, 1) forwards; }
-  @keyframes popup { 0% { transform: translate(-50%, -50%) scale(.2) rotate(-20deg); opacity: 0; }
-    30% { opacity: 1; transform: translate(-50%, -80%) scale(1.15) rotate(var(--r)); }
-    100% { opacity: 0; transform: translate(-50%, -190%) scale(.9) rotate(var(--r)); } }
+  main { position: relative; z-index: 1; max-width: 760px; margin: 0 auto; padding: 0 18px calc(110px + var(--safe-b)); }
 
-  /* ================= app ================= */
-  .app { position: fixed; inset: 0; z-index: 1; display: flex; flex-direction: column; padding: calc(14px + var(--safe-t)) 0 0; }
-  .head { padding: 0 20px; display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
-  .head h1 { font-family: 'Caveat', cursive; font-weight: 700; font-size: 36px; line-height: .95; color: var(--burgundy); }
-  .head h1 small { display: block; font-family: 'Fredoka', sans-serif; font-weight: 500; font-size: 13px; color: var(--ink-soft); margin-top: 4px; letter-spacing: .01em; }
-  .pill { display: inline-flex; align-items: center; gap: 6px; height: 36px; padding: 0 13px; border-radius: 999px;
-    background: var(--paper); box-shadow: var(--shadow); font-weight: 600; font-size: 14px; color: var(--burgundy); white-space: nowrap; }
+  /* ---------- portada ---------- */
+  .hero { text-align: center; padding: 54px 6px 8px; position: relative; }
+  .eyebrow { font-size: 11px; font-weight: 700; letter-spacing: .26em; text-transform: uppercase; color: var(--ink-2); }
+  .eyebrow::before, .eyebrow::after { content: "✦"; color: var(--hot); margin: 0 10px; font-size: 9px; vertical-align: 2px; }
+  .hero h1 { font-family: var(--serif); font-weight: 400; font-size: clamp(54px, 15vw, 92px); line-height: .9; letter-spacing: -.02em; margin-top: 14px; color: var(--burgundy); }
+  .hero h1 em { display: block; font-style: italic; color: var(--hot); position: relative; }
+  .hero h1 .heart { display: inline-block; width: .42em; vertical-align: .1em; margin-left: .05em; cursor: pointer; transition: transform .25s cubic-bezier(.3, 1.8, .5, 1); }
+  .hero h1 .heart:active { transform: scale(.8); }
+  .hero h1 .heart.beat { animation: beat 1.4s ease-in-out infinite; }
+  @keyframes beat { 0%, 100% { transform: scale(1); } 15% { transform: scale(1.18); } 30% { transform: scale(1); } 45% { transform: scale(1.12); } }
+  .swash { display: block; width: 200px; margin: 8px auto 0; }
+  .swash path { stroke-dasharray: 260; stroke-dashoffset: 260; animation: draw 1.6s .5s ease-out forwards; }
+  @keyframes draw { to { stroke-dashoffset: 0; } }
+  .lede { font-family: var(--serif); font-style: italic; font-size: 21px; line-height: 1.3; color: var(--ink-2); margin: 16px auto 0; max-width: 340px; }
 
-  .chips { display: flex; gap: 8px; overflow-x: auto; padding: 14px 20px 6px; scrollbar-width: none; touch-action: pan-x; flex-shrink: 0; }
-  .chips::-webkit-scrollbar { display: none; }
-  .chip { flex-shrink: 0; height: 36px; padding: 0 14px; border-radius: 999px; font-weight: 500; font-size: 14px;
-    background: rgba(255, 251, 245, .75); border: 1.5px solid rgba(110, 22, 52, .12); color: var(--ink);
-    transition: transform .2s, background .25s, color .25s, border-color .25s; }
-  .chip:active { transform: scale(.94); }
-  .chip.on { background: var(--burgundy); color: var(--cream); border-color: var(--burgundy); }
+  .thread { margin: 26px auto 0; max-width: 360px; }
+  .thread-bar { position: relative; height: 22px; }
+  .thread-bar::before { content: ""; position: absolute; left: 0; right: 0; top: 50%; border-top: 1.5px dashed var(--ink-3); }
+  .thread-fill { position: absolute; left: 0; top: 50%; height: 3px; margin-top: -1.5px; border-radius: 3px; background: linear-gradient(90deg, var(--lime), var(--hot)); width: 0; transition: width 1s cubic-bezier(.3, 1.2, .5, 1); }
+  .thread-bead { position: absolute; top: 50%; left: 0; transform: translate(-50%, -50%); font-size: 18px; transition: left 1s cubic-bezier(.3, 1.2, .5, 1); filter: drop-shadow(0 2px 3px rgba(91, 16, 40, .25)); }
+  .thread-txt { display: flex; justify-content: space-between; margin-top: 6px; font-size: 12px; font-weight: 600; color: var(--ink-2); }
+  .thread-txt b { color: var(--hot); }
 
-  .views { position: relative; flex: 1; min-height: 0; }
-  .view { position: absolute; inset: 0; overflow-y: auto; overscroll-behavior: contain; padding: 8px 20px 120px;
-    opacity: 0; pointer-events: none; transform: translateY(14px); transition: opacity .35s, transform .35s; }
-  .view.on { opacity: 1; pointer-events: auto; transform: none; }
+  .hero-actions { display: flex; justify-content: center; gap: 10px; margin-top: 22px; flex-wrap: wrap; }
+  .btn { display: inline-flex; align-items: center; gap: 8px; height: 44px; padding: 0 18px; border-radius: 999px; font-size: 14px; font-weight: 600;
+    background: var(--paper); color: var(--burgundy); box-shadow: var(--shadow-s); border: 1px solid var(--line); transition: transform .15s, box-shadow .2s; }
+  .btn:active { transform: scale(.95); }
+  .btn.dark { background: var(--burgundy); color: var(--paper); border-color: var(--burgundy); }
+  .btn .seal-ico { width: 20px; height: 20px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #FFB3D2, var(--hot)); display: grid; place-items: center; font-size: 10px; }
 
-  /* ---------- tarro ---------- */
-  #jarView { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; overflow: hidden; }
-  .jar-wrap { position: relative; width: 230px; height: 300px; margin-top: -10px; cursor: pointer; touch-action: manipulation; }
-  .jar-wrap.wiggle { animation: wiggle .55s cubic-bezier(.3, 1.5, .5, 1); }
-  @keyframes wiggle { 20% { transform: rotate(-7deg) scale(1.03); } 45% { transform: rotate(6deg) scale(1.05); } 70% { transform: rotate(-3deg); } }
-  .jar-wrap.idle { animation: idle 3.2s ease-in-out infinite; }
-  @keyframes idle { 0%, 88%, 100% { transform: none; } 92% { transform: rotate(-3deg); } 96% { transform: rotate(3deg); } }
-  .lid { position: absolute; left: 50%; top: 18px; width: 150px; height: 34px; transform: translateX(-50%); border-radius: 12px 12px 8px 8px;
-    background: linear-gradient(180deg, var(--burgundy-2), var(--burgundy)); box-shadow: inset 0 -5px 0 rgba(0, 0, 0, .15), 0 4px 0 rgba(110, 22, 52, .2); z-index: 3; }
-  .lid::after { content: ""; position: absolute; inset: 6px 10px auto; height: 4px; border-radius: 4px; background: rgba(255, 255, 255, .25); }
-  .bow { position: absolute; left: 50%; top: 0; width: 64px; transform: translateX(-50%); z-index: 4; }
-  .glass { position: absolute; left: 12px; right: 12px; top: 48px; bottom: 0; border-radius: 38px 38px 46px 46px;
-    background: linear-gradient(115deg, rgba(255, 255, 255, .65), rgba(255, 255, 255, .25) 40%, rgba(255, 255, 255, .45));
-    border: 3px solid rgba(110, 22, 52, .18); box-shadow: inset 0 -10px 30px rgba(255, 141, 185, .25), var(--shadow); overflow: hidden; z-index: 1; }
-  .neck { position: absolute; left: 50%; top: 44px; width: 140px; height: 16px; transform: translateX(-50%); border-radius: 6px;
-    background: rgba(255, 255, 255, .55); border: 3px solid rgba(110, 22, 52, .18); z-index: 2; }
-  .shine { position: absolute; left: 20px; top: 70px; width: 14px; height: 140px; border-radius: 20px; background: rgba(255, 255, 255, .75); z-index: 3; pointer-events: none; }
-  .shine.s2 { left: 40px; top: 80px; width: 7px; height: 56px; opacity: .7; }
-  .slip { position: absolute; width: 38px; height: 22px; border-radius: 4px; box-shadow: 0 2px 0 rgba(110, 22, 52, .12);
-    transition: transform .5s cubic-bezier(.3, 1.4, .5, 1), opacity .3s; }
-  .slip::after { content: ""; position: absolute; left: 50%; top: 0; bottom: 0; width: 1.5px; background: rgba(110, 22, 52, .12); }
-  .slip.gone { transform: translateY(-140px) scale(.4) !important; opacity: 0; }
-  .label { position: absolute; left: 50%; bottom: 44px; transform: translateX(-50%) rotate(-3deg); z-index: 4; pointer-events: none;
-    background: var(--paper); padding: 6px 18px 4px; border-radius: 8px; box-shadow: 0 3px 10px rgba(110, 22, 52, .15);
-    font-family: 'Caveat', cursive; font-weight: 700; font-size: 26px; color: var(--burgundy); white-space: nowrap; }
-  .label::before, .label::after { content: ""; position: absolute; top: 50%; width: 6px; height: 6px; border-radius: 50%; background: var(--pink); transform: translateY(-50%); }
-  .label::before { left: 6px; } .label::after { right: 6px; }
-  .jar-hint { margin-top: 26px; font-weight: 500; font-size: 15px; color: var(--ink-soft); line-height: 1.4; }
-  .jar-hint b { color: var(--hot); font-weight: 600; }
-  .tap-me { display: inline-block; margin-top: 6px; font-family: 'Caveat', cursive; font-size: 26px; font-weight: 700; color: var(--hot); animation: nudge 1.6s ease-in-out infinite; }
-  @keyframes nudge { 50% { transform: translateY(-5px); } }
+  /* ---------- secciones ---------- */
+  section { margin-top: 54px; }
+  .sec-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 16px; }
+  .sec-head h2 { font-family: var(--serif); font-weight: 400; font-size: 34px; line-height: 1; color: var(--burgundy); }
+  .sec-head h2 em { color: var(--hot); }
+  .sec-head .note-hand { font-family: var(--hand); font-size: 20px; color: var(--ink-2); white-space: nowrap; }
 
-  /* ---------- listas ---------- */
-  .view h2 { font-family: 'Caveat', cursive; font-size: 34px; font-weight: 700; color: var(--burgundy); margin: 4px 0 2px; }
-  .view .sub { font-size: 14px; color: var(--ink-soft); margin-bottom: 18px; }
-  .grid { columns: 2; column-gap: 12px; }
-  .mini { display: block; break-inside: avoid; margin-bottom: 14px; padding: 18px 14px 14px; border-radius: 6px; position: relative; text-align: left; width: 100%;
-    font-family: 'Caveat', cursive; font-weight: 600; font-size: 21px; line-height: 1.08; color: var(--ink);
-    box-shadow: 0 6px 16px -8px rgba(110, 22, 52, .4); transform: rotate(var(--rot)); transition: transform .2s; }
-  .mini:active { transform: rotate(0) scale(.97); }
-  .mini::before { content: ""; position: absolute; top: -7px; left: 50%; width: 46px; height: 16px; transform: translateX(-50%) rotate(-4deg);
-    background: rgba(255, 255, 255, .6); border-radius: 2px; }
-  .mini .h { position: absolute; right: 8px; bottom: 4px; font-size: 13px; }
-  .empty { text-align: center; padding: 50px 20px; color: var(--ink-soft); font-size: 15px; line-height: 1.5; }
-  .empty div { font-size: 52px; margin-bottom: 10px; }
+  /* ---------- la de hoy ---------- */
+  .today { position: relative; border-radius: 26px; padding: 34px 26px 24px; color: var(--paper); overflow: hidden; cursor: pointer;
+    background: radial-gradient(120% 90% at 100% 0%, var(--burgundy-2), var(--wine) 70%); box-shadow: var(--shadow-m); }
+  .today::before { content: ""; position: absolute; inset: 10px; border-radius: 18px; border: 1px solid rgba(255, 251, 246, .16); pointer-events: none; }
+  .today .stars { position: absolute; inset: 0; pointer-events: none; }
+  .today .stars span { position: absolute; color: var(--pink); opacity: .7; font-size: 10px; animation: twinkle 2.6s ease-in-out infinite; }
+  @keyframes twinkle { 50% { opacity: .1; transform: scale(.6); } }
+  .today .date { font-family: var(--hand); font-size: 22px; color: var(--pink); }
+  .today p { font-family: var(--serif); font-size: clamp(27px, 7.4vw, 36px); line-height: 1.12; margin: 10px 0 22px; text-wrap: pretty; position: relative; }
+  .today p::before { content: "“"; position: absolute; left: -14px; top: -14px; font-size: 64px; color: var(--hot); opacity: .55; line-height: 1; }
+  .today .row { display: flex; align-items: center; justify-content: space-between; position: relative; }
+  .today .cat { font-size: 12px; font-weight: 600; letter-spacing: .04em; color: rgba(255, 251, 246, .7); }
+  .heart-btn { width: 42px; height: 42px; border-radius: 50%; display: grid; place-items: center; transition: transform .2s cubic-bezier(.3, 1.8, .5, 1), background .2s; }
+  .heart-btn:active { transform: scale(.8); }
+  .heart-btn svg { width: 20px; height: 20px; }
+  .heart-btn path { fill: none; stroke: currentColor; stroke-width: 1.8; transition: fill .2s; }
+  .heart-btn.on path { fill: var(--hot); stroke: var(--hot); }
+  .today .heart-btn { background: rgba(255, 251, 246, .1); color: var(--paper); }
 
-  /* ---------- barra de abajo ---------- */
-  .nav { position: fixed; left: 50%; bottom: calc(14px + var(--safe-b)); transform: translateX(-50%); z-index: 5;
-    display: flex; gap: 2px; padding: 6px; border-radius: 999px; background: rgba(255, 251, 245, .92);
-    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); box-shadow: 0 12px 34px -10px rgba(110, 22, 52, .45); }
-  .nav button { position: relative; display: flex; flex-direction: column; align-items: center; gap: 1px; min-width: 72px; padding: 7px 8px 6px; border-radius: 999px;
-    font-size: 11px; font-weight: 600; color: var(--ink-soft); transition: background .25s, color .25s; }
-  .nav button span { font-size: 21px; line-height: 1.1; transition: transform .3s cubic-bezier(.3, 1.6, .5, 1); }
-  .nav button.on { background: var(--pink-2); color: var(--burgundy); }
-  .nav button.on span { transform: scale(1.15) rotate(-6deg); }
-  .badge { position: absolute; top: 2px; right: 10px; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 9px; background: var(--hot); color: #fff;
-    font-size: 11px; font-weight: 600; line-height: 18px; text-align: center; font-style: normal; }
-  .badge:empty { display: none; }
-  .badge.bump { animation: bump .5s cubic-bezier(.3, 1.8, .5, 1); }
-  @keyframes bump { 40% { transform: scale(1.5); } }
+  /* ---------- estados de ánimo ---------- */
+  .moods { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+  .mood { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 14px 4px 12px; border-radius: 20px; background: rgba(255, 251, 246, .7);
+    border: 1px solid var(--line); box-shadow: var(--shadow-s); transition: transform .2s cubic-bezier(.3, 1.6, .5, 1), background .2s; }
+  .mood:active { transform: scale(.92) rotate(-2deg); }
+  .mood .em { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; font-size: 22px; transition: transform .3s cubic-bezier(.3, 1.8, .5, 1); }
+  .mood:hover .em { transform: rotate(-10deg) scale(1.08); }
+  .mood span { font-size: 11px; font-weight: 600; line-height: 1.15; text-align: center; color: var(--ink-2); }
 
-  /* ================= notita abierta ================= */
-  .modal { position: fixed; inset: 0; z-index: 20; display: grid; place-items: center; padding: 20px;
-    background: rgba(255, 236, 225, .6); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-    opacity: 0; pointer-events: none; transition: opacity .3s; }
+  /* ---------- tablero ---------- */
+  .filters { display: flex; gap: 8px; overflow-x: auto; margin: 0 -18px 14px; padding: 2px 18px 8px; scrollbar-width: none; }
+  .filters::-webkit-scrollbar { display: none; }
+  .chip { flex-shrink: 0; height: 36px; padding: 0 14px; border-radius: 999px; font-size: 13px; font-weight: 600; color: var(--ink-2);
+    background: rgba(255, 251, 246, .75); border: 1px solid var(--line); transition: all .25s; display: inline-flex; align-items: center; gap: 6px; }
+  .chip .n { font-size: 11px; opacity: .6; }
+  .chip.on { background: var(--burgundy); color: var(--paper); border-color: var(--burgundy); box-shadow: 0 6px 14px -6px rgba(91, 16, 40, .6); }
+  .board-tools { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 18px; }
+  .board-tools .count { font-size: 13px; color: var(--ink-2); font-weight: 500; }
+  .board-tools .count b { color: var(--burgundy); }
+
+  .board { columns: 2; column-gap: 14px; }
+  @media (min-width: 620px) { .board { columns: 3; } }
+  .card { break-inside: avoid; margin-bottom: 16px; perspective: 1100px; display: block; position: relative; transform: rotate(var(--tilt)); transition: transform .3s; }
+  .card.hide { display: none; }
+  .card.appear { animation: appear .5s cubic-bezier(.2, 1.2, .4, 1) both; animation-delay: var(--d); }
+  @keyframes appear { from { opacity: 0; transform: translateY(18px) rotate(var(--tilt)) scale(.94); } }
+  .inner { position: relative; transform-style: preserve-3d; -webkit-transform-style: preserve-3d; transition: transform .8s cubic-bezier(.3, 1.25, .45, 1); }
+  .card.open .inner { transform: rotateY(180deg); }
+  .face { -webkit-backface-visibility: hidden; backface-visibility: hidden; border-radius: 6px 6px 6px 6px; }
+  .back { position: relative; transform: rotateY(180deg); background: var(--paper); padding: 26px 16px 14px; box-shadow: var(--shadow-s); min-height: 116px; cursor: pointer; }
+  .back p { font-family: var(--serif); font-size: 19px; line-height: 1.18; color: var(--ink); text-wrap: pretty; }
+  .back .meta { display: flex; align-items: center; justify-content: space-between; margin-top: 12px; }
+  .back .meta small { font-family: var(--hand); font-size: 17px; color: var(--ink-3); }
+  .back .mini-heart { font-size: 14px; opacity: 0; transform: scale(.3); transition: all .3s cubic-bezier(.3, 1.8, .5, 1); }
+  .card.fav .mini-heart { opacity: 1; transform: none; }
+  .tape { position: absolute; top: -9px; left: 50%; width: 64px; height: 20px; transform: translateX(-50%) rotate(var(--tape-r, -3deg));
+    background: var(--tape); opacity: .78; border-radius: 2px;; }
+  .front { position: absolute; inset: 0; background: var(--tint); box-shadow: var(--shadow-s); overflow: hidden; cursor: pointer;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;
+    background-image: repeating-linear-gradient(135deg, rgba(255, 255, 255, .35) 0 6px, transparent 6px 14px); }
+  .front::after { content: ""; position: absolute; right: 0; bottom: 0; width: 26px; height: 26px;
+    background: linear-gradient(135deg, rgba(91, 16, 40, .14) 50%, var(--bg) 50%); border-top-left-radius: 4px; box-shadow: -2px -2px 4px rgba(91, 16, 40, .08); }
+  .front .num { position: absolute; top: 8px; left: 11px; font-family: var(--hand); font-size: 18px; color: rgba(74, 14, 34, .55); }
+  .wax { width: 46px; height: 46px; border-radius: 50%; display: grid; place-items: center; font-size: 19px; position: relative;
+    background: radial-gradient(circle at 34% 30%, #A8325A, var(--burgundy) 62%, var(--wine)); box-shadow: 0 3px 8px rgba(62, 10, 27, .35), inset 0 -3px 0 rgba(0, 0, 0, .2), inset 0 2px 2px rgba(255, 255, 255, .2); }
+  .wax::before { content: ""; position: absolute; inset: 4px; border-radius: 50%; border: 1.5px dashed rgba(255, 210, 225, .35); }
+  .front .open-hint { font-size: 10.5px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: rgba(74, 14, 34, .5); }
+  .card:not(.open):hover .wax { animation: wob .5s ease-in-out; }
+  .card.glow .front { animation: glow 1s ease-in-out 2; }
+  @keyframes glow { 50% { box-shadow: 0 0 0 4px var(--paper), 0 0 0 7px var(--hot), 0 0 30px var(--hot); } }
+  @keyframes wob { 30% { transform: rotate(-12deg); } 60% { transform: rotate(10deg); } }
+  .card.pressing .inner { transform: scale(.96); transition: transform .4s; }
+  .card.open.pressing .inner { transform: rotateY(180deg) scale(.96); }
+
+  .board-empty { column-span: all; text-align: center; padding: 40px 20px; color: var(--ink-2); font-family: var(--serif); font-style: italic; font-size: 20px; }
+
+  .foot { text-align: center; margin-top: 50px; font-family: var(--hand); font-size: 22px; color: var(--ink-2); }
+  .foot span { color: var(--hot); display: inline-block; animation: beat 1.6s ease-in-out infinite; }
+
+  /* ---------- botón flotante ---------- */
+  .fab { position: fixed; right: 18px; bottom: calc(20px + var(--safe-b)); z-index: 30; width: 60px; height: 60px; border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, #A8325A, var(--burgundy) 65%); color: var(--paper); font-size: 24px;
+    box-shadow: 0 14px 30px -10px rgba(62, 10, 27, .7), inset 0 2px 2px rgba(255, 255, 255, .2); display: grid; place-items: center;
+    transition: transform .25s cubic-bezier(.3, 1.8, .5, 1); }
+  .fab:active { transform: scale(.88) rotate(-20deg); }
+  .fab .lbl { position: absolute; right: 70px; white-space: nowrap; font-family: var(--hand); font-size: 20px; color: var(--burgundy);
+    background: var(--paper); padding: 4px 12px; border-radius: 12px; box-shadow: var(--shadow-s); pointer-events: none;
+    animation: lbl 6s ease-in-out infinite; }
+  @keyframes lbl { 0%, 70%, 100% { opacity: 0; transform: translateX(8px); } 8%, 60% { opacity: 1; transform: none; } }
+
+  /* ---------- notita en grande ---------- */
+  .modal { position: fixed; inset: 0; z-index: 50; display: grid; place-items: center; padding: 22px;
+    background: rgba(250, 236, 228, .66); backdrop-filter: blur(10px) saturate(120%); -webkit-backdrop-filter: blur(10px) saturate(120%);
+    opacity: 0; pointer-events: none; transition: opacity .35s; }
   .modal.on { opacity: 1; pointer-events: auto; }
-  .note-zone { width: min(370px, 100%); display: flex; flex-direction: column; align-items: center; gap: 18px; }
-  .note { position: relative; width: 100%; min-height: 260px; padding: 50px 28px 34px; border-radius: 10px; touch-action: none; cursor: grab;
-    box-shadow: 0 24px 50px -18px rgba(110, 22, 52, .55), 0 2px 0 rgba(110, 22, 52, .08);
-    display: flex; flex-direction: column; justify-content: center; text-align: center; transform: rotate(var(--rot, -1deg)); }
-  .note.enter { animation: unfold .7s cubic-bezier(.2, 1.25, .4, 1) both; }
-  @keyframes unfold { 0% { transform: translateY(160px) scale(.25) rotate(-25deg); opacity: 0; }
-    55% { transform: translateY(-10px) scale(1.04) rotate(3deg); opacity: 1; } 100% { transform: rotate(var(--rot, -1deg)); } }
-  .tape { position: absolute; top: -12px; left: 50%; width: 96px; height: 28px; transform: translateX(-50%) rotate(-3deg);
-    background: rgba(255, 255, 255, .55); border: 1px dashed rgba(110, 22, 52, .12); border-radius: 3px; }
-  .tag { position: absolute; top: 14px; left: 16px; font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 999px;
-    background: rgba(255, 255, 255, .6); color: var(--burgundy); }
-  .num { position: absolute; top: 18px; right: 18px; font-size: 12px; font-weight: 600; color: var(--ink-soft); }
-  .num.new { color: var(--hot); }
-  .note p { font-family: 'Caveat', cursive; font-weight: 600; font-size: clamp(29px, 8vw, 36px); line-height: 1.05; color: var(--ink); text-wrap: balance; }
-  .note p .w { display: inline-block; opacity: 0; transform: translateY(8px); animation: wIn .45s cubic-bezier(.2, 1.3, .4, 1) forwards; animation-delay: calc(.3s + var(--i) * 45ms); }
-  @keyframes wIn { to { opacity: 1; transform: none; } }
-  .bigheart { position: absolute; left: 50%; top: 50%; font-size: 110px; transform: translate(-50%, -50%) scale(0); pointer-events: none; opacity: 0; }
-  .bigheart.go { animation: bh .85s cubic-bezier(.2, 1.5, .4, 1); }
-  @keyframes bh { 30% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; } 70% { transform: translate(-50%, -50%) scale(.95); opacity: 1; }
-    100% { transform: translate(-50%, -80%) scale(1.2); opacity: 0; } }
-  .actions { display: flex; gap: 10px; }
-  .act { height: 54px; min-width: 54px; padding: 0 18px; border-radius: 999px; display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-    background: var(--paper); box-shadow: var(--shadow); font-weight: 600; font-size: 15px; color: var(--burgundy); transition: transform .15s, background .25s, color .25s; }
+  .stage { width: min(420px, 100%); display: flex; flex-direction: column; align-items: center; gap: 18px; }
+  .stage .kicker { font-family: var(--hand); font-size: 24px; color: var(--burgundy); text-align: center; min-height: 26px; }
+  .big { position: relative; width: 100%; min-height: 300px; padding: 52px 30px 26px; border-radius: 8px; background: var(--paper); touch-action: none; cursor: grab;
+    box-shadow: 0 30px 60px -24px rgba(62, 10, 27, .55), 0 2px 0 rgba(91, 16, 40, .06);
+    display: flex; flex-direction: column; justify-content: space-between;
+    background-image: linear-gradient(90deg, transparent 30px, rgba(217, 58, 126, .22) 30px 31.5px, transparent 31.5px); }
+  .big.enter { animation: unfold .75s cubic-bezier(.2, 1.25, .4, 1) both; }
+  @keyframes unfold { 0% { opacity: 0; transform: perspective(900px) rotateX(70deg) translateY(60px) scale(.8); }
+    100% { opacity: 1; transform: rotate(var(--r, -1deg)); } }
+  .big .tape { width: 110px; height: 28px; top: -13px; }
+  .big .tag { align-self: flex-start; font-size: 11.5px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2);
+    position: absolute; top: 20px; left: 44px; }
+  .big .no { position: absolute; top: 14px; right: 20px; font-family: var(--hand); font-size: 22px; color: var(--ink-3); }
+  .big p { font-family: var(--serif); font-size: clamp(28px, 7.6vw, 38px); line-height: 1.1; color: var(--ink); padding-left: 16px; text-wrap: pretty; margin: auto 0; }
+  .big p .w { display: inline-block; opacity: 0; filter: blur(6px); transform: translateY(6px); animation: w .6s cubic-bezier(.2, 1, .3, 1) forwards; animation-delay: calc(.25s + var(--i) * 38ms); }
+  @keyframes w { to { opacity: 1; filter: none; transform: none; } }
+  .big .sign { align-self: flex-end; font-family: var(--hand); font-size: 22px; color: var(--hot); margin-top: 18px; opacity: 0; animation: w .6s 1s forwards; }
+  .big .burst { position: absolute; left: 50%; top: 50%; font-size: 120px; transform: translate(-50%, -50%) scale(0); opacity: 0; pointer-events: none; }
+  .big .burst.go { animation: burst .9s cubic-bezier(.2, 1.5, .4, 1); }
+  @keyframes burst { 35% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; } 70% { transform: translate(-50%, -50%) scale(.95); opacity: 1; } 100% { transform: translate(-50%, -90%) scale(1.25); opacity: 0; } }
+  .acts { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+  .act { height: 48px; min-width: 48px; padding: 0 16px; border-radius: 999px; display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+    background: var(--paper); color: var(--burgundy); font-size: 14px; font-weight: 600; box-shadow: var(--shadow-s); border: 1px solid var(--line); transition: transform .15s, background .2s, color .2s; }
   .act:active { transform: scale(.92); }
-  .act.main { background: var(--burgundy); color: var(--cream); }
-  .act.fav.on { background: var(--hot); color: #fff; }
-  .swipe-hint { font-size: 12.5px; color: var(--ink-soft); }
+  .act.on { background: var(--hot); color: #fff; border-color: var(--hot); }
+  .act.dark { background: var(--burgundy); color: var(--paper); border-color: var(--burgundy); }
+  .hint { font-size: 12px; color: var(--ink-2); text-align: center; }
 
-  /* ================= carta de intro ================= */
-  .intro { position: fixed; inset: 0; z-index: 40; display: grid; place-items: center; padding: 24px; background: var(--cream); transition: opacity .6s, visibility .6s; }
-  .intro.hide { opacity: 0; visibility: hidden; }
-  .env-zone { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; gap: 28px; }
-  .env-zone h2 { font-family: 'Caveat', cursive; font-size: 44px; color: var(--burgundy); line-height: 1; text-align: center; }
-  .env-zone .tiny { font-size: 14px; color: var(--ink-soft); animation: nudge 1.6s ease-in-out infinite; }
-  .envelope { position: relative; width: 270px; height: 180px; cursor: pointer; animation: float 3s ease-in-out infinite; perspective: 600px; }
+  /* ---------- carta ---------- */
+  .intro { position: fixed; inset: 0; z-index: 80; display: grid; place-items: center; padding: 24px; background: var(--bg); transition: opacity .7s, visibility .7s; }
+  .intro.hide { opacity: 0; visibility: hidden; pointer-events: none; }
+  .intro .aura { position: absolute; }
+  .env-wrap { position: relative; display: flex; flex-direction: column; align-items: center; gap: 30px; text-align: center; }
+  .env-wrap .eyebrow { margin-bottom: -18px; }
+  .env-wrap h2 { font-family: var(--serif); font-weight: 400; font-size: 52px; line-height: .95; color: var(--burgundy); }
+  .env-wrap h2 em { color: var(--hot); }
+  .envelope { position: relative; width: 280px; height: 186px; cursor: pointer; animation: float 3.2s ease-in-out infinite; }
   @keyframes float { 50% { transform: translateY(-8px) rotate(-1.5deg); } }
-  .env-back { position: absolute; inset: 0; border-radius: 12px; background: var(--burgundy); box-shadow: 0 24px 40px -16px rgba(110, 22, 52, .6); }
-  .env-front { position: absolute; inset: 0; border-radius: 12px; z-index: 3; background: var(--burgundy-2); clip-path: polygon(0 0, 50% 55%, 100% 0, 100% 100%, 0 100%); }
-  .env-flap { position: absolute; left: 0; right: 0; top: 0; height: 110px; z-index: 4; transform-origin: top; transition: transform .6s ease-in-out, z-index 0s .3s;
-    background: #A12F57; clip-path: polygon(0 0, 100% 0, 50% 100%); }
-  .seal { position: absolute; left: 50%; top: 82px; width: 54px; height: 54px; margin-left: -27px; z-index: 5; border-radius: 50%;
-    background: radial-gradient(circle at 35% 30%, #FFB3D2, var(--hot)); box-shadow: 0 4px 10px rgba(0, 0, 0, .25), inset 0 -3px 0 rgba(0, 0, 0, .12);
-    display: grid; place-items: center; font-size: 24px; transition: transform .4s, opacity .4s; }
-  .peek { position: absolute; left: 18px; right: 18px; top: 12px; height: 150px; z-index: 2; border-radius: 6px; background: var(--paper); transition: transform .7s cubic-bezier(.3, 1.2, .5, 1) .45s; }
+  .envelope > * { position: absolute; }
+  .e-back { inset: 0; border-radius: 10px; background: var(--burgundy); box-shadow: 0 30px 50px -20px rgba(62, 10, 27, .7); }
+  .e-letter { left: 16px; right: 16px; top: 10px; height: 160px; border-radius: 6px; background: var(--paper); transition: transform .8s cubic-bezier(.3, 1.2, .5, 1) .45s;
+    background-image: repeating-linear-gradient(transparent 0 17px, rgba(217, 58, 126, .2) 17px 18px); }
+  .e-front { inset: 0; border-radius: 10px; background: linear-gradient(160deg, #8E2448, var(--burgundy-2)); clip-path: polygon(0 0, 50% 56%, 100% 0, 100% 100%, 0 100%); }
+  .e-flap { left: 0; right: 0; top: 0; height: 112px; transform-origin: top; background: linear-gradient(180deg, #A8325A, #8E2448); clip-path: polygon(0 0, 100% 0, 50% 100%);
+    transition: transform .6s ease-in-out, z-index 0s .3s; z-index: 3; border-radius: 10px 10px 0 0; }
+  .e-seal { left: 50%; top: 84px; width: 58px; height: 58px; margin-left: -29px; z-index: 4; border-radius: 50%; display: grid; place-items: center; font-size: 22px;
+    background: radial-gradient(circle at 34% 30%, #FFB8D4, var(--hot) 60%, #A3245C); box-shadow: 0 4px 12px rgba(0, 0, 0, .3), inset 0 -3px 0 rgba(0, 0, 0, .15); transition: transform .45s, opacity .45s; }
+  .e-seal::before { content: ""; position: absolute; inset: 5px; border-radius: 50%; border: 1.5px dashed rgba(255, 255, 255, .45); }
   .envelope.open { animation: none; }
-  .envelope.open .env-flap { transform: rotateX(180deg); z-index: 1; }
-  .envelope.open .seal { transform: scale(0) rotate(90deg); opacity: 0; }
-  .envelope.open .peek { transform: translateY(-90px); }
+  .envelope.open .e-flap { transform: rotateX(180deg); z-index: 0; }
+  .envelope.open .e-seal { transform: scale(0) rotate(120deg); opacity: 0; }
+  .envelope.open .e-letter { transform: translateY(-96px); }
+  .tap-tip { font-family: var(--hand); font-size: 22px; color: var(--ink-2); animation: nud 1.6s ease-in-out infinite; }
+  @keyframes nud { 50% { transform: translateY(-4px); } }
 
-  .letter { position: fixed; inset: 0; z-index: 41; display: grid; place-items: center; padding: 22px; pointer-events: none; }
-  .letter .paper { position: relative; width: min(390px, 100%); padding: 34px 26px 26px 40px; border-radius: 12px; background-color: var(--paper);
-    box-shadow: 0 30px 60px -20px rgba(110, 22, 52, .5);
-    background-image: repeating-linear-gradient(transparent 0 39px, rgba(255, 141, 185, .3) 39px 40px); background-position: 0 28px;
-    opacity: 0; transform: translateY(80px) scale(.85) rotate(-3deg); transition: opacity .5s, transform .7s cubic-bezier(.2, 1.3, .4, 1); }
+  .letter { position: fixed; inset: 0; z-index: 81; display: grid; place-items: center; padding: 20px; pointer-events: none; }
   .letter.on { pointer-events: auto; }
-  .letter.on .paper { opacity: 1; transform: rotate(-1deg); }
-  .letter .paper::before { content: ""; position: absolute; top: 0; bottom: 0; left: 26px; width: 2px; background: rgba(232, 69, 139, .3); }
-  .letter .line { font-family: 'Caveat', cursive; font-weight: 600; font-size: 27px; line-height: 40px; color: var(--ink); opacity: 0; transform: translateX(-8px); transition: opacity .6s, transform .6s; }
-  .letter .line.in { opacity: 1; transform: none; }
-  .letter .line.big { font-size: 40px; font-weight: 700; color: var(--burgundy); }
-  .letter .line.love { color: var(--hot); font-weight: 700; font-size: 34px; text-align: right; margin-top: 6px; }
-  .letter .go { margin-top: 18px; width: 100%; height: 54px; border-radius: 999px; background: var(--burgundy); color: var(--cream); font-weight: 600; font-size: 16px;
-    opacity: 0; transform: translateY(10px); transition: opacity .5s, transform .5s; box-shadow: var(--shadow); }
-  .letter .go.in { opacity: 1; transform: none; }
+  .sheet { position: relative; width: min(400px, 100%); padding: 40px 26px 26px 44px; border-radius: 6px; background: var(--paper);
+    box-shadow: 0 40px 70px -28px rgba(62, 10, 27, .55);
+    background-image: linear-gradient(90deg, transparent 30px, rgba(217, 58, 126, .3) 30px 31.5px, transparent 31.5px), repeating-linear-gradient(transparent 0 37px, rgba(91, 16, 40, .08) 37px 38px);
+    background-position: 0 0, 0 30px;
+    opacity: 0; transform: translateY(90px) scale(.86) rotate(-4deg); transition: opacity .5s, transform .8s cubic-bezier(.2, 1.25, .4, 1); }
+  .letter.on .sheet { opacity: 1; transform: rotate(-1deg); }
+  .sheet .tape { --tape: var(--lime); width: 120px; height: 28px; top: -13px; }
+  .sheet .l { font-family: var(--hand); font-weight: 500; font-size: 27px; line-height: 38px; color: var(--ink); opacity: 0; transform: translateX(-6px); transition: opacity .7s, transform .7s; }
+  .sheet .l.in { opacity: 1; transform: none; }
+  .sheet .l.h { font-family: var(--serif); font-style: italic; font-size: 40px; color: var(--burgundy); }
+  .sheet .l.love { font-weight: 700; color: var(--hot); text-align: right; font-size: 32px; margin-top: 6px; }
+  .sheet .go { margin-top: 20px; width: 100%; height: 52px; border-radius: 999px; background: var(--burgundy); color: var(--paper); font-size: 15px; font-weight: 600;
+    opacity: 0; transform: translateY(10px); transition: opacity .5s, transform .5s; }
+  .sheet .go.in { opacity: 1; transform: none; }
 
-  /* ================= toast ================= */
-  .toast { position: fixed; left: 50%; top: calc(16px + var(--safe-t)); z-index: 50; transform: translate(-50%, -160%);
-    padding: 12px 18px; border-radius: 16px; background: var(--burgundy); color: var(--cream); font-size: 14px; font-weight: 500; text-align: center;
-    width: max-content; max-width: calc(100% - 32px); box-shadow: var(--shadow); transition: transform .45s cubic-bezier(.3, 1.4, .5, 1); }
-  .toast.on { transform: translate(-50%, 0); }
+  /* ---------- efectos ---------- */
+  .pop { position: fixed; z-index: 90; pointer-events: none; transform: translate(-50%, -50%); font-size: var(--s, 20px); color: var(--c, var(--hot));
+    animation: pop .95s cubic-bezier(.2, 1.2, .4, 1) forwards; }
+  @keyframes pop { 0% { opacity: 0; transform: translate(-50%, -50%) scale(.2); }
+    25% { opacity: 1; transform: translate(calc(-50% + var(--dx) * .4), calc(-50% + var(--dy) * .4)) scale(1.1) rotate(var(--r)); }
+    100% { opacity: 0; transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy) - 40px)) scale(.7) rotate(var(--r)); } }
+  .rain { position: fixed; top: -40px; z-index: 95; pointer-events: none; font-size: 22px; animation: rain linear forwards; }
+  @keyframes rain { to { transform: translateY(110vh) rotate(var(--r)); } }
+  .toast { position: fixed; left: 50%; bottom: calc(96px + var(--safe-b)); z-index: 70; transform: translate(-50%, 30px); opacity: 0;
+    padding: 12px 18px; border-radius: 16px; background: var(--wine); color: var(--paper); font-size: 14px; font-weight: 500; text-align: center;
+    width: max-content; max-width: calc(100% - 40px); box-shadow: var(--shadow-m); transition: all .45s cubic-bezier(.3, 1.4, .5, 1); pointer-events: none; }
+  .toast.on { opacity: 1; transform: translate(-50%, 0); }
 
-  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; } }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; } }
 </style>
 </head>
 <body>
+<div class="aura" aria-hidden="true"><i></i><i></i><i></i></div>
+<div class="grain" aria-hidden="true"></div>
 
-<div class="bg" id="bg" aria-hidden="true">
-  <div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
-</div>
+<main>
+  <!-- portada -->
+  <header class="hero">
+    <div class="eyebrow">una colección de</div>
+    <h1>Notitas<em>para Olga<svg class="heart beat" id="heroHeart" viewBox="0 0 24 24" role="button" aria-label="corazón"><path d="M12 21s-7.5-4.6-9.6-9.4C.9 8.2 3 4.5 6.6 4.5c2.1 0 3.5 1.2 4.4 2.5.9-1.3 2.3-2.5 4.4-2.5 3.6 0 5.7 3.7 4.2 7.1C19.5 16.4 12 21 12 21z" fill="currentColor"/></svg></em></h1>
+    <svg class="swash" viewBox="0 0 200 20" aria-hidden="true"><path d="M4 12 C40 2, 70 18, 100 10 S160 2, 196 12" fill="none" stroke="#B5D95A" stroke-width="3" stroke-linecap="round"/></svg>
+    <p class="lede">Cosas que te he ido diciendo con el tiempo, guardadas aquí para cuando te apetezca.</p>
 
-<!-- ============ app ============ -->
-<div class="app">
-  <header class="head">
-    <h1>notitas para michulita<small id="left">…</small></h1>
-    <span class="pill" title="notitas abiertas">💌 <span id="readCount">0</span></span>
+    <div class="thread">
+      <div class="thread-bar"><div class="thread-fill" id="tFill"></div><div class="thread-bead" id="tBead">💗</div></div>
+      <div class="thread-txt"><span>descubiertas <b id="tRead">0</b></span><span>de <span id="tTotal">0</span></span></div>
+    </div>
+
+    <div class="hero-actions">
+      <button class="btn" id="reLetter"><span class="seal-ico">♥</span>releer la carta</button>
+      <button class="btn dark" id="heroRandom">🎲 una al azar</button>
+    </div>
   </header>
 
-  <nav class="chips" id="chips" aria-label="Tipos de notitas"></nav>
-
-  <main class="views">
-    <section class="view on" id="jarView">
-      <div class="jar-wrap idle" id="jar" role="button" tabindex="0" aria-label="Sacar una notita del tarro">
-        <svg class="bow" viewBox="0 0 64 30" aria-hidden="true"><path d="M32 15 C22 2 6 2 6 12 C6 22 22 22 32 15 Z" fill="#FF8DB9"/><path d="M32 15 C42 2 58 2 58 12 C58 22 42 22 32 15 Z" fill="#FF8DB9"/><path d="M30 15 L22 30 L28 28 L32 18 Z M34 15 L42 30 L36 28 L32 18 Z" fill="#E8458B"/><circle cx="32" cy="15" r="5" fill="#E8458B"/></svg>
-        <div class="lid"></div>
-        <div class="neck"></div>
-        <div class="glass" id="glass"></div>
-        <div class="shine"></div><div class="shine s2"></div>
-        <div class="label">para ti ♡</div>
-      </div>
-      <div class="jar-hint" id="jarHint"></div>
-      <div class="tap-me">¡toca el tarro!</div>
-    </section>
-
-    <section class="view" id="favView">
-      <h2>mis guardadas ♡</h2>
-      <p class="sub">Las que más te gustan, siempre a mano.</p>
-      <div class="grid" id="favGrid"></div>
-    </section>
-
-    <section class="view" id="readView">
-      <h2>ya abiertas</h2>
-      <p class="sub">Todas las que has sacado del tarro, para releerlas.</p>
-      <div class="grid" id="readGrid"></div>
-    </section>
-  </main>
-</div>
-
-<nav class="nav" aria-label="Secciones">
-  <button class="on" data-view="jarView"><span>🫙</span>tarro</button>
-  <button data-view="favView"><span>💗</span>guardadas<i class="badge" id="favBadge"></i></button>
-  <button data-view="readView"><span>📖</span>abiertas</button>
-  <button id="openLetter"><span>💌</span>carta</button>
-</nav>
-
-<!-- ============ notita ============ -->
-<div class="modal" id="modal" role="dialog" aria-modal="true" aria-label="Notita">
-  <div class="note-zone">
-    <article class="note" id="note">
-      <div class="tape"></div>
-      <span class="tag" id="noteTag"></span>
-      <span class="num" id="noteNum"></span>
-      <p id="noteText"></p>
-      <div class="bigheart" id="bigheart">💗</div>
+  <!-- la de hoy -->
+  <section>
+    <div class="sec-head"><h2>La de <em>hoy</em></h2><span class="note-hand" id="todayDate"></span></div>
+    <article class="today" id="today">
+      <div class="stars" id="stars"></div>
+      <div class="date">cada día una distinta ♡</div>
+      <p id="todayText"></p>
+      <div class="row"><span class="cat" id="todayCat"></span><button class="heart-btn" id="todayFav" aria-label="guardar"><svg viewBox="0 0 24 24"><path d="M12 20.5s-7.2-4.4-9.2-9C1.4 8.3 3.4 5 6.7 5c2 0 3.3 1.1 4.2 2.4h2.2C14 6.1 15.3 5 17.3 5c3.3 0 5.3 3.3 3.9 6.5-2 4.6-9.2 9-9.2 9z"/></svg></button></div>
     </article>
-    <div class="actions">
-      <button class="act" id="closeBtn" aria-label="Cerrar">✕</button>
-      <button class="act fav" id="favBtn">♡ guardar</button>
-      <button class="act main" id="nextBtn">otra 🎲</button>
+  </section>
+
+  <!-- cómo estás -->
+  <section>
+    <div class="sec-head"><h2>¿Cómo estás, <em>michulita</em>?</h2></div>
+    <div class="moods" id="moods"></div>
+  </section>
+
+  <!-- tablero -->
+  <section id="boardSec">
+    <div class="sec-head"><h2>El <em>tablero</em></h2><span class="note-hand">toca para abrir</span></div>
+    <div class="filters" id="filters"></div>
+    <div class="board-tools">
+      <span class="count" id="bCount"></span>
+      <button class="btn" id="surprise" style="height:38px;font-size:13px">✨ sorpréndeme</button>
     </div>
-    <div class="swipe-hint">desliza para otra · doble toque para guardar</div>
+    <div class="board" id="board"></div>
+  </section>
+
+  <p class="foot">hecho con mucho amor <span>♥</span></p>
+</main>
+
+<button class="fab" id="fab" aria-label="Una notita al azar"><span class="lbl">¿una al azar?</span>🎲</button>
+
+<!-- notita en grande -->
+<div class="modal" id="modal" role="dialog" aria-modal="true">
+  <div class="stage">
+    <div class="kicker" id="kicker"></div>
+    <article class="big" id="big">
+      <div class="tape" id="bigTape"></div>
+      <span class="tag" id="bigTag"></span>
+      <span class="no" id="bigNo"></span>
+      <p id="bigText"></p>
+      <div class="burst" id="burst">💗</div>
+    </article>
+    <div class="acts">
+      <button class="act" id="mClose" aria-label="cerrar">✕</button>
+      <button class="act" id="mFav">♡ guardar</button>
+      <button class="act" id="mCopy" aria-label="copiar">⧉</button>
+      <button class="act dark" id="mNext">otra →</button>
+    </div>
+    <div class="hint">desliza para cambiar · doble toque para guardar</div>
   </div>
 </div>
 
-<!-- ============ carta de intro ============ -->
+<!-- carta -->
 <div class="intro" id="intro">
-  <div class="bg" aria-hidden="true"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div></div>
-  <div class="env-zone">
-    <h2>tienes una carta</h2>
+  <div class="aura" aria-hidden="true"><i></i><i></i><i></i></div>
+  <div class="env-wrap">
+    <div class="eyebrow">tienes correo</div>
+    <h2>Para <em>Olga</em></h2>
     <div class="envelope" id="envelope" role="button" tabindex="0" aria-label="Abrir la carta">
-      <div class="env-back"></div>
-      <div class="peek"></div>
-      <div class="env-front"></div>
-      <div class="env-flap"></div>
-      <div class="seal">💗</div>
+      <div class="e-back"></div><div class="e-letter"></div><div class="e-front"></div><div class="e-flap"></div><div class="e-seal">♥</div>
     </div>
-    <div class="tiny">toca para abrirla</div>
+    <div class="tap-tip">toca el sello para abrirla</div>
   </div>
 </div>
 <div class="letter" id="letter">
-  <div class="paper">
-    <div class="line big">michulita…</div>
-    <div class="line">te dejo esto por aquí.</div>
-    <div class="line">Son algunas cosas que te he ido diciendo con el tiempo, para que las puedas tener aquí recogidas y puedas leerlas cuando te apetezca.</div>
-    <div class="line love">te quiero mucho, Olga ♡</div>
-    <button class="go" id="goBtn">abrir el tarro de notitas →</button>
+  <div class="sheet">
+    <div class="tape"></div>
+    <div class="l h">michulita…</div>
+    <div class="l">te dejo esto por aquí, son algunas cosas que te he ido diciendo con el tiempo, para que las puedas tener aquí recogidas y puedas leerlas cuando te apetezca.</div>
+    <div class="l love">te quiero mucho Olga ♡</div>
+    <button class="go" id="goBtn">ver mis notitas →</button>
   </div>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
-/* ======================================================
-   ✏️ NOTITAS — { c: tipo, t: texto }
-   tipos: b = lo bonita que eres · a = días grises · e = aquí estoy
-          q = te quiero · n = tú y yo · m = motes y tonterías
-   (añade las nuevas al final para no descolocar las guardadas)
-   ====================================================== */
+/* =========================================================
+   Todas las notitas son mensajes literales de Adrián en el chat.
+   c = tipo · t = texto (tal cual se escribió)
+   ========================================================= */
 const NOTAS = [
-  // 🌸 lo bonita que eres
-  { c: 'b', t: "Preciosa no es que estés, es que eres." },
-  { c: 'b', t: "Más guapa que la más guapa, y la más guapa eres tú." },
-  { c: 'b', t: "Te he visto despeinada, sobada, en pijama… y no ha habido segundo que no haya pensado que eres lo más bonito que hay." },
-  { c: 'b', t: "Y la cara, yo no sé qué pasa, que cada día eres más bonita." },
-  { c: 'b', t: "Da exactamente igual lo que hagas o lo que te pase: más bonita no puedes estar." },
-  { c: 'b', t: "Te vas igual de bonita que siempre, porque no sabes ser de otra forma." },
-  { c: 'b', t: "Si eres preciosa, se te tiene que decir todas las veces que haga falta y punto." },
-  { c: 'b', t: "Mira que eres mona y preciosa, incluso llorando." },
-  { c: 'b', t: "Eres una belleza que yo no he visto nada igual en mi vida." },
-  { c: 'b', t: "Para mí eres lo más espectacular que he visto, en casi todos los sentidos." },
-  { c: 'b', t: "Lo preciosa que eres por fuera y lo especial que eres por dentro." },
-  { c: 'b', t: "Ni un poquito de maquillaje te hace falta para estar bonita." },
-  { c: 'b', t: "Más chula que chula, más bonita que ninguna." },
-  { c: 'b', t: "Pocas cosas bonitas te digo para todo lo bonita que tú eres." },
-  { c: 'b', t: "Preciosa es poco ya." },
-  { c: 'b', t: "Aunque no te vea, sé que estás preciosa." },
-  { c: 'b', t: "Carita de cansada, pero preciosa." },
-  { c: 'b', t: "Ni durmiendo regular estás ni un poquito menos bonita." },
-  { c: 'b', t: "Mira cómo se peina la chica más bonita que he visto nunca." },
-  { c: 'b', t: "Para mí eres la mujer más preciosa que he visto." },
-  { c: 'b', t: "Me encanta cómo me miras con la media sonrisa y la manita encima." },
-  { c: 'b', t: "Las rodillas más bonitas que yo vi en mi vida." },
-  { c: 'b', t: "¿Cómo puedes estar tan bonita ya de buena mañana?" },
-  { c: 'b', t: "Es que hueles increíble siempre." },
-  { c: 'b', t: "Yo guapa te veo siempre. Es un hecho indiscutible, y no te lo digo por decir, lo pienso de verdad." },
-  { c: 'b', t: "Tú guapa y preciosa estás siempre: no ha habido día que haya dicho «uy… hoy un poco menos»." },
-  { c: 'b', t: "Incluso de vagabunda eres la más bonita de las calles." },
-  { c: 'b', t: "Con lo guapa que eres te puedes poner lo que quieras." },
-  { c: 'b', t: "Eres psicóloga y modelo, e igual de guapa que de inteligente." },
-  { c: 'b', t: "De lo que no te cansas nunca es de estar siempre preciosa." },
-  { c: 'b', t: "Eres preciosa, Olga. Lleves como lleves el pelo, eso no cambia." },
-  { c: 'b', t: "Qué preciosa y qué brillante te ves." },
-  { c: 'b', t: "Te veo bonita siempre, y créeme que te veo de verdad: con todo lo que eres, todo lo bueno que eres, que tienes y que haces." },
-  { c: 'b', t: "Tú sí que eres preciosa, que ni una operación te quita esa cara bonita." },
-
-  // 🌱 para los días grises
-  { c: 'a', t: "No seas tan dura contigo misma: que tengas una mala época no significa que dejes de ser un 10." },
-  { c: 'a', t: "En los días que te sientas mejor, yo lo celebro contigo. Y en los días que te sientas un poco peor, yo te recuerdo todo lo bueno, que créeme que es muchísimo." },
-  { c: 'a', t: "Ya te digo yo si puedes con todo." },
-  { c: 'a', t: "No te dejes pisotear, Olga. No podrán contigo." },
-  { c: 'a', t: "Estate tranquila, que seguro que te sale como siempre." },
-  { c: 'a', t: "Solo tienes que ser tú: eres atenta y cuidona, eres detallista, lo ves todo y lo tienes todo en cuenta." },
-  { c: 'a', t: "Van a flipar contigo, lo tengo clarísimo." },
-  { c: 'a', t: "Eres muy autoexigente contigo misma, y eso te hace ser mejor en todos los sentidos." },
-  { c: 'a', t: "Te lo has currado porque vales mucho. Las notas son solo un reflejo de todo el buen trabajo que haces." },
-  { c: 'a', t: "Eres muy inteligente, sensible y empática." },
-  { c: 'a', t: "Estoy totalmente seguro de que eres una máquina y una profesional en lo tuyo." },
-  { c: 'a', t: "Se te notaba nerviosa, pero ya lo tienes, miamor." },
-  { c: 'a', t: "Tú ya eres gigante y vas a seguir creciendo sin parar, michula." },
-  { c: 'a', t: "Eres lista y te conoces bastante, seguro que lo acabas viendo." },
-  { c: 'a', t: "No es que exageres, es que sientes como sientes y eres muy sensible." },
-  { c: 'a', t: "Sé que a veces te cuesta un poquito más, pero eres muy funcional, y a medida que te vayas conociendo lo vas a ser aún más." },
-  { c: 'a', t: "A descansar, que lo mereces y lo necesitas." },
-  { c: 'a', t: "Y no te pongas triste, michulita, porfa." },
-  { c: 'a', t: "Hoy duerme y descansa como te mereces, que has tenido una semana muy movida." },
-  { c: 'a', t: "Sal de la cama, preciosa: fuera te espera un mundo lleno de oportunidades." },
-  { c: 'a', t: "Lo más importante es que tú estés contenta con cómo ayudas a los chavales. Es lo más bonito." },
-  { c: 'a', t: "Piensa en lo mejor para ti, sobre todo." },
-  { c: 'a', t: "Mañana ya, con ilusión y energía renovada." },
-  { c: 'a', t: "Todo está bien y a mejor, como siempre." },
-  { c: 'a', t: "Y aun así has sacado energía para entrenar… eres una bestia." },
-  { c: 'a', t: "Vales muchísimo y lo tengo muy claro." },
-  { c: 'a', t: "Sé lo mucho que eres, lo mucho que sientes y lo muchísimo que vales. Lo acepto todo y lo adoro todo." },
-  { c: 'a', t: "Cuerpo KO y mente bien activa… cuando te digan algo ya te relajas y descansas como toca." },
-  { c: 'a', t: "Ahora tranquilita, meditación y a descansar como una reina." },
-
-  // 🫶 aquí estoy
-  { c: 'e', t: "Aquí estoy siempre." },
-  { c: 'e', t: "Yo te voy a dar mi calor, mi mano y mi todo siempre, michulita. En todos los momentos voy a estar para ti." },
-  { c: 'e', t: "Estoy para ti y tienes todo mi apoyo, energía y ganas para que puedas estar lo mejor posible." },
-  { c: 'e', t: "Aunque esté a lo mío y con los míos, siempre estoy para ti." },
-  { c: 'e', t: "Sabes que me puedes contar lo que sea y desahogarte si lo necesitas." },
-  { c: 'e', t: "Si necesitas evadirte, salir de casa, hablar, no hablar… lo que sea, puedes contar conmigo." },
-  { c: 'e', t: "Para ti saco tiempo y energía de donde sea." },
-  { c: 'e', t: "Los abrazos fuertes te los voy a dar, ahora y siempre." },
-  { c: 'e', t: "Por muy liado que vaya, siempre estoy pendiente de ti y de todo lo que me dices." },
-  { c: 'e', t: "Estoy para ti siempre, Olga. Ahora más que nunca." },
-  { c: 'e', t: "Sé que nos tenemos el uno al otro y que siempre queremos lo mejor. Somos así, y juntos aún más." },
-  { c: 'e', t: "No te cierres conmigo, porfa. Sabes que me puedes contar lo que sea." },
-  { c: 'e', t: "Si necesitas algo, puedes contar siempre conmigo." },
-  { c: 'e', t: "Todo lo que hago lo hago porque te quiero, y me sale solo cuidarte." },
-  { c: 'e', t: "Puedes estar muy tranquila: solo me apetece tratarte bien y cuidarte." },
-  { c: 'e', t: "No te voy a romper el corazón, puedes estar tranquila." },
-  { c: 'e', t: "Si te apetece hablar, me lo puedes decir. Yo siempre estoy dispuesto." },
-  { c: 'e', t: "Te guardo un abrazo gran reserva." },
-  { c: 'e', t: "Abrazos vas a tener, no te preocupes." },
-  { c: 'e', t: "Nada más te vea te voy a dar un abrazo bien fuerte. Vente preparada." },
-  { c: 'e', t: "Te voy a quitar el frío para el resto de tu vida." },
-  { c: 'e', t: "Michulita y tuchulito contra lo que sea." },
-  { c: 'e', t: "Ojalá poder ir contigo para quitarte un poco de estrés." },
-  { c: 'e', t: "Por ti, como si me tengo que ir con el carrito este hasta Portugal." },
-  { c: 'e', t: "Me metería en un tren durante horas solo para darte un abrazo." },
-  { c: 'e', t: "Para servirte en todo lo que pueda, miamor." },
-  { c: 'e', t: "Estando contigo todo es mucho más fácil, mi secre." },
-  { c: 'e', t: "Igual que tú te preocupas de cómo estoy, a mí me pasa igual contigo." },
-  { c: 'e', t: "Me gusta saber cómo te sientes y lo que te pasa. Siempre." },
-  { c: 'e', t: "Tus abrazos me calman y me quitan cualquier susto." },
-
-  // 💗 te quiero
-  { c: 'q', t: "Te amo todo lo que se puede amar a alguien." },
-  { c: 'q', t: "Eres el amor de mi vida, la mujer de mis sueños y mi compañera pa' todo y pa' siempre." },
-  { c: 'q', t: "Claro que eres mi persona favorita." },
-  { c: 'q', t: "Para mí eres de lo mejor que tengo, de lo más importante y de lo que más quiero." },
-  { c: 'q', t: "Te quiero con todo lo que eres, cada uno de tus pensamientos." },
-  { c: 'q', t: "Te quiero así, tal cual. Sin nada más ni nada menos." },
-  { c: 'q', t: "Te quiero mucho, por si no te lo he dicho hoy." },
-  { c: 'q', t: "Te quiero pasiempre, desde las dos a la una." },
-  { c: 'q', t: "Cuánto te quiero, qué suerte tengo de tenerte cerca." },
-  { c: 'q', t: "Te quiero, michulita." },
-  { c: 'q', t: "Te re adoro, miniña bonita." },
-  { c: 'q', t: "Te adoro en todos los sentidos y me derrito por ti." },
-  { c: 'q', t: "Estoy más enchochao que nunca." },
-  { c: 'q', t: "Yo también te quiero mucho, Olga. Desde hace ya tiempo, y cada vez más." },
-  { c: 'q', t: "Claro que te quiero, Olga. No te he dejado de querer nunca." },
-  { c: 'q', t: "Te valoro y te quiero mucho, y espero que eso también te llegue." },
-  { c: 'q', t: "Te quiero, preciosa. Eres la mejor." },
-  { c: 'q', t: "Gracias por este amor, miamor." },
-  { c: 'q', t: "Me encantas tú, y me encanta todo lo que haces y me haces." },
-  { c: 'q', t: "Es súper evidente que me encantas desde siempre." },
-  { c: 'q', t: "Me encantas en muchos sentidos, Olga 🫠" },
-  { c: 'q', t: "Solo paso por aquí para decirte que eres la mejor, que te amo y que tengo muchas ganas de verte." },
-  { c: 'q', t: "Ojalá otros 100, otros 1000 y otros 10000 mesecitos contigo." },
-  { c: 'q', t: "Para mí eres michulita y miamor, sobre todo." },
-  { c: 'q', t: "Eres increíble y la mejor novia del mundo." },
-  { c: 'q', t: "Aquí está tu chulito enamorado para recordarte lo bien que estamos juntos." },
-  { c: 'q', t: "Pero soy tu tonto, miamor." },
-  { c: 'q', t: "Voy a descansar estos ojitos enamorados de la mujer más increíble y especial que hay." },
-  { c: 'q', t: "Me tienes feliz y enamorado." },
-  { c: 'q', t: "Se me cae la baba contigo." },
-
-  // 🍓 tú y yo
-  { c: 'n', t: "No sabes lo afortunado y lo feliz que me siento por estar contigo." },
-  { c: 'n', t: "Me entiendes y me cuidas, me alegras la vida y me haces sentir muy afortunado." },
-  { c: 'n', t: "Contigo tengo la mejor rutina de todas, porque estar a tu lado es lo que mejor me sienta." },
-  { c: 'n', t: "Desde que estoy contigo estoy mucho mejor en todos los sentidos." },
-  { c: 'n', t: "Contigo me calmo y desconecto del ruido que tengo dentro y fuera." },
-  { c: 'n', t: "Yo me veo contigo para siempre." },
-  { c: 'n', t: "Yo quiero mi vida a tu lado: cuanto más tiempo y más cerca, mejor." },
-  { c: 'n', t: "Da igual coja, manca o tuerta: yo me quedo contigo siempre." },
-  { c: 'n', t: "Mientras sea a tu lado, yo soy lo más feliz que puedo ser." },
-  { c: 'n', t: "Qué ganas de todos los besos, de todas las risas y de todos los abrazos colgones." },
-  { c: 'n', t: "Nos espera una vida maravillosa." },
-  { c: 'n', t: "Contigo al lado no le tengo miedo a nada." },
-  { c: 'n', t: "Se me pasa el tiempo volando contigo, no me doy ni cuenta." },
-  { c: 'n', t: "Me río mucho contigo, y es algo que me encanta que sea así." },
-  { c: 'n', t: "Podría estar horas mirándote y hablando contigo de cualquier cosa." },
-  { c: 'n', t: "Prefiero 5 minutos en tu cama con tus caricias que una noche entera de sueño." },
-  { c: 'n', t: "Cómodo, tranquilo y a gusto estoy siempre contigo." },
-  { c: 'n', t: "Me siento muy cuidado. Sé que te importo y que solo quieres lo mejor para mí." },
-  { c: 'n', t: "Gracias por cómo eres conmigo, cómo me tratas y cómo me haces ser mejor." },
-  { c: 'n', t: "Estoy mejor gracias a ti, desde hace mucho y ahora aún más." },
-  { c: 'n', t: "Me calmas y me haces ver las cosas más claras." },
-  { c: 'n', t: "Gracias por ser como eres, por cómo me tratas y por todo esto bonito que tenemos." },
-  { c: 'n', t: "Yo quiero todo lo que sea contigo." },
-  { c: 'n', t: "Mis planes quiero que sean contigo." },
-  { c: 'n', t: "Si estás cerca, yo feliz estoy siempre." },
-  { c: 'n', t: "Hasta las cosas más normales y aburridas me gustan contigo." },
-  { c: 'n', t: "Se vienen muchos más findes de cocinitas y abrazos bañados por atardeceres pastelosos." },
-  { c: 'n', t: "Un finde tranquilo de los nuestros: nuestros bagels buenos, nuestras series y nuestros abrazos colgones." },
-  { c: 'n', t: "Cada vez mejor, michulita. Cada uno con lo suyo y juntos en lo nuestro." },
-  { c: 'n', t: "Si ya tenía recuerdos preciosos por allí, ahora que algunos son contigo mejoran lo que parecía inmejorable." },
-  { c: 'n', t: "Me encanta que se vaya a cumplir mi sueño de estar contigo en París." },
-  { c: 'n', t: "Contigo cerca tampoco necesito mucho más, créeme." },
-  { c: 'n', t: "No desconecto de ninguna forma mejor que estando contigo, te lo juro." },
-  { c: 'n', t: "Yo contigo es como mejor estoy, y eso es un hecho totalmente objetivo y demostrable." },
-  { c: 'n', t: "Se nos ve bien enamorados." },
-  { c: 'n', t: "Hasta cómo nos miramos: enamorados siempre." },
-  { c: 'n', t: "Tengo muy buena rutina de sueño últimamente, en gran parte gracias a ti." },
-  { c: 'n', t: "Estando contigo se me va todo el cansancio." },
-  { c: 'n', t: "Me pongo a pensar y se me hace raro haber llegado a este punto contigo, pero estoy extremadamente feliz." },
-  { c: 'n', t: "Mira que pasamos horas, pero ya quiero estar contigo otra vez." },
-  { c: 'n', t: "Te pienso y te echo de menos después de estos días tan cerca." },
-  { c: 'n', t: "Te echo de menos, Olga. Tengo ganas de abrazarte, acariciarte, reírnos y pasar nuestros ratos." },
-  { c: 'n', t: "Sigo aquí pensando en ti y con ganas de verte." },
-  { c: 'n', t: "Los abrazos me salen solos si te tengo cerca." },
-  { c: 'n', t: "Me gustas, y quiero estar contigo." },
-  { c: 'n', t: "Estar feliz, reírnos y hacer el bobo como siempre." },
-
-  // 🧸 motes y tonterías
-  { c: 'm', t: "Tú sí que eres bonita, mi dorito fibrado mojado en salsa de belleza." },
-  { c: 'm', t: "Rencorosa, preciosa, orgullosa, talentosa, misteriosa, poderosa… olgaseosa." },
-  { c: 'm', t: "Tú sí que eres bonita, mi Kim Possible bollera pueblerina." },
-  { c: 'm', t: "Buenos días, michicle de fresa 🍓" },
-  { c: 'm', t: "Buenos días, buñuelito de chocolate negro." },
-  { c: 'm', t: "Buenos días, mi lomo embuchao." },
-  { c: 'm', t: "Buenos días, mi papo palpitón." },
-  { c: 'm', t: "Buenos días, princesa madrugadora." },
-  { c: 'm', t: "Buenos días, mi gitanika de piel canela." },
-  { c: 'm', t: "Buen día, mi bonita sonrisita." },
-  { c: 'm', t: "Buenos días, miamorcito soñador." },
-  { c: 'm', t: "Buenos días, miniña bonita entera." },
-  { c: 'm', t: "Buenos días, chulita bonita." },
-  { c: 'm', t: "Buenos días a la madrugadora más peinada." },
-  { c: 'm', t: "Estás preciosa, mi huevito árabe reflejado." },
-  { c: 'm', t: "Qué bonita esa migitanilla de mofletes colorados." },
-  { c: 'm', t: "Preciosa, bonita, espectacular leona salvaje: soy un pobre antílope despistado que merece ser devorado." },
-  { c: 'm', t: "Tú eres mi agua fresca de manantial después de 4 h de entreno en el día más caluroso del verano." },
-  { c: 'm', t: "Eres tan puntual que hasta queriendo llegar tarde llegas temprano." },
-  { c: 'm', t: "0% sobaco, 100% michulita preciosa." },
-  { c: 'm', t: "Te adoro, michicle de fresa de rollo." },
-  { c: 'm', t: "Y te quiero, magdalena bizcocha chocolatona, o como sea que te salga." },
-  { c: 'm', t: "Tengo una foto mental tuya preciosa de ayer… 🫠" },
-  { c: 'm', t: "Bonita estás siempre, y quien diga lo contrario le meto una torta que lo dejo ciego." },
-  { c: 'm', t: "Este finde voy a ir a tu madre y a tu padre a preguntarles directamente si eres guapa o no." },
-  { c: 'm', t: "Eres la más grande y tocha." },
-  { c: 'm', t: "Contigo soy un buenazo semicalzonazos… pero es lo que me sale, me derrito fácilmente." },
-  { c: 'm', t: "Menos mal que te tengo: tú eres la memoriona de la relación." },
-  { c: 'm', t: "Hasta tus mordiscos de caimán echo de menos." },
-  { c: 'm', t: "Tú eres mi fotógrafa, estilista y consejera." },
-  { c: 'm', t: "Ahora te leo y te admiro, miamor." },
-  { c: 'm', t: "Yo estoy atento y a la orden para todo lo que me diga michicle de fresa." },
-  { c: 'm', t: "Una terracita tranquila, la brisa pasando y delante mío la gitana más preciosa que hay." },
-  { c: 'm', t: "Eres la mejor pre esposa que existe." },
-  { c: 'm', t: "Empezar las vacaciones con el amor de mi vida, que eres tú, migitanilla de ojos largos." },
-  { c: 'm', t: "Así te quiero ver siempre: bien feliz, vestida de rosa y mirándome con esos ojos largos como el Nilo." },
-  { c: 'm', t: "Tú sí que eres lo mejor que hay en el mundo entero, mi bonita suave." },
-  { c: 'm', t: "Eres lo mejor que hay en esta vida estresada." },
-  { c: 'm', t: "Tú sí que eres bonita, miamor: abrazable matutino, nocturno y a cualquier hora del día." },
-  { c: 'm', t: "Te doy un abrazo y una calentada si la necesitas." },
-  { c: 'm', t: "Eeeeesa es miniña descansada." },
-  { c: 'm', t: "Mírala qué chula, qué bonita y qué dorada 🥰" },
-  { c: 'm', t: "Qué preciosa morena de bíceps gigantes." },
-  { c: 'm', t: "Hasta así de cerca y monga eres bonita." },
-  { c: 'm', t: "Ahora eres mi prometida, claro." },
+  {"c": "b", "t": "Preciosa no es que estés es que eres"},
+  {"c": "b", "t": "Más guapa que la más guapa, y la más guapa eres tú"},
+  {"c": "b", "t": "Pero de verdad te digo que yo te he visto en esas, despeinada, sobada en pijama… y no ha habido segundo que no haya pensado que eres lo más bonito que hay"},
+  {"c": "b", "t": "Y la cara yo no se que pasa que cada día eres más bonita"},
+  {"c": "b", "t": "Tu da exactamente igual lo que hagas o lo que te pase que más bonita no puedes estar"},
+  {"c": "b", "t": "Te vas igual de bonita que siempre porque no sabes ser de otra forma"},
+  {"c": "b", "t": "Si eres preciosa se te tiene que decir todas las veces que haga falta y punto"},
+  {"c": "b", "t": "Pero mira que eres mona y preciosa incluso llorando"},
+  {"c": "b", "t": "Pero eres una belleza que yo no he visto nada igual en mi vida"},
+  {"c": "b", "t": "Pero para mí eres lo más espectacular que he visto, en casi todos los sentidos"},
+  {"c": "b", "t": "De lo preciosa que eres por fuera y lo especial que eres por dentro"},
+  {"c": "b", "t": "Ni un poquito de maquillaje te hace falta para estar bonita"},
+  {"c": "b", "t": "Más chula que chula, más bonita que ninguna"},
+  {"c": "b", "t": "Pocas cosas bonitas te digo para todo lo bonita que tú eres"},
+  {"c": "b", "t": "Preciosa es poco ya"},
+  {"c": "b", "t": "Aunque no te vea se que estás preciosa"},
+  {"c": "b", "t": "Carita de cansada pero preciosa"},
+  {"c": "b", "t": "Pero aún y así… ni durmiendo regular estás ni un poco menos bonita"},
+  {"c": "b", "t": "Mira como se peina la chica más bonita que he visto nunca"},
+  {"c": "b", "t": "Si para mi es la mujer más preciosa que he visto"},
+  {"c": "b", "t": "Estás preciosa así, carita de cansada pero me encanta como me miras con la media sonrisa y la manita encima"},
+  {"c": "b", "t": "Las rodillas más bonitas que yo vi en mi vida"},
+  {"c": "b", "t": "Como puedes estar tan bonita ya de buena mañana"},
+  {"c": "b", "t": "Es que hueles increíble siempre"},
+  {"c": "b", "t": "Yo guapa te veo siempre, eso es un hecho indiscutible, y no te lo digo por decir, lo pienso de verdad"},
+  {"c": "b", "t": "Y no me voy a cansar de repetirlo, tú guapa preciosa estás siempre, no ha habido día que haya dicho uy… hoy un poco menos"},
+  {"c": "b", "t": "Pero incluso de vagabunda eres la más bonita de las calles"},
+  {"c": "b", "t": "A mi me gusta el look, con lo guapa que eres te puedes poner lo que quieras"},
+  {"c": "b", "t": "Que eres psicóloga y modelo y que eres igual de guapa que de inteligente"},
+  {"c": "b", "t": "Mejor descansada que cansada, pero de lo que no te cansas es de estar siempre preciosa"},
+  {"c": "b", "t": "Eres preciosa Olga, las trenzas te dan un toque pero lleves como lleves el pelo eso no cambia"},
+  {"c": "b", "t": "Yo te veo bonita siempre y creeme que se que te veo de verdad, con todo lo que eres, todo lo bueno que eres, que tienes y que haces"},
+  {"c": "b", "t": "Tú si que eres preciosa, que ni una operación te quita esa cara bonita"},
+  {"c": "b", "t": "Siempre estás preciosa, pero así aún mucho más"},
+  {"c": "b", "t": "Pero que preciosa que estás 😩"},
+  {"c": "b", "t": "Que bonita que eres"},
+  {"c": "b", "t": "Estás preciosa Olga 🥰"},
+  {"c": "b", "t": "Pa que luego digas que no estás preciosa siempre…"},
+  {"c": "b", "t": "Y que eres preciosa da igual como cuando y donde"},
+  {"c": "b", "t": "Tu guapaza estás siempre, aunque sea recién despertada"},
+  {"c": "b", "t": "Pero siempre te veo bonita"},
+  {"c": "b", "t": "Yo lo que te veo es preciosa como siempre"},
+  {"c": "b", "t": "Pero que preciosa y que salvaje estás, antes en el vídeo, ahora y siempre, te lo escribo para que este cochecito te lo recuerde"},
+  {"c": "b", "t": "Si es que más bonita guapa bella preciosa no puedes ser"},
+  {"c": "b", "t": "Eres bonita bella preciosa"},
+  {"c": "b", "t": "Eres bonita eres preciosa y eres increíble"},
+  {"c": "b", "t": "Tu bien bonita como siempre"},
+  {"c": "b", "t": "Guapa y chulita siempre… y buena también aunque te quieras hacer la mala"},
+  {"c": "b", "t": "Tu si que eres la más guapa de todo el mundo"},
+  {"c": "b", "t": "Tu si que eres preciosa miniña"},
+  {"c": "a", "t": "No seas tan dura contigo misma, que tengas una mala época encima por algo que no es ni tu culpa no significa que dejes de ser un 10"},
+  {"c": "a", "t": "En los días que te sientas mejor yo lo celebro contigo y en los días que te sientas un poco peor yo te recuerdo todo lo bueno que creeme que es muchísimo"},
+  {"c": "a", "t": "Ya te digo si puedes con todo"},
+  {"c": "a", "t": "No te dejes pisotear Olga no podrán contigo"},
+  {"c": "a", "t": "Tú cuídate mucho, dale un repaso a todo esto y estáte tranquila que seguro que te sale como siempre"},
+  {"c": "a", "t": "Se te da muy bien Olga, solo tienes que ser tú, ya eres atenta y cuidona, te sale solo, eres detallista, lo ves todo y lo tienes todo en cuenta"},
+  {"c": "a", "t": "Van a flipar contigo, lo tengo clarísimo"},
+  {"c": "a", "t": "Eres muy autoexigente contigo misma, y está muy bien porque te hace ser mejor en todos los sentidos"},
+  {"c": "a", "t": "Te lo has currado, porque vales mucho, los comentarios y la nota son solo un reflejo de todo el buen trabajo que haces ahí"},
+  {"c": "a", "t": "Pero eres muy inteligente, sensible y empática"},
+  {"c": "a", "t": "Estoy totalmente seguro de que eres una máquina y una profesional en lo tuyo"},
+  {"c": "a", "t": "Se te notaba nerviosa pero ya lo tienes miamor"},
+  {"c": "a", "t": "Tu ya eres gigante y vas a seguir creciendo sin parar michula"},
+  {"c": "a", "t": "Eres lista y te conoces bastante, seguro que lo acabas viendo"},
+  {"c": "a", "t": "No es que exageres es que sientes como sientes y eres muy sensible"},
+  {"c": "a", "t": "Se que a veces te cuesta un poco de más pero también se que eres muy funcional y que a medida que te vayas conociendo lo vas a ser aún más"},
+  {"c": "a", "t": "A descansar que lo mereces y lo necesitas"},
+  {"c": "a", "t": "Y no te pongas triste michulita porfa"},
+  {"c": "a", "t": "Tú hoy duerme y descansa como te mereces, que has tenido una semana muy movida. Y así mañana nos pillamos con energía y recuperamos todas las horas que queramos"},
+  {"c": "a", "t": "Sal de la cama preciosa, fuera te espera un mundo lleno de oportunidades"},
+  {"c": "a", "t": "Y lo más importante es que tú estés contenta y satisfecha con como ayudas a los chavales, es lo más bonito también"},
+  {"c": "a", "t": "Piensa en lo mejor para ti sobre todo"},
+  {"c": "a", "t": "Te adoro michulita, aunque hayan sido un par de dias intensos y emocionales todo está bien y a mejor como siempre"},
+  {"c": "a", "t": "Y aún y así veo que has sacado energía para entrenar … eres una bestia"},
+  {"c": "a", "t": "Vales muchísimo y lo tengo muy claro"},
+  {"c": "a", "t": "Se lo mucho que eres, lo mucho que sientes y lo muchísimo que vales, lo acepto todo y lo adoro todo"},
+  {"c": "a", "t": "Pero ahora ya relajadita meditación y a descansar como una reina"},
+  {"c": "a", "t": "Un trámite Olga, que te diga lo increíble que eres y lo bien que lo has hecho"},
+  {"c": "a", "t": "Gracias a ti también Olga, vales mucho y quiero que tú lo sientas"},
+  {"c": "a", "t": "Bueno pero ya te vas conociendo y aún te queda, son cosas normales. Eres lista y reconoces lo que te pasa que ya es mucho"},
+  {"c": "a", "t": "Y sinceramente por como eres lo llevas mejor de lo que me imaginaba"},
+  {"c": "a", "t": "Descansa y cuídate mucho"},
+  {"c": "a", "t": "Está bien, que tengas un buen día y cuídate mucho porfa. Te quiero"},
+  {"c": "a", "t": "Puedes estar cansada y feliz"},
+  {"c": "a", "t": "Ojalá duermas bien, descanses y se te cure esa espaldota. Ya tengo ganas de verte michicle, te veo en un rato. Te quiero"},
+  {"c": "a", "t": "Tú ahora descansa y ya mañana bien fresca te lo miras todo y me vas diciendo"},
+  {"c": "a", "t": "Pues el día que te mereces ni más ni menos, descansadita, bien alimentada y con una buena compañía gustosa"},
+  {"c": "a", "t": "Ya sabes que también es muy importante descansar, si el cuerpo pide descanso hay que dárselo"},
+  {"c": "a", "t": "A comer mucho y a descansar y estar tranquila bajo la lluvia"},
+  {"c": "e", "t": "Y otra vez te lo digo, aquí estoy siempre"},
+  {"c": "e", "t": "Yo te voy a dar mi calor mi mano y mi todo siempre michulita, en todos los momentos voy a estar para ti"},
+  {"c": "e", "t": "Estoy para ti y tienes todo mi apoyo, energía y ganas para que puedas estar lo mejor que puedas estar en todos los sentidos"},
+  {"c": "e", "t": "Pero aunque esté a lo mío y con los míos siempre estoy para ti"},
+  {"c": "e", "t": "Y no te cierres conmigo porfa, sabes que me puedes contar lo que sea y desahogarte si lo necesitas"},
+  {"c": "e", "t": "Si necesitas evadirte un poco, salir de tu casa, hablar, no hablar, lo que sea que quieras puedes contar conmigo"},
+  {"c": "e", "t": "pero para ti saco tiempo y energía de donde sea"},
+  {"c": "e", "t": "Los abrazos fuertes te los voy a dar, ahora y siempre"},
+  {"c": "e", "t": "Pero si quiero decirte que nunca te ignoro ni obvio nada de lo que me dices, por muy liado que pueda ir siempre estoy pendiente de ti y de todo lo que me dices"},
+  {"c": "e", "t": "Se que debes estar triste y muy cansada. Solo espero que puedas descansar y relajarte lo máximo posible. Estoy para ti siempre Olga, ahora más que nunca. Te quiero"},
+  {"c": "e", "t": "Se que nos tenemos el uno al otro y que siempre queremos lo mejor, somos así y juntos aún más"},
+  {"c": "e", "t": "quiero que sepas que si necesitas algo puedes contar siempre conmigo"},
+  {"c": "e", "t": "Pero todo lo que hago lo hago porque te quiero y me sale solo cuidarte"},
+  {"c": "e", "t": "Pues puedes estar muy tranquila, solo me apetece tratarte bien y cuidarte"},
+  {"c": "e", "t": "No te voy a romper el corazón, puedes estar tranquila"},
+  {"c": "e", "t": "si te apetece hablar me lo puedes decir, yo siempre estoy dispuesto"},
+  {"c": "e", "t": "Pero no te preocupes, te guardo un abrazo gran reserva"},
+  {"c": "e", "t": "Abrazos vas a tener no te preocupes"},
+  {"c": "e", "t": "Nada más te vea te voy a dar un abrazo bien fuerte, vente preparada"},
+  {"c": "e", "t": "Que cosas me dices miamor… pero te voy a quitar el frio para el resto de tu vida"},
+  {"c": "e", "t": "Michulita y tuchulito contra lo que sea"},
+  {"c": "e", "t": "Normal… jo, debes estar bien nerviosa, ojalá poder ir contigo para quitarte un poco de estrés"},
+  {"c": "e", "t": "Pues normalmente no preciosa, pero por ti como si me tengo que ir con el carrito este hasta portugal"},
+  {"c": "e", "t": "Me metería en un tren podrido como este durante horas solo para darte un abrazo"},
+  {"c": "e", "t": "Para servirte en todo lo que pueda miamor"},
+  {"c": "e", "t": "Un poquito sí, pero estando contigo todo es mucho más fácil mi secre"},
+  {"c": "e", "t": "Igual que tu te preocupas de como estoy y quieres que esté lo mejor posible a mi me pasa igual"},
+  {"c": "e", "t": "Si lo se, a mi me pasa igual contigo, me gusta saber como te sientes y lo que te pasa, siempre"},
+  {"c": "e", "t": "Te entiendo totalmente, se que no es fácil ni una situación en la que te sientes cómoda, siempre estoy pero ahora más que nunca"},
+  {"c": "e", "t": "Sabes que cualquier cosa me puedes contar, hablar o lo que sea, y si no quieres igualmente estoy aquí para lo que sea"},
+  {"c": "e", "t": "Está bien, pero me puedes contar y desahogarte si en algún momento lo necesitas, o lo que sea, ya lo sabes"},
+  {"c": "e", "t": "Me puedes contar cuando quieras o si quieres hablar lo que sea"},
+  {"c": "e", "t": "Ya te se ya, me las puedes contar siempre que quieras, que me gusta mucho"},
+  {"c": "e", "t": "Yo te escribo miamor no te preocupes, o te canto o lo que tú desees"},
+  {"c": "e", "t": "Y aquí te recibo siempre, aunque sean abrazos de lucha grecorromana"},
+  {"c": "e", "t": "Yo a ti te quiero cerca siempre"},
+  {"c": "e", "t": "Te doy un abrazo y una calentada si la necesitas"},
+  {"c": "e", "t": "Estás temblorosa? Te daba un abrazo fuerte bajo la manta"},
+  {"c": "e", "t": "Jo me sabe fatal que estés así, tengo ganas de abrazarte suave"},
+  {"c": "e", "t": "Y el abrazo me lo apunto para cuando te vea"},
+  {"c": "e", "t": "Te guardo un abrazo ubicador para la próxima"},
+  {"c": "e", "t": "Sea lo que sea lo voy a recibir encantado y te vas a llevar un abrazo bien fuerte a cambio"},
+  {"c": "e", "t": "Y tanto que durarán, a la mínima te abrazo fuerte para sellar la tregua al momento"},
+  {"c": "q", "t": "Te amo todo lo que se puede amar a alguien"},
+  {"c": "q", "t": "Eres el amor de mi vida, la mujer de mis sueños y mi compañera pa todo y pa siempre"},
+  {"c": "q", "t": "Claro que eres mi persona favorita"},
+  {"c": "q", "t": "Para mí eres de lo mejor que tengo, de lo más importante y de lo que más quiero"},
+  {"c": "q", "t": "Cada uno es como es y yo te quiero con todo lo que eres, cada uno de tus pensamientos"},
+  {"c": "q", "t": "Lo tengo muy presente, se como eres y lo tengo totalmente aceptado, me gustas y te quiero así tal cual. Sin nada más ni nada menos"},
+  {"c": "q", "t": "Te quiero mucho, por si no te lo he dicho hoy"},
+  {"c": "q", "t": "Te quiero pasiempre desde las dos a la una"},
+  {"c": "q", "t": "Cuanto te quiero, que suerte tengo de tenerte cerca"},
+  {"c": "q", "t": "Te quiero michulita"},
+  {"c": "q", "t": "Te re adoro miniña bonita"},
+  {"c": "q", "t": "No es mucho mi estilo pero contigo no puedo evitarlo, te adoro en todos los sentidos y me derrito por ti"},
+  {"c": "q", "t": "Estoy más enchochao que nunca, sensible y con ganas de estar contigo"},
+  {"c": "q", "t": "Yo también te quiero mucho Olga, desde ya hace y cada vez más"},
+  {"c": "q", "t": "Claro que te quiero Olga, no te he dejado de querer nunca"},
+  {"c": "q", "t": "Te valoro y te quiero mucho y espero que eso también te llegue"},
+  {"c": "q", "t": "te quiero preciosa eres la mejor"},
+  {"c": "q", "t": "Gracias por este amor miamor"},
+  {"c": "q", "t": "Me encantas tú y me encanta todo lo que haces y me haces"},
+  {"c": "q", "t": "Es que a parte es algo que es super evidente que me encantas desde siempre"},
+  {"c": "q", "t": "Me encantas en muchos sentidos Olga 🫠"},
+  {"c": "q", "t": "Seguramente ya debes estar durmiendo o a punto, yo solo paso por aquí para decirte que eres la mejor, que te amo y que tengo muchas ganas de verte"},
+  {"c": "q", "t": "Felices 10 mesecitos por cierto michulita , ojalá otros 100 otros 1000 y otros 10000"},
+  {"c": "q", "t": "Para mí eres michulita y miamor sobre todo"},
+  {"c": "q", "t": "Eres increíble y la mejor novia del mundo"},
+  {"c": "q", "t": "Que aquí está tu chulito pre marido enamorado para recordarte lo bien que estamos juntos"},
+  {"c": "q", "t": "Pero soy tu tonto miamor"},
+  {"c": "q", "t": "Pero ya voy a cenar algo y a descansar estos ojitos enamorados de la mujer más increíble y especial que hay"},
+  {"c": "q", "t": "Tú si que eres bonita miamor, que me tienes feliz y enamorado"},
+  {"c": "q", "t": "Me se cae la baba contigo"},
+  {"c": "q", "t": "Te quiero mucho miamor me haces muy feliz"},
+  {"c": "q", "t": "Te quiero Olga, perdona por no saber estar a la altura a veces. Te mereces y quiero darte lo mejor"},
+  {"c": "q", "t": "Y que yo también te quiero Olga, y te lo voy a decir mucho durante estos días"},
+  {"c": "q", "t": "Y con todo lo que haya, porque así lo quiero, porque te quiero a ti, tal y como eres y con todo lo que eres"},
+  {"c": "q", "t": "Para mí eres el amor de mi vida y te lo digo porque así lo siento hasta ahora"},
+  {"c": "q", "t": "Yo te lo voy a seguir diciendo y demostrando, se lo mucho que vales y quiero seguir estando a tu lado para darte y hacerte sentir lo mejor"},
+  {"c": "q", "t": "Te quiero confesar que hoy he sentido aún más de lo que ya había sentido por ti, y no es solo por este sentimiento de añoranza anticipada"},
+  {"c": "q", "t": "Será el clima o la luna o este amor que me tiene suspirando"},
+  {"c": "q", "t": "Para mi siempre eres miamor bonito y chocolatao"},
+  {"c": "q", "t": "Para mi eres muy importante y es gran parte de lo que soy"},
+  {"c": "q", "t": "Te quiero bonita, que te vaya bien el vuelo ❤️‍🔥"},
+  {"c": "q", "t": "Y yo a ti miamor 🥰"},
+  {"c": "q", "t": "Mwuah para ti tambien miamor"},
+  {"c": "q", "t": "Para esto y para mucho más Olga, eres miamor"},
+  {"c": "q", "t": "Y yo a ti Olga, está siendo una semana intensa, necesito estar contigo y sentir la calma"},
+  {"c": "q", "t": "Y te digo todo lo que me gustas y lo que te quiero"},
+  {"c": "q", "t": "Y que te quiero así sin más también"},
+  {"c": "q", "t": "Lo que te quiero yo a ti mi mergoli…"},
+  {"c": "n", "t": "No sabes lo afortunado y lo feliz que me siento por estar contigo"},
+  {"c": "n", "t": "Y yo contigo Olga, me entiendes y me cuidas, me alegras la vida y me haces sentir muy afortunado"},
+  {"c": "n", "t": "Contigo tengo la mejor rutina de todas aunque no haga nada, porque estar a tu lado es lo que mejor me sienta"},
+  {"c": "n", "t": "Desde que estoy contigo estoy mucho mejor en todos los sentidos"},
+  {"c": "n", "t": "Yo también me gusto mucho así, contigo me calmo y desconecto del ruido que tengo dentro y fuera"},
+  {"c": "n", "t": "Yo me veo contigo para siempre"},
+  {"c": "n", "t": "Yo quiero mi vida a tu lado, cuanto más tiempo y más cerca mejor"},
+  {"c": "n", "t": "Da igual como luzca, coja manca o tuerta, yo me quedo contigo siempre"},
+  {"c": "n", "t": "Mientras sea así a tu lado yo soy lo más feliz que puedo ser"},
+  {"c": "n", "t": "Que ganas de esos 3 besos, de todas las risas, todos los abrazos colgones y todo lo que venga a tu lado este año ❤️"},
+  {"c": "n", "t": "Y que nos espera una vida maravillosa"},
+  {"c": "n", "t": "Yo también confio y contigo al lado tampoco le tengo miedo a nada"},
+  {"c": "n", "t": "Se me pasa el tiempo volando contigo no me doy ni cuenta"},
+  {"c": "n", "t": "Y me rio mucho contigo, es algo que me encanta que sea así"},
+  {"c": "n", "t": "Que no me canso de ninguna de las dos… podría estar horas mirándote y hablando contigo de cualquier cosa"},
+  {"c": "n", "t": "Y esta tarde en tu cama contigo cerca y tus caricias era como estar en una nube, prefiero 5 minutos así que una noche de sueño"},
+  {"c": "n", "t": "Cómodo tranquilo y a gusto estoy siempre contigo"},
+  {"c": "n", "t": "Créeme que lo haces muy bien, me siento muy cuidado, se que te importo y que solo quieres lo mejor para mi"},
+  {"c": "n", "t": "Ya te lo he dicho alguna vez, pero gracias por como eres conmigo, como me tratas y como me haces ser mejor"},
+  {"c": "n", "t": "Gracias a ti también, estoy mejor gracias a ti, desde hace mucho y ahora aún más"},
+  {"c": "n", "t": "Por esto y por todo, me calmas y me haces ver las cosas más claras"},
+  {"c": "n", "t": "Gracias a ti por ser como eres, por como me tratas y por todo esto bonito que tenemos"},
+  {"c": "n", "t": "Yo quiero todo lo que sea contigo"},
+  {"c": "n", "t": "Mis planes quiero que sean contigo, no voy a hacer otros"},
+  {"c": "n", "t": "Si estás cerca yo feliz estoy siempre"},
+  {"c": "n", "t": "Y yo contigo también, hasta las cosas más normales y aburridas"},
+  {"c": "n", "t": "Se vienen muchos más findes primaverales, de cocinitas y abrazos bañados por atardeceres pastelosos"},
+  {"c": "n", "t": "Un finde tranquilo de los nuestros, nuestros bagels buenos nuestras series y pelis y nuestros abrazos colgones"},
+  {"c": "n", "t": "Cada vez mejor michulita, aún nos queda mucho a los dos, a cada uno con lo suyo y juntos en lo nuestro"},
+  {"c": "n", "t": "Si ya tenía recuerdos preciosos por allí, ahora que algunos son contigo ya mejoran lo que parecía inmejorable"},
+  {"c": "n", "t": "Me encanta que se vaya a cumplir mi sueño de estar contigo en parís"},
+  {"c": "n", "t": "Contigo cerca tampoco necesito mucho más créeme"},
+  {"c": "n", "t": "No desconecto de ninguna forma mejor que estando contigo te lo juro"},
+  {"c": "n", "t": "Yo contigo es como mejor estoy y eso es un hecho totalmente objetivo y demostrable"},
+  {"c": "n", "t": "Se nos ve bien enamorados"},
+  {"c": "n", "t": "Incluso como nos miramos enamorados siempre"},
+  {"c": "n", "t": "Tengo muy buena rutina de sueño últimamente, en gran parte gracias a ti jeje"},
+  {"c": "n", "t": "He dormido muy bien esta semana, y estando contigo se me va todo el cansancio"},
+  {"c": "n", "t": "Yo me pongo a pensar y se me hace raro haber llegado a este punto contigo, pero estoy extremadamente feliz, me gusta mucho que haya sido todo así"},
+  {"c": "n", "t": "Mira que pasamos horas pero ya quiero estar contigo otra vez"},
+  {"c": "n", "t": "Te pienso y te echo de menos después de estos días tan cerca"},
+  {"c": "n", "t": "Tengo ganas de abrazarte y acariciarte, reirnos y pasar nuestros ratos"},
+  {"c": "n", "t": "Sigo aquí pensando en ti y con ganas de verte"},
+  {"c": "n", "t": "Los abrazos me salen solos si te tengo cerca, el jugar siempre nos ha gustado"},
+  {"c": "n", "t": "Me lo paso muy bien contigo, me río mucho y estoy super a gusto hagamos lo que hagamos"},
+  {"c": "n", "t": "Siento que puedo ser yo y hablar de todo contigo estando muy relajado"},
+  {"c": "n", "t": "Es de verdad, me pasa como a ti… hay algunas cosas que me las como solo yo, pero estando contigo las digiero un poco mejor, y sé que también estás ahí"},
+  {"c": "n", "t": "Y gran parte de que me vaya bien es por ti, me haces estar mejor y eso me influye mucho"},
+  {"c": "n", "t": "Y yo suerte de tenerte a mi lado y poderte acompañar en todo. Para relajarte siempre que lo necesites y disfrutar todo lo que se pueda a tu lado"},
+  {"c": "n", "t": "Sabes que yo estando contigo me da igual donde y como, pero nos merecemos lo mejor, la vida que queremos y que va a llegar más pronto que tarde"},
+  {"c": "n", "t": "Que ganas tengo de estar contigo en galicia y saborear el preview de la vida que nos viene"},
+  {"c": "n", "t": "Ganas de estar contigo, de que cada vez que te veo se me pone el cuerpo diferente, como una sensación entre admiración y ganas de morderte fuerte"},
+  {"c": "n", "t": "Que bonita esta me gusta mucho como nos miramos"},
+  {"c": "n", "t": "Porque quiero y porque estar contigo como hemos estado hace un rato me deja un gusto y una felicidad en el cuerpo que no hay otra cosa que lo consiga"},
+  {"c": "n", "t": "Yo decido y quiero estar contigo y no miento cuando siempre te digo que el mayor tiempo posible"},
+  {"c": "n", "t": "Siempre te he dicho que es de mis momentos favoritos contigo, es algo tan sencillo pero que me gusta tanto…"},
+  {"c": "n", "t": "Afortunado contigo siempre"},
+  {"c": "n", "t": "Y contigo al lado ni te cuento, el más feliz y orgulloso de toda la península"},
+  {"c": "n", "t": "Pues sí, y te echo de menos de madrugada cerca también"},
+  {"c": "n", "t": "Que ya te echo de menos"},
+  {"c": "n", "t": "Yo ya echo de menos tus piececitos cerca de mi"},
+  {"c": "n", "t": "Gracias a ti también por ser como eres y por ser como eres conmigo"},
+  {"c": "n", "t": "Gracias por nada y en todo caso gracias a ti por muchas cosas pero sobre todo por ser tú y como me cuidas"},
+  {"c": "n", "t": "Eres la mejor, gracias por tanto"},
+  {"c": "n", "t": "Gracias miamor eres la mejor"},
+  {"c": "n", "t": "Que eres la mejor de las mejores"},
+  {"c": "n", "t": "Tu si que eres la mejor de todas"},
+  {"c": "n", "t": "Me ha gustado mucho el finde contigo, me lo he pasado muy bien y me ayuda mucho a desconectar"},
+  {"c": "n", "t": "Yo estoy encantado y feliz contigo, pase lo que pase"},
+  {"c": "n", "t": "Es que estaba ahí todo feliz viendo mi vida contigo"},
+  {"c": "n", "t": "Y aunque nos vayamos a ver a mi siempre me gusta verte y hablar contigo"},
+  {"c": "n", "t": "Ojalá muchos más allí y sobre todo contigo"},
+  {"c": "n", "t": "Y sobre todo contigo, sea donde sea, galicia está genial pero me da igual el lugar si estoy junto a tu piel suave cogiéndome del brazo para pasear"},
+  {"c": "m", "t": "Tu si que eres bonita, mi dorito fibrado mojado en salsa de belleza"},
+  {"c": "m", "t": "Rencorosa preciosa orgullosa talentosa misteriosa poderosa olgaseosa"},
+  {"c": "m", "t": "Tú si que eres bonita mi kim possible bollera pueblerina"},
+  {"c": "m", "t": "Bon día michicle de fresa"},
+  {"c": "m", "t": "Buenos días bombón de chocolate negro"},
+  {"c": "m", "t": "Buenos días mi lomo embuchao"},
+  {"c": "m", "t": "Buenos días mi papo palpitón"},
+  {"c": "m", "t": "Buenos días princesa madrugadora"},
+  {"c": "m", "t": "Buenos días mi gitanika de piel canela"},
+  {"c": "m", "t": "Buen día mi bonita sonrisita"},
+  {"c": "m", "t": "Buenos días miamorcito soñador"},
+  {"c": "m", "t": "Buenos días miniña bonita entera"},
+  {"c": "m", "t": "Buenos días chulita bonita"},
+  {"c": "m", "t": "Buenos días a la madrugadora más peinada"},
+  {"c": "m", "t": "Buenos días michicle dulce y sabroso"},
+  {"c": "m", "t": "Buenos días bomboncito de gluteo ☺️"},
+  {"c": "m", "t": "Estás preciosa mi huevito árabe reflejado"},
+  {"c": "m", "t": "Que bonita que ese migitanilla de mofletes coloraos"},
+  {"c": "m", "t": "Preciosa, bonita, espectacular leona salvaje carinovora, soy un pobre antilope despistado que merece ser deborado"},
+  {"c": "m", "t": "Tú eres mi agua fresca de manantial después de 4h de entreno georgiano en el día más caluroso del verano"},
+  {"c": "m", "t": "Eres tan puntual que hasta queriendo llegar tarde llegas temprano"},
+  {"c": "m", "t": "0% sobaco 100% michulita preciosa"},
+  {"c": "m", "t": "Te adoro michicle de fresa de rollo"},
+  {"c": "m", "t": "Y yo te quiero magdalena bizcocha chocolatona o como sea que te salga"},
+  {"c": "m", "t": "Yo tengo una foto mental tuya preciosa de ayer… 🫠"},
+  {"c": "m", "t": "Bonita estás siempre y eso es así y quien diga lo contrario le meto una torta que lo dejo ciego"},
+  {"c": "m", "t": "Este finde voy a ir a tu madre y a tu padre y les voy a preguntar directamente si eres guapa o no"},
+  {"c": "m", "t": "Eres la mas grande y tocha"},
+  {"c": "m", "t": "Contigo ya ves que soy un buenazo semicalzonazos … pero es lo que me sale, me derrito fácilmente"},
+  {"c": "m", "t": "Menos mal que te tengo sí… tú eres la memoriona de la relación"},
+  {"c": "m", "t": "Mirad chicos… hasta sus mordiscos de caiman echo de menos"},
+  {"c": "m", "t": "Pero tú eres mi fotógrafa estilista y consejera"},
+  {"c": "m", "t": "Ahora te leo y te admiro miamor"},
+  {"c": "m", "t": "Yo estoy atento y a la orden para todo lo que me diga michicle de fresa"},
+  {"c": "m", "t": "Pfff que rico, como me gusta todo eso en una terracita tranquila con la brisa pasando y delante mío la gitana más preciosa que hay"},
+  {"c": "m", "t": "Que eres la mejor pre esposa que existe"},
+  {"c": "m", "t": "Cenar pronto y empezar los días de vacaciones con el amor de mi vida que eres tú migitanilla de ojos largos"},
+  {"c": "m", "t": "Así te quiero ver siempre, bien feliz, vestida de rosa y mirándome con esos ojos largos como el nilo"},
+  {"c": "m", "t": "Tu si que eres lo mejor que hay en el mundo entero mibonita suave"},
+  {"c": "m", "t": "Eres lo mejor que hay en esta vida estresada"},
+  {"c": "m", "t": "Tu si que eres bonita miamor abrazable matutino nocturno y a cualquier hora del día, donde sea pero a tu ladito suave"},
+  {"c": "m", "t": "Eeeeesa es miniña descansada"},
+  {"c": "m", "t": "Mirala que chula que bonita y que dorada 🥰"},
+  {"c": "m", "t": "Que preciosa morena de biceps gigantes"},
+  {"c": "m", "t": "Hasta así cerca y monga eres bonita"},
+  {"c": "m", "t": "Ahora eres mi prometida claro"},
+  {"c": "m", "t": "Tú si que eres bonita michicle"},
+  {"c": "m", "t": "Tu si que eres mi perfecta"},
+  {"c": "m", "t": "Michina de ojos rojos"},
+  {"c": "m", "t": "Y eres un foco de esos potente que sirve solo para transatlánticos"},
+  {"c": "m", "t": "Pero bonita mentirosa que eres"},
+  {"c": "m", "t": "Una escapista de cara bonita"},
+  {"c": "m", "t": "Mírala que chula michicle rosado"},
+  {"c": "m", "t": "Gracias michula alisada"},
+  {"c": "m", "t": "Pues a seguir diciéndonos michulita"},
+  {"c": "m", "t": "Aaaaaahora sí, es michulita"},
+  {"c": "m", "t": "Que manía tengo con meter el dedo en el micro, pero el resumen es que eres lo más bonito que hay y que tengo ganas de morderte"},
+  {"c": "m", "t": "Tu si que eres bonita miamor"},
+  {"c": "m", "t": "Buenos días dormilona"}
 ];
 
 const CATS = {
-  all: { name: 'todas', emoji: '✨' },
-  b:   { name: 'lo bonita que eres', emoji: '🌸', paper: '#FFD3E4' },
-  a:   { name: 'para días grises',   emoji: '🌱', paper: '#E6F4BC' },
-  e:   { name: 'aquí estoy',         emoji: '🫶', paper: '#FFE7CF' },
-  q:   { name: 'te quiero',          emoji: '💗', paper: '#FFC0D6' },
-  n:   { name: 'tú y yo',            emoji: '🍓', paper: '#F7D9E2' },
-  m:   { name: 'motes y tonterías',  emoji: '🧸', paper: '#D8EDA6' },
+  b: { name: 'lo bonita que eres', short: 'bonita', emoji: '🌸', tint: '#F8CFDF', tape: '#F49AC0' },
+  a: { name: 'para días grises',   short: 'ánimo',  emoji: '🌱', tint: '#E3F0B8', tape: '#B5D95A' },
+  e: { name: 'aquí estoy',         short: 'aquí estoy', emoji: '🫶', tint: '#FBE3D3', tape: '#F2A9A0' },
+  q: { name: 'te quiero',          short: 'te quiero', emoji: '💗', tint: '#F6BFD2', tape: '#D93A7E' },
+  n: { name: 'tú y yo',            short: 'tú y yo', emoji: '🍓', tint: '#F0D8E0', tape: '#A8325A' },
+  m: { name: 'motes y tonterías',  short: 'motes', emoji: '🧸', tint: '#DCEBB0', tape: '#7FA83A' },
 };
-const LINES = 'repeating-linear-gradient(transparent 0 37px, rgba(110, 22, 52, .07) 37px 38px)';
+const MOODS = [
+  { k: 'bajon',  emoji: '🌧️', label: 'con bajón',        bg: '#E3F0B8', cats: ['a', 'e'], kicker: 'para cuando hay bajón…' },
+  { k: 'mimos',  emoji: '🧸', label: 'con ganas de mimos', bg: '#F8CFDF', cats: ['q', 'n'], kicker: 'mimitos por escrito…' },
+  { k: 'insegu', emoji: '🪞', label: 'insegurilla',       bg: '#FBE3D3', cats: ['b'],      kicker: 'por si se te olvida…' },
+  { k: 'cansa',  emoji: '🌙', label: 'cansadita',          bg: '#F0D8E0', cats: ['a'], match: /descans|dorm|cuíd|cuid|reina|tranquil/i, kicker: 'para descansar bonito…' },
+  { k: 'risas',  emoji: '🍓', label: 'con ganas de reír',  bg: '#DCEBB0', cats: ['m'],      kicker: 'una tontería de las mías…' },
+];
 
-/* ================= estado ================= */
+/* ---------- utilidades ---------- */
 const $ = id => document.getElementById(id);
 const store = {
-  get(k, d) { try { const v = localStorage.getItem('michu-' + k); return v ? JSON.parse(v) : d; } catch { return d; } },
-  set(k, v) { try { localStorage.setItem('michu-' + k, JSON.stringify(v)); } catch {} },
+  get(k, d) { try { const v = localStorage.getItem('olga-' + k); return v ? JSON.parse(v) : d; } catch { return d; } },
+  set(k, v) { try { localStorage.setItem('olga-' + k, JSON.stringify(v)); } catch {} },
 };
 const read = new Set(store.get('read', []).filter(i => i < NOTAS.length));
 const favs = new Set(store.get('favs', []).filter(i => i < NOTAS.length));
-let cat = 'all', current = -1;
 const save = () => { store.set('read', [...read]); store.set('favs', [...favs]); };
-const ids = () => NOTAS.map((_, i) => i).filter(i => cat === 'all' || NOTAS[i].c === cat);
 const rand = a => a[Math.random() * a.length | 0];
 const buzz = p => { try { navigator.vibrate && navigator.vibrate(p); } catch {} };
+function seeded(seed) { return () => { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+const pad = n => String(n).padStart(3, '0');
+const HEART = '<svg viewBox="0 0 24 24" width="14" height="14"><path fill="currentColor" d="M12 21s-7.5-4.6-9.6-9.4C.9 8.2 3 4.5 6.6 4.5c2.1 0 3.5 1.2 4.4 2.5.9-1.3 2.3-2.5 4.4-2.5 3.6 0 5.7 3.7 4.2 7.1C19.5 16.4 12 21 12 21z"/></svg>';
 
-/* ================= fondo: garabatos ================= */
-(function () {
-  const bg = $('bg'), D = ['🌸', '✿', '♡', '✦', '🍓', '☁︎', '🌷', '✧', '♡', '✿', '✦'];
-  D.forEach((ch, i) => {
-    const d = document.createElement('span');
-    d.className = 'doodle';
-    d.textContent = ch;
-    d.style.left = (4 + Math.random() * 88) + '%';
-    d.style.top = (4 + Math.random() * 88) + '%';
-    d.style.fontSize = (14 + Math.random() * 16) + 'px';
-    d.style.color = ['#E8458B', '#4E7D2C', '#8E2448', '#FF8DB9'][i % 4];
-    d.style.animationDelay = (-Math.random() * 6) + 's';
-    bg.appendChild(d);
-  });
-})();
-
-function pop(x, y, emoji) {
-  const s = document.createElement('span');
-  s.className = 'pop';
-  s.textContent = emoji || rand(['💗', '🌸', '✨', '💕', '🍓', '🌷', '💖']);
-  s.style.left = x + 'px'; s.style.top = y + 'px';
-  s.style.setProperty('--r', (Math.random() * 40 - 20) + 'deg');
-  document.body.appendChild(s);
-  setTimeout(() => s.remove(), 950);
+function pop(x, y, opts = {}) {
+  const n = opts.n || 1;
+  for (let i = 0; i < n; i++) {
+    const s = document.createElement('span');
+    s.className = 'pop';
+    s.textContent = opts.ch || rand(['♥', '✦', '✿', '♥', '❀', '✧']);
+    const a = Math.random() * Math.PI * 2, d = n > 1 ? 40 + Math.random() * (opts.spread || 90) : 0;
+    s.style.cssText = `left:${x}px;top:${y}px;--dx:${Math.cos(a) * d}px;--dy:${Math.sin(a) * d - (n > 1 ? 0 : 30)}px;--r:${Math.random() * 60 - 30}deg;--s:${12 + Math.random() * 14}px;--c:${rand(['#D93A7E', '#F49AC0', '#B5D95A', '#7E1D3F'])};animation-delay:${i * 18}ms`;
+    document.body.appendChild(s);
+    setTimeout(() => s.remove(), 1200);
+  }
 }
-function confetti(x, y, n = 10) {
-  for (let i = 0; i < n; i++) setTimeout(() => pop(x + (Math.random() - .5) * 170, y + (Math.random() - .5) * 90), i * 35);
+function rain(n = 40) {
+  for (let i = 0; i < n; i++) {
+    const s = document.createElement('span');
+    s.className = 'rain';
+    s.textContent = rand(['💗', '🌸', '💕', '✨', '🍓', '💖', '🌷']);
+    s.style.cssText = `left:${Math.random() * 100}vw;--r:${Math.random() * 360 - 180}deg;animation-duration:${2.2 + Math.random() * 2}s;animation-delay:${Math.random() * 1.2}s;font-size:${16 + Math.random() * 16}px`;
+    document.body.appendChild(s);
+    setTimeout(() => s.remove(), 5000);
+  }
 }
-// tocar cualquier hueco vacío -> florecita
+function toast(msg) {
+  const t = $('toast'); t.textContent = msg; t.classList.add('on');
+  clearTimeout(toast.h); toast.h = setTimeout(() => t.classList.remove('on'), 2600);
+}
+// tocar huecos vacíos -> chispita
 document.addEventListener('pointerdown', e => {
-  if (e.target.closest('button, .jar-wrap, .note, .envelope, .chips, .mini, .paper, .nav')) return;
+  if (e.target.closest('button, .card, .big, .envelope, .sheet, .today, .filters, .mood, svg')) return;
   pop(e.clientX, e.clientY);
 });
 
-function toast(msg) {
-  const t = $('toast'); t.textContent = msg; t.classList.add('on');
-  clearTimeout(toast.h); toast.h = setTimeout(() => t.classList.remove('on'), 2800);
+/* ---------- progreso ---------- */
+function progress() {
+  const p = read.size / NOTAS.length * 100;
+  $('tFill').style.width = p + '%';
+  $('tBead').style.left = p + '%';
+  $('tRead').textContent = read.size;
+  $('tTotal').textContent = NOTAS.length;
+  updateCounts();
+  if (read.size === NOTAS.length && !store.get('done', 0)) {
+    store.set('done', 1);
+    setTimeout(() => { rain(70); toast('¡Las has descubierto todas! 🥹 Pero me quedan muchas más por decirte'); }, 900);
+  }
 }
 
-/* ================= chips ================= */
-const chips = $('chips');
-Object.entries(CATS).forEach(([k, v]) => {
+/* ---------- la de hoy ---------- */
+const now = new Date();
+const dayKey = now.getFullYear() * 1000 + Math.floor((now - new Date(now.getFullYear(), 0, 0)) / 864e5);
+const todayId = Math.floor(seeded(dayKey)() * NOTAS.length);
+$('todayDate').textContent = now.toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' });
+$('todayText').textContent = NOTAS[todayId].t;
+$('todayCat').textContent = CATS[NOTAS[todayId].c].emoji + '  ' + CATS[NOTAS[todayId].c].name;
+for (let i = 0; i < 14; i++) {
+  const s = document.createElement('span'); s.textContent = rand(['✦', '✧', '·', '♥']);
+  s.style.cssText = `left:${Math.random() * 100}%;top:${Math.random() * 100}%;animation-delay:${-Math.random() * 3}s;font-size:${8 + Math.random() * 8}px`;
+  $('stars').appendChild(s);
+}
+$('todayFav').onclick = e => { e.stopPropagation(); toggleFav(todayId); const r = e.currentTarget.getBoundingClientRect(); if (favs.has(todayId)) pop(r.left + 21, r.top + 21, { n: 10 }); };
+$('today').onclick = () => openBig(todayId, 'la notita de hoy ♡');
+
+/* ---------- estados de ánimo ---------- */
+MOODS.forEach(m => {
   const b = document.createElement('button');
-  b.className = 'chip' + (k === cat ? ' on' : '');
-  b.textContent = `${v.emoji} ${v.name}`;
+  b.className = 'mood';
+  b.innerHTML = `<span class="em" style="background:${m.bg}">${m.emoji}</span><span>${m.label}</span>`;
   b.onclick = () => {
-    cat = k; buzz(6);
-    [...chips.children].forEach(c => c.classList.toggle('on', c === b));
-    b.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
-    fillJar(); renderLists();
+    let pool = NOTAS.map((_, i) => i).filter(i => m.cats.includes(NOTAS[i].c) && (!m.match || m.match.test(NOTAS[i].t)));
+    const fresh = pool.filter(i => !read.has(i));
+    buzz(10);
+    const r = b.getBoundingClientRect(); pop(r.left + r.width / 2, r.top + 20, { n: 6, ch: m.emoji, spread: 50 });
+    setTimeout(() => openBig(rand(fresh.length ? fresh : pool), m.kicker, pool), 180);
   };
-  chips.appendChild(b);
+  $('moods').appendChild(b);
 });
 
-/* ================= tarro ================= */
-const glass = $('glass'), jar = $('jar');
-function fillJar() {
-  glass.innerHTML = '';
-  const all = ids(), left = all.filter(i => !read.has(i));
-  const MAX = 36, perRow = 4;
-  const n = left.length ? Math.max(1, Math.round(left.length / all.length * MAX)) : 0;
-  for (let k = 0; k < n; k++) {
-    const row = Math.floor(k / perRow), col = k % perRow;
-    const s = document.createElement('i');
-    s.className = 'slip';
-    s.style.background = CATS[NOTAS[left[k % left.length]].c].paper;
-    s.style.left = (8 + col * 44 + (row % 2 ? 12 : 0) + Math.random() * 8) + 'px';
-    s.style.bottom = (8 + row * 18 + Math.random() * 5) + 'px';
-    s.style.transform = `rotate(${Math.random() * 70 - 35}deg)`;
-    glass.appendChild(s);
-  }
-  $('jarHint').innerHTML = left.length
-    ? `te quedan <b>${left.length}</b> de ${all.length} notitas por abrir`
-    : `¡las has abierto todas! 🥹<br>toca y te saco una al azar para releer`;
-  $('left').textContent = `${read.size} de ${NOTAS.length} abiertas · ${favs.size} guardadas`;
-  $('readCount').textContent = read.size;
+/* ---------- tablero ---------- */
+const board = $('board');
+const order = NOTAS.map((_, i) => i);
+{ const r = seeded(20241016); for (let i = order.length - 1; i > 0; i--) { const j = Math.floor(r() * (i + 1)); [order[i], order[j]] = [order[j], order[i]]; } }
+const cards = new Map();
+let filter = 'all';
+
+order.forEach((id, k) => {
+  const n = NOTAS[id], c = CATS[n.c];
+  const el = document.createElement('div');
+  el.className = 'card' + (read.has(id) ? ' open' : '') + (favs.has(id) ? ' fav' : '');
+  el.style.setProperty('--tilt', (((k * 53) % 7) - 3) * .45 + 'deg');
+  el.innerHTML = `
+    <div class="inner">
+      <div class="face back"><div class="tape" style="--tape:${c.tape};--tape-r:${((k * 31) % 9) - 4}deg"></div>
+        <p></p><div class="meta"><small>${c.emoji} nº ${pad(id + 1)}</small><span class="mini-heart">💗</span></div></div>
+      <div class="face front" style="--tint:${c.tint}"><span class="num">nº ${pad(id + 1)}</span><span class="wax">${c.emoji}</span><span class="open-hint">ábreme</span></div>
+    </div>`;
+  el.querySelector('p').textContent = n.t;
+  attachPress(el, id);
+  board.appendChild(el);
+  cards.set(id, el);
+});
+
+function attachPress(el, id) {
+  let t = null, sx = 0, sy = 0, long = false;
+  el.addEventListener('pointerdown', e => {
+    sx = e.clientX; sy = e.clientY; long = false;
+    el.classList.add('pressing');
+    t = setTimeout(() => {
+      long = true; el.classList.remove('pressing');
+      if (!read.has(id)) reveal(id, e.clientX, e.clientY);
+      toggleFav(id, true); pop(e.clientX, e.clientY, { n: 12, ch: '♥' }); buzz([10, 40, 10]);
+      toast('Guardada en tus favoritas 💗');
+    }, 520);
+  });
+  const cancel = () => { clearTimeout(t); el.classList.remove('pressing'); };
+  el.addEventListener('pointermove', e => { if (Math.hypot(e.clientX - sx, e.clientY - sy) > 8) cancel(); });
+  el.addEventListener('pointerleave', cancel);
+  el.addEventListener('pointercancel', cancel);
+  el.addEventListener('pointerup', e => {
+    cancel();
+    if (long) return;
+    if (!read.has(id)) reveal(id, e.clientX, e.clientY);
+    else openBig(id, null, visibleIds());
+  });
+  el.addEventListener('contextmenu', e => e.preventDefault());
 }
 
-function draw() {
-  let pool = ids().filter(i => !read.has(i)), again = false;
-  if (!pool.length) { pool = ids(); again = true; }
-  let id = rand(pool);
-  if (pool.length > 1) while (id === current) id = rand(pool);
-  return { id, again };
-}
-
-function takeFromJar() {
-  jar.classList.remove('idle', 'wiggle'); void jar.offsetWidth; jar.classList.add('wiggle');
-  buzz([10, 30, 14]);
-  const slips = glass.querySelectorAll('.slip:not(.gone)');
-  if (slips.length) slips[slips.length - 1].classList.add('gone');
-  const r = jar.getBoundingClientRect();
-  confetti(r.left + r.width / 2, r.top + 40, 6);
-  const { id, again } = draw();
-  if (again) toast('Ya las habías abierto todas de aquí — ¡pero releer también vale! 💗');
-  setTimeout(() => openNote(id, true), 330);
-}
-jar.addEventListener('click', takeFromJar);
-jar.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); takeFromJar(); } });
-jar.addEventListener('animationend', e => { if (e.animationName === 'wiggle') { jar.classList.remove('wiggle'); jar.classList.add('idle'); } });
-
-/* ================= notita ================= */
-const modal = $('modal'), note = $('note'), favBtn = $('favBtn');
-function openNote(id, fresh) {
-  current = id;
-  const n = NOTAS[id], c = CATS[n.c], isNew = fresh && !read.has(id);
+function reveal(id, x, y) {
+  const el = cards.get(id);
   read.add(id); save();
-  note.style.backgroundColor = c.paper;
-  note.style.backgroundImage = LINES;
-  note.style.setProperty('--rot', (Math.random() * 4 - 2).toFixed(1) + 'deg');
-  $('noteTag').textContent = `${c.emoji} ${c.name}`;
-  const num = $('noteNum'); num.textContent = isNew ? '¡nueva!' : `nº ${id + 1}`; num.classList.toggle('new', isNew);
-  const p = $('noteText'); p.innerHTML = '';
-  n.t.split(' ').forEach((w, i) => { const s = document.createElement('span'); s.className = 'w'; s.style.setProperty('--i', i); s.textContent = w; p.append(s, ' '); });
-  setFav();
-  note.classList.remove('enter'); note.style.transform = ''; note.style.transition = ''; note.style.opacity = '';
-  void note.offsetWidth; note.classList.add('enter');
-  modal.classList.add('on');
-  fillJar(); renderLists();
-}
-function closeNote() { modal.classList.remove('on'); }
-function setFav() {
-  const on = favs.has(current);
-  favBtn.classList.toggle('on', on);
-  favBtn.textContent = on ? '♥ guardada' : '♡ guardar';
-}
-function toggleFav(force) {
-  if (current < 0) return;
-  const on = force ?? !favs.has(current);
-  on ? favs.add(current) : favs.delete(current);
-  save(); setFav(); renderLists(); fillJar();
-  const b = $('favBadge'); b.classList.remove('bump'); void b.offsetWidth; b.classList.add('bump');
-  if (on) {
-    const h = $('bigheart'); h.classList.remove('go'); void h.offsetWidth; h.classList.add('go');
-    const r = note.getBoundingClientRect(); confetti(r.left + r.width / 2, r.top + r.height / 2, 8);
-    buzz(14);
-  }
-}
-favBtn.onclick = () => toggleFav();
-$('closeBtn').onclick = closeNote;
-$('nextBtn').onclick = () => fling(1);
-modal.addEventListener('pointerdown', e => { if (e.target === modal) closeNote(); });
-document.addEventListener('keydown', e => {
-  if (!modal.classList.contains('on')) return;
-  if (e.key === 'Escape') closeNote();
-  if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') fling(e.key === 'ArrowRight' ? 1 : -1);
-});
-
-function fling(dir) {
-  note.classList.remove('enter');
-  note.style.transition = 'transform .38s ease-in, opacity .38s';
-  note.style.transform = `translateX(${dir * 140}%) rotate(${dir * 25}deg)`;
-  note.style.opacity = '0';
-  buzz(8);
-  setTimeout(() => { const { id, again } = draw(); if (again) toast('Ya las habías abierto todas de aquí 🥹'); openNote(id, true); }, 300);
+  el.classList.add('open');
+  buzz(12);
+  pop(x, y, { n: 9, spread: 70 });
+  progress();
 }
 
-// arrastrar la notita + doble toque para guardar
-let drag = null, lastTap = 0;
-note.addEventListener('pointerdown', e => {
-  drag = { x: e.clientX, y: e.clientY, dx: 0 };
-  note.classList.remove('enter'); note.style.transition = 'none';
-  try { note.setPointerCapture(e.pointerId); } catch {}
-});
-note.addEventListener('pointermove', e => {
-  if (!drag) return;
-  drag.dx = e.clientX - drag.x; const dy = (e.clientY - drag.y) * .3;
-  note.style.transform = `translate(${drag.dx}px, ${dy}px) rotate(${drag.dx / 14}deg)`;
-});
-const endDrag = () => {
-  if (!drag) return;
-  const dx = drag.dx; drag = null;
-  if (Math.abs(dx) > 90) return fling(Math.sign(dx));
-  note.style.transition = 'transform .45s cubic-bezier(.3, 1.6, .5, 1)';
-  note.style.transform = 'rotate(var(--rot))';
-  if (Math.abs(dx) < 6) {
-    const now = Date.now();
-    if (now - lastTap < 320) { toggleFav(true); lastTap = 0; } else lastTap = now;
-  }
-};
-note.addEventListener('pointerup', endDrag);
-note.addEventListener('pointercancel', endDrag);
+function visibleIds() { return order.filter(id => match(id)); }
+function match(id) { return filter === 'all' || (filter === 'fav' ? favs.has(id) : filter === 'new' ? !read.has(id) : NOTAS[id].c === filter); }
 
-/* ================= listas ================= */
-function renderGrid(el, list, empty) {
-  el.innerHTML = '';
-  if (!list.length) { el.innerHTML = `<div class="empty" style="column-span:all">${empty}</div>`; return; }
-  list.forEach(i => {
-    const b = document.createElement('button');
-    b.className = 'mini';
-    b.style.background = CATS[NOTAS[i].c].paper;
-    b.style.setProperty('--rot', ((i * 37 % 9) - 4) / 2 + 'deg');
-    b.textContent = NOTAS[i].t;
-    if (favs.has(i)) { const h = document.createElement('span'); h.className = 'h'; h.textContent = '💗'; b.appendChild(h); }
-    b.onclick = () => openNote(i, false);
-    el.appendChild(b);
+function applyFilter(animate = true) {
+  let k = 0, shown = 0;
+  order.forEach(id => {
+    const el = cards.get(id), ok = match(id);
+    el.classList.toggle('hide', !ok);
+    if (ok) {
+      shown++;
+      if (animate && k < 24) { el.classList.remove('appear'); void el.offsetWidth; el.style.setProperty('--d', (k++ * 25) + 'ms'); el.classList.add('appear'); }
+    }
+  });
+  let empty = board.querySelector('.board-empty');
+  if (!shown) {
+    if (!empty) { empty = document.createElement('div'); empty.className = 'board-empty'; board.prepend(empty); }
+    empty.textContent = filter === 'fav' ? 'Aún no has guardado ninguna… mantén pulsada una notita para guardarla ♡' : '¡Ya las has abierto todas! 🥹';
+  } else if (empty) empty.remove();
+  updateCounts();
+}
+function updateCounts() {
+  const ids = visibleIds(), opened = ids.filter(i => read.has(i)).length;
+  $('bCount').innerHTML = `<b>${opened}</b> abiertas de ${ids.length}`;
+  document.querySelectorAll('.chip').forEach(ch => {
+    const f = ch.dataset.f, n = ch.querySelector('.n');
+    if (!n) return;
+    n.textContent = f === 'fav' ? favs.size : f === 'new' ? NOTAS.length - read.size : '';
   });
 }
-function renderLists() {
-  const inCat = i => cat === 'all' || NOTAS[i].c === cat;
-  renderGrid($('favGrid'), [...favs].filter(inCat).reverse(), '<div>🫙</div>Aún no has guardado ninguna.<br>Abre una notita y toca <b>♡ guardar</b><br>(o dale dos toques).');
-  renderGrid($('readGrid'), [...read].filter(inCat).reverse(), '<div>💌</div>Todavía no has abierto ninguna.<br>¡Ve al tarro y saca la primera!');
-  $('favBadge').textContent = favs.size || '';
-}
 
-/* ================= navegación ================= */
-document.querySelectorAll('.nav [data-view]').forEach(b => b.onclick = () => {
-  buzz(6);
-  document.querySelectorAll('.nav button').forEach(x => x.classList.toggle('on', x === b));
-  document.querySelectorAll('.view').forEach(v => v.classList.toggle('on', v.id === b.dataset.view));
+const FILTERS = [['all', '✨', 'todas'], ['new', '✉️', 'sin abrir'], ['fav', '💗', 'guardadas'], ...Object.entries(CATS).map(([k, c]) => [k, c.emoji, c.short])];
+FILTERS.forEach(([k, e, l]) => {
+  const b = document.createElement('button');
+  b.className = 'chip' + (k === filter ? ' on' : '');
+  b.dataset.f = k;
+  b.innerHTML = `${e} ${l}${k === 'fav' || k === 'new' ? ' <span class="n"></span>' : ''}`;
+  b.onclick = () => {
+    filter = k; buzz(6);
+    document.querySelectorAll('.chip').forEach(c => c.classList.toggle('on', c === b));
+    b.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+    applyFilter();
+  };
+  $('filters').appendChild(b);
 });
 
-/* ================= carta de intro ================= */
+$('surprise').onclick = () => {
+  let pool = visibleIds().filter(i => !read.has(i));
+  if (!pool.length) pool = order.filter(i => !read.has(i));
+  if (!pool.length) { openBig(rand(order), 'para releer ♡'); return; }
+  const id = rand(pool), el = cards.get(id);
+  if (el.classList.contains('hide')) { filter = 'all'; document.querySelectorAll('.chip').forEach(c => c.classList.toggle('on', c.dataset.f === 'all')); applyFilter(false); }
+  el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  el.classList.remove('glow'); void el.offsetWidth; el.classList.add('glow');
+  setTimeout(() => { const r = el.getBoundingClientRect(); reveal(id, r.left + r.width / 2, r.top + r.height / 2); }, 900);
+};
+
+/* ---------- favoritas ---------- */
+function toggleFav(id, force) {
+  const on = force ?? !favs.has(id);
+  on ? favs.add(id) : favs.delete(id);
+  save();
+  cards.get(id)?.classList.toggle('fav', on);
+  $('todayFav').classList.toggle('on', favs.has(todayId));
+  if (current === id) setFavBtn();
+  updateCounts();
+  if (filter === 'fav') applyFilter(false);
+}
+$('todayFav').classList.toggle('on', favs.has(todayId));
+
+/* ---------- notita en grande ---------- */
+const modal = $('modal'), big = $('big');
+let current = -1, list = [];
+function openBig(id, kicker, pool) {
+  current = id;
+  list = pool || visibleIds();
+  const n = NOTAS[id], c = CATS[n.c];
+  if (!read.has(id)) { read.add(id); save(); cards.get(id).classList.add('open'); progress(); }
+  $('kicker').textContent = kicker || '';
+  $('bigTape').style.setProperty('--tape', c.tape);
+  $('bigTag').textContent = c.emoji + ' ' + c.name;
+  $('bigNo').textContent = 'nº ' + pad(id + 1);
+  const p = $('bigText'); p.innerHTML = '';
+  n.t.split(' ').forEach((w, i) => { const s = document.createElement('span'); s.className = 'w'; s.style.setProperty('--i', Math.min(i, 40)); s.textContent = w; p.append(s, ' '); });
+  big.style.setProperty('--r', (Math.random() * 3 - 1.5).toFixed(1) + 'deg');
+  big.style.transition = ''; big.style.transform = ''; big.style.opacity = '';
+  big.classList.remove('enter'); void big.offsetWidth; big.classList.add('enter');
+  setFavBtn();
+  modal.classList.add('on'); document.body.classList.add('lock');
+}
+function closeBig() { modal.classList.remove('on'); document.body.classList.remove('lock'); }
+function setFavBtn() {
+  const on = favs.has(current), b = $('mFav');
+  b.classList.toggle('on', on); b.textContent = on ? '♥ guardada' : '♡ guardar';
+}
+function step(dir) {
+  const ids = list.length ? list : order;
+  let i = ids.indexOf(current);
+  let next;
+  if (i === -1) next = rand(ids);
+  else {
+    const unread = ids.filter(x => !read.has(x) && x !== current);
+    next = unread.length && dir > 0 ? rand(unread) : ids[(i + dir + ids.length) % ids.length];
+  }
+  big.classList.remove('enter');
+  big.style.transition = 'transform .35s ease-in, opacity .35s';
+  big.style.transform = `translateX(${dir * 120}%) rotate(${dir * 18}deg)`; big.style.opacity = '0';
+  buzz(8);
+  setTimeout(() => openBig(next, $('kicker').textContent, list), 260);
+}
+$('mClose').onclick = closeBig;
+$('mNext').onclick = () => step(1);
+$('mFav').onclick = () => { toggleFav(current); if (favs.has(current)) { const b = $('burst'); b.classList.remove('go'); void b.offsetWidth; b.classList.add('go'); buzz(14); const r = big.getBoundingClientRect(); pop(r.left + r.width / 2, r.top + r.height / 2, { n: 14, spread: 140 }); } };
+$('mCopy').onclick = async () => {
+  try { await navigator.clipboard.writeText(NOTAS[current].t); toast('Copiada ✨'); } catch { toast('No he podido copiarla'); }
+};
+modal.addEventListener('pointerdown', e => { if (e.target === modal) closeBig(); });
+document.addEventListener('keydown', e => {
+  if (!modal.classList.contains('on')) return;
+  if (e.key === 'Escape') closeBig();
+  if (e.key === 'ArrowRight') step(1);
+  if (e.key === 'ArrowLeft') step(-1);
+});
+{ // deslizar + doble toque
+  let d = null, last = 0;
+  big.addEventListener('pointerdown', e => { d = { x: e.clientX, y: e.clientY, dx: 0 }; big.classList.remove('enter'); big.style.transition = 'none'; try { big.setPointerCapture(e.pointerId); } catch {} });
+  big.addEventListener('pointermove', e => { if (!d) return; d.dx = e.clientX - d.x; big.style.transform = `translate(${d.dx}px, ${(e.clientY - d.y) * .25}px) rotate(${d.dx / 16}deg)`; });
+  const end = () => {
+    if (!d) return; const dx = d.dx; d = null;
+    if (Math.abs(dx) > 90) return step(dx < 0 ? 1 : -1);
+    big.style.transition = 'transform .5s cubic-bezier(.3, 1.6, .5, 1)'; big.style.transform = 'rotate(var(--r))';
+    if (Math.abs(dx) < 6) { const t = Date.now(); if (t - last < 320) { if (!favs.has(current)) $('mFav').click(); else { const b = $('burst'); b.classList.remove('go'); void b.offsetWidth; b.classList.add('go'); } last = 0; } else last = t; }
+  };
+  big.addEventListener('pointerup', end); big.addEventListener('pointercancel', end);
+}
+
+/* ---------- aleatoria ---------- */
+function randomAny(kicker) {
+  const fresh = order.filter(i => !read.has(i));
+  openBig(rand(fresh.length ? fresh : order), kicker || 'una al azar ✨', order);
+}
+$('fab').onclick = e => { pop(e.clientX, e.clientY, { n: 8 }); randomAny(); };
+$('heroRandom').onclick = () => randomAny();
+
+/* ---------- corazón secreto ---------- */
+{ let taps = 0, tt; $('heroHeart').addEventListener('click', e => {
+  taps++; clearTimeout(tt); tt = setTimeout(() => taps = 0, 1500);
+  pop(e.clientX, e.clientY, { n: 5, ch: '♥' }); buzz(8);
+  if (taps >= 5) { taps = 0; rain(60); buzz([20, 60, 20, 60, 40]); toast('michulita y tuchulito contra lo que sea 💗'); }
+}); }
+
+/* ---------- carta ---------- */
 const intro = $('intro'), env = $('envelope'), letter = $('letter');
 function showIntro() {
   intro.classList.remove('hide'); env.classList.remove('open'); letter.classList.remove('on');
-  letter.querySelectorAll('.line, .go').forEach(l => l.classList.remove('in'));
+  letter.querySelectorAll('.l, .go').forEach(l => l.classList.remove('in'));
+  document.body.classList.add('lock');
 }
-function openEnvelope() {
+function openEnv() {
   if (env.classList.contains('open')) return;
   env.classList.add('open'); buzz([12, 40, 20]);
-  const r = env.getBoundingClientRect(); confetti(r.left + r.width / 2, r.top + 20, 12);
-  setTimeout(() => {
-    letter.classList.add('on');
-    letter.querySelectorAll('.line, .go').forEach((l, i) => setTimeout(() => l.classList.add('in'), 450 + i * 750));
-  }, 900);
+  const r = env.getBoundingClientRect(); pop(r.left + r.width / 2, r.top + 90, { n: 16, spread: 150 });
+  setTimeout(() => { letter.classList.add('on'); letter.querySelectorAll('.l, .go').forEach((l, i) => setTimeout(() => l.classList.add('in'), 500 + i * 900)); }, 950);
 }
-env.addEventListener('click', openEnvelope);
-env.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openEnvelope(); } });
+env.addEventListener('click', openEnv);
+env.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openEnv(); } });
 $('goBtn').onclick = () => {
   store.set('intro', 1);
-  letter.classList.remove('on'); intro.classList.add('hide');
-  setTimeout(() => { const r = jar.getBoundingClientRect(); confetti(r.left + r.width / 2, r.top + r.height / 2, 14); }, 400);
+  letter.classList.remove('on'); intro.classList.add('hide'); document.body.classList.remove('lock');
+  setTimeout(() => rain(26), 300);
 };
-$('openLetter').onclick = showIntro;
-if (store.get('intro', 0)) intro.classList.add('hide');
+$('reLetter').onclick = showIntro;
+if (store.get('intro', 0)) intro.classList.add('hide'); else document.body.classList.add('lock');
 
-fillJar(); renderLists();
+applyFilter(false); progress();
 </script>
 </body>
 </html>
