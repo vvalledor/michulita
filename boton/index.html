@@ -378,6 +378,8 @@
     padding: calc(22px + var(--safe-t)) 18px calc(22px + var(--safe-b)); background: rgba(36, 5, 15, .58);
     -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); opacity: 0; pointer-events: none; transition: opacity .4s; }
   .lt.on { opacity: 1; pointer-events: auto; }
+  .lt:not(.on), .lt:not(.on) * { pointer-events: none !important; }
+  .modal:not(.on), .modal:not(.on) * { pointer-events: none !important; }
   .lt-card { position: relative; width: min(410px, 100%); max-height: calc(100dvh - 150px); overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; touch-action: pan-y;
     padding: 46px 24px 26px 30px; border-radius: 8px; background: var(--cream); color: var(--ink); box-shadow: 0 30px 60px -20px rgba(0, 0, 0, .7);
     background-image: linear-gradient(90deg, transparent 18px, rgba(194, 48, 107, .28) 18px 19.5px, transparent 19.5px), repeating-linear-gradient(transparent 0 31px, rgba(94, 18, 48, .08) 31px 32px);
@@ -421,6 +423,8 @@
     background: rgba(255, 214, 230, .13); border: 1px solid rgba(255, 214, 230, .24); color: var(--blush); transition: transform .15s, background .2s;
     -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
   .care-btn:active { transform: scale(.9); background: rgba(255, 214, 230, .25); }
+  .care-btn { touch-action: manipulation; -webkit-user-select: none; user-select: none; }
+  .care-btn > * { pointer-events: none; }
   .care-btn span { font-size: 26px; line-height: 1.1; }
   .care-btn small { font-size: 10.5px; font-weight: 800; letter-spacing: .02em; }
   .care-btn .cn { position: absolute; top: -6px; right: -6px; min-width: 20px; height: 20px; padding: 0 5px; border-radius: 10px; background: #F28C28; color: #fff;
@@ -1020,10 +1024,10 @@ function say(html, ms = 2600) {
 }
 function hop(happy = true) {
   bunny.classList.remove('hop'); void bunny.offsetWidth; bunny.classList.add('hop');
-  if (happy) { bunny.classList.add('happy'); clearTimeout(hop.h); hop.h = setTimeout(() => bunny.classList.remove('happy'), 900); }
+  if (happy) { bunny.classList.add('happy'); clearTimeout(hop.h); hop.h = setTimeout(() => { if (!hugging) bunny.classList.remove('happy'); }, 900); }
 }
 bunny.addEventListener('click', e => {
-  if (!bunny.classList.contains('corner')) return;
+  if (!bunny.classList.contains('corner') || hugging) return;
   hop(); buzz(10);
   const r = bunny.getBoundingClientRect(); sparks(r.left + r.width / 2, r.top + 30, 8, 60, ['💗', '💕', '✨']);
   say(rand(BUNNY_PET), 2200);
@@ -1231,6 +1235,7 @@ modal.addEventListener('pointerdown', e => { if (e.target === modal) closeNote()
 const HITOS = { 1: 'La primera ☺️ quedan muchas más eh', 10: 'Ya llevas 10 eh 🥹', 25: '25 ya… tremendo', 50: 'Ufff 50 notitas 🫠', 100: '¡100! madre mía 😳', 150: '150, ya vas por la mitad ☺️', 200: '200 ya… pfff qué bonito todo 🥹', 250: '250, ya casi casi 🥺' };
 let saidHito = new Set(store.get('hitos', []));
 function react() {
+  if (hugging) return;
   const n = opened.length;
   hop();
   if (n === NOTAS.length && !saidHito.has(n)) {
@@ -1248,9 +1253,12 @@ function react() {
 
 /* ---------- el conejito se duerme si no le haces caso ---------- */
 let lastAct = Date.now();
-document.addEventListener('pointerdown', () => {
+document.addEventListener('pointerdown', e => {
   lastAct = Date.now();
-  if (bunny.classList.contains('sleep')) { bunny.classList.remove('sleep'); hop(); say('Uy, me había quedado frito 😳', 2400); }
+  if (bunny.classList.contains('sleep')) {
+    bunny.classList.remove('sleep');
+    if (!e.target.closest('.care')) { hop(); say('Uy, me había quedado frito 😳', 2400); }
+  }
 }, true);
 setInterval(() => {
   const onJar = !$('jarScreen').classList.contains('off');
@@ -1345,7 +1353,7 @@ function setFat() {
 }
 function updateCare() {
   const onJar = !$('jarScreen').classList.contains('off');
-  const ok = store.get('pinky', '') === 'done' && onJar && !document.body.classList.contains('event') && !hugging;
+  const ok = store.get('pinky', '') === 'done' && onJar && !document.body.classList.contains('event') && !hugging && !(typeof hugQueued !== 'undefined' && hugQueued);
   care.classList.toggle('on', ok);
 }
 function ask(label) {
@@ -1515,6 +1523,7 @@ function closeLetter(fromPop) {
   if (fromPop !== true) popLayer('letter');
   stopWriting();
   $('lt').classList.remove('on');
+  $('ltClose').classList.remove('in'); $('ltReplay').classList.remove('in'); $('ltSkip').classList.remove('in');
   if (letterFirst) { letterFirst = false; afterLetter(); }
 }
 $('ltClose').onclick = () => { buzz(8); closeLetter(); };
@@ -1532,38 +1541,48 @@ function afterLetter() {
 /* --- zanahorias: la conejita se va poniendo gordita --- */
 const CARROT_HITOS = { 1: 'Ñam ñam 🥕☺️ gracias Olga', 5: 'Ufff ya llevo 5 eh 🤤', 10: 'Me estoy poniendo gordita 😳', 20: 'Pfff ya casi no quepo 🫠', 30: 'No puedo más 🥺… bueno, una más vale' };
 const CARROT_LINES = ['Ñam ñam 🥕', 'Ufff qué rica 🤤', 'Gracias Olga 🥹', 'Otra porfa 🥺', 'Jeje 🥰', 'Qué bien me cuidas eh ☺️'];
-$('carrotBtn').onclick = async () => {
-  if (eating || hugging) return;
-  eating = true; buzz(8);
+// Cada toque lanza una zanahoria al momento (hasta 10 a la vez); nada se queda bloqueado.
+let inFlight = 0, settleWaiters = [], hugQueued = false;
+function carrotsSettled() { return inFlight ? new Promise(r => settleWaiters.push(r)) : Promise.resolve(); }
+async function throwCarrot() {
   const b = $('carrotBtn').getBoundingClientRect(), p = pinky.getBoundingClientRect();
   const sx = b.left + b.width / 2, sy = b.top + b.height / 2;
   const tx = p.left + p.width * .5 - sx, ty = p.top + p.height * .52 - sy;
   const c = document.createElement('span'); c.className = 'carrot-fly'; c.textContent = '🥕';
   c.style.left = sx + 'px'; c.style.top = sy + 'px'; document.body.appendChild(c);
-  await c.animate([
-    { transform: 'translate(0, 0) scale(.7) rotate(0)' },
-    { transform: `translate(${tx * .5}px, ${ty - 80}px) scale(1.25) rotate(-160deg)`, offset: .5 },
-    { transform: `translate(${tx}px, ${ty}px) scale(.7) rotate(-300deg)` },
-  ], { duration: 620, easing: 'cubic-bezier(.3, .1, .3, 1)', fill: 'forwards' }).finished;
-  pinky.classList.remove('chomp'); void pinky.offsetWidth; pinky.classList.add('chomp', 'happy');
-  for (const cut of [34, 67, 100]) { c.style.clipPath = `inset(0 0 0 ${cut}%)`; sparks(sx + tx, sy + ty + 8, 3, 24, ['·', '•', '✦']); buzz(10); await sleep(170); }
-  c.remove();
+  try {
+    await c.animate([
+      { transform: 'translate(0, 0) scale(.7) rotate(0)' },
+      { transform: `translate(${tx * .5}px, ${ty - 80}px) scale(1.25) rotate(-160deg)`, offset: .5 },
+      { transform: `translate(${tx}px, ${ty}px) scale(.7) rotate(-300deg)` },
+    ], { duration: 620, easing: 'cubic-bezier(.3, .1, .3, 1)', fill: 'forwards' }).finished;
+    pinky.classList.remove('chomp'); void pinky.offsetWidth; pinky.classList.add('chomp', 'happy');
+    for (const cut of [34, 67, 100]) { c.style.clipPath = `inset(0 0 0 ${cut}%)`; sparks(sx + tx, sy + ty + 8, 3, 24, ['·', '•', '✦']); buzz(10); await sleep(170); }
+  } finally { c.remove(); }
   carrots++; store.set('carrots', carrots); setFat();
-  pinky.classList.remove('chomp'); void pinky.offsetWidth; pinky.classList.add('chomp', 'happy');
-  sparks(p.left + p.width * .5, p.top + p.height * .5, 6, 45, ['ñam', '✦', '♥']);
+  sparks(p.left + p.width * .5, p.top + p.height * .5, 5, 45, ['ñam', '✦', '♥']);
   sayP(CARROT_HITOS[carrots] || (carrots > 30 ? rand(['Estoy redondita ya 😳', 'Ñam… 🫠', 'Una más y ruedo 🥺']) : rand(CARROT_LINES)), 2200);
-  setTimeout(() => { eating = false; }, 380);
-  clearTimeout(window._chomp); window._chomp = setTimeout(() => pinky.classList.remove('chomp', 'happy'), 950);
+  clearTimeout(window._chomp); window._chomp = setTimeout(() => { if (!hugging) pinky.classList.remove('chomp', 'happy'); }, 950);
+}
+$('carrotBtn').onclick = () => {
+  if (hugging || hugQueued || inFlight >= 10) return;
+  inFlight++; buzz(8);
+  throwCarrot().catch(() => {}).finally(() => {
+    inFlight = Math.max(0, inFlight - 1);
+    if (!inFlight) { const w = settleWaiters; settleWaiters = []; w.forEach(f => f()); }
+  });
 };
 
 /* --- abrazo de los dos conejitos --- */
 const HUG_W = ['Ufff qué abrazo más bueno 🥹', 'Esto es lo que necesitaba 🫠', 'Abrazo de parte de Adri eh ☺️', 'Otro cuando quieras 🥰'];
 const HUG_P = ['Jo qué gustito 🥺', 'Este va de su parte 🤗', 'Te queremos mucho eh ☺️', 'Ya está, ya está 🥹'];
-$('hugBtn').onclick = async () => {
-  if (hugging || eating) return;
-  hugging = true; buzz(10);
-  bunny.classList.remove('sleep'); bubble.classList.remove('on'); pBubble.classList.remove('on');
-  updateCare();
+function resetHugPose() {
+  $('hugHeart').classList.remove('on');
+  [bunny, pinky].forEach(el => { el.classList.remove('hug', 'happy', 'travel', 'hop'); el.style.transform = ''; });
+}
+async function doHug() {
+  bunny.classList.remove('sleep', 'hop'); pinky.classList.remove('hop', 'chomp');
+  bubble.classList.remove('on'); pBubble.classList.remove('on');
   const cx = innerWidth / 2, wr = bunny.getBoundingClientRect(), pr = pinky.getBoundingClientRect();
   bunny.classList.add('travel'); pinky.classList.add('travel');
   bunny.style.transform = `translateX(${cx - wr.width + 16 - wr.left}px)`;
@@ -1584,10 +1603,20 @@ $('hugBtn').onclick = async () => {
   bunny.classList.add('travel'); pinky.classList.add('travel');
   bunny.style.transform = ''; pinky.style.transform = '';
   await sleep(950);
-  bunny.classList.remove('travel'); pinky.classList.remove('travel');
-  hugging = false; updateCare();
-  say(rand(HUG_W), 2600);
-  setTimeout(() => sayP(rand(HUG_P), 2600), 1100);
+}
+$('hugBtn').onclick = async () => {
+  if (hugging || hugQueued) return;
+  buzz(10);
+  hugQueued = true; updateCare();          // si aún hay zanahorias en el aire, espera a que acaben
+  await carrotsSettled();
+  hugQueued = false;
+  if (hugging) return;
+  hugging = true; updateCare();
+  let ok = false;
+  try { await doHug(); ok = true; }
+  catch (e) { /* si algo falla, se vuelve a la posición normal */ }
+  finally { resetHugPose(); hugging = false; updateCare(); }
+  if (ok) { say(rand(HUG_W), 2600); setTimeout(() => { if (!hugging) sayP(rand(HUG_P), 2600); }, 1100); }
 };
 
 /* --- tocar a la conejita --- */
