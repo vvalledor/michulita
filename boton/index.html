@@ -416,22 +416,31 @@
   .lt-close.in { opacity: 1; pointer-events: auto; }
 
   /* cuidados: queso, chocolate y abrazo */
-  .care { position: fixed; left: 50%; bottom: calc(92px + var(--safe-b)); z-index: 31; display: flex; gap: 8px; transform: translate(-50%, 14px); opacity: 0; pointer-events: none;
+  .care { position: fixed; left: 50%; bottom: calc(84px + var(--safe-b)); z-index: 31; display: grid; grid-template-columns: repeat(2, 58px); gap: 6px; transform: translate(-50%, 14px); opacity: 0; pointer-events: none;
     transition: opacity .4s, transform .5s cubic-bezier(.3, 1.6, .5, 1); }
   .care.on { opacity: 1; pointer-events: auto; transform: translate(-50%, 0); }
-  .care-btn { position: relative; width: 58px; height: 62px; border-radius: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px;
+  .care-btn { position: relative; width: 58px; height: 54px; border-radius: 18px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px;
     background: rgba(255, 214, 230, .13); border: 1px solid rgba(255, 214, 230, .24); color: var(--blush); transition: transform .15s, background .2s;
     -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
   .care-btn:active { transform: scale(.9); background: rgba(255, 214, 230, .25); }
   .care-btn { touch-action: manipulation; -webkit-user-select: none; user-select: none; }
   .care-btn > * { pointer-events: none; }
-  .care-btn span { font-size: 26px; line-height: 1.1; }
+  .care-btn span { font-size: 23px; line-height: 1.1; }
+  .care-btn span svg { width: 40px; height: 16px; display: block; margin: 5px auto 4px; }
   .care-btn small { font-size: 9.5px; font-weight: 800; letter-spacing: .02em; }
   .care-btn .cn { position: absolute; top: -6px; right: -6px; min-width: 20px; height: 20px; padding: 0 5px; border-radius: 10px; background: #F28C28; color: #fff;
     font-size: 11px; font-weight: 800; font-style: normal; line-height: 20px; text-align: center; }
   .care-btn .cn:empty { display: none; }
-  body.has-pinky #jarScreen { padding-bottom: calc(176px + var(--safe-b)); }
+  body.has-pinky #jarScreen { padding-bottom: calc(214px + var(--safe-b)); }
   .treat-fly { position: fixed; z-index: 60; width: 36px; height: 36px; margin: -18px 0 0 -18px; font-size: 30px; line-height: 36px; text-align: center; pointer-events: none; will-change: transform; }
+  .dumb { position: absolute; left: 50%; top: 66%; width: 78%; transform: translate(-50%, 0); pointer-events: none; opacity: 0; transition: opacity .3s; z-index: 2; }
+  .dumb svg { width: 100%; display: block; filter: drop-shadow(0 3px 3px rgba(0, 0, 0, .35)); }
+  .bunny.lifting .dumb { opacity: 1; animation: lift .7s ease-in-out infinite; }
+  @keyframes lift { 50% { transform: translate(-50%, -34px) rotate(-2deg); } }
+  .bunny.lifting svg { animation: squat .7s ease-in-out infinite !important; }
+  @keyframes squat { 0%, 100% { transform: scale(1.04, .95) translateY(3px); } 50% { transform: scale(.97, 1.05) translateY(-3px); } }
+  .bunny.lifting .eyes { display: none; }
+  .bunny.lifting .happy-eyes { display: inline; }
   .treat-fly.half-l { clip-path: inset(-10% 50% -10% -10%); }
   .treat-fly.half-r { clip-path: inset(-10% -10% -10% 50%); }
   .hug-heart { position: fixed; z-index: 32; font-size: 54px; pointer-events: none; transform: translate(-50%, -50%) scale(0); opacity: 0; transition: opacity .3s; }
@@ -579,6 +588,7 @@
   <button class="care-btn" id="cheeseBtn" aria-label="Darles queso"><span>🧀</span><small>queso</small></button>
   <button class="care-btn" id="chocoBtn" aria-label="Darles chocolate"><span>🍫</span><small>chocolate</small></button>
   <button class="care-btn" id="hugBtn" aria-label="Dar un abrazo"><span>🤗</span><small>abrazo</small></button>
+  <button class="care-btn" id="gymBtn" aria-label="A hacer pesas"><span><svg viewBox="0 0 80 24" aria-hidden="true"><rect x="10" y="9" width="60" height="6" rx="3" fill="#FFD6E6"/><rect x="5" y="1" width="9" height="22" rx="3" fill="#A6CC45"/><rect x="66" y="1" width="9" height="22" rx="3" fill="#A6CC45"/><rect x="0" y="5" width="6" height="14" rx="2" fill="#D9EBA8"/><rect x="74" y="5" width="6" height="14" rx="2" fill="#D9EBA8"/></svg></span><small>pesas</small></button>
 </div>
 <div class="hug-heart" id="hugHeart">💗</div>
 
@@ -1613,12 +1623,55 @@ const feed = kind => () => {
 $('cheeseBtn').onclick = feed('queso');
 $('chocoBtn').onclick = feed('choco');
 
+/* --- pesas: los dos entrenan y vuelven a estar como al principio --- */
+const DUMB_SVG = '<svg viewBox="0 0 80 24" aria-hidden="true"><rect x="10" y="10" width="60" height="4" rx="2" fill="#5E1230"/><rect x="5" y="2" width="8" height="20" rx="2.5" fill="#A6CC45"/><rect x="67" y="2" width="8" height="20" rx="2.5" fill="#A6CC45"/><rect x="0" y="6" width="6" height="12" rx="2" fill="#4F8226"/><rect x="74" y="6" width="6" height="12" rx="2" fill="#4F8226"/></svg>';
+[bunny, pinky].forEach(b => { const d = document.createElement('div'); d.className = 'dumb'; d.innerHTML = DUMB_SVG; b.appendChild(d); });
+async function workout() {
+  const from = Math.min(treats, 30), wasThin = treats === 0;
+  [bunny, pinky].forEach(b => b.classList.remove('sleep', 'hop', 'chomp', 'happy', 'travel', 'hug'));
+  bubble.classList.remove('on'); pBubble.classList.remove('on');
+  [bunny, pinky].forEach(b => b.classList.add('lifting'));
+  buzz(12);
+  say(wasThin ? 'Venga, a mantenernos 💪' : '¡Venga, a quemar el chocolate! 💪', 1800);
+  setTimeout(() => { if (hugging) sayP('Pfff qué duro 😩', 1600); }, 1100);
+  const reps = 5;
+  for (let i = 1; i <= reps; i++) {
+    await sleep(700);
+    const f = (1 + from * (1 - i / reps) * .017).toFixed(4);
+    [bunny, pinky].forEach(b => {
+      b.style.setProperty('--fat', f);
+      const r = b.getBoundingClientRect(); sparks(r.left + r.width * .5, r.top + r.height * .22, 2, 30, ['💦', '💧']);
+    });
+    buzz(14);
+    if (i === 3) say('¡Una más! 💪', 1300);
+  }
+  [bunny, pinky].forEach(b => b.classList.remove('lifting'));
+  treats = 0; store.set('treats', 0); setFat();
+  [bunny, pinky].forEach(b => { const r = b.getBoundingClientRect(); sparks(r.left + r.width / 2, r.top + r.height * .35, 8, 55, ['✨', '💪', '✦']); });
+  buzz([20, 50, 20]);
+  await sleep(250);
+  [bunny, pinky].forEach(b => { b.classList.remove('hop'); void b.offsetWidth; b.classList.add('hop'); });
+  say(wasThin ? 'Ya estábamos en forma eh 😎' : 'Como nuevos ☺️', 2500);
+  setTimeout(() => sayP(wasThin ? 'Jeje 💪' : 'Ufff qué cansancio… ¿un trocito de chocolate? 🥺', 2800), 700);
+}
+$('gymBtn').onclick = async () => {
+  if (hugging || hugQueued) return;
+  buzz(10);
+  hugQueued = true; updateCare();           // espera a que acabe la merienda que esté en el aire
+  await treatsSettled();
+  hugQueued = false;
+  if (hugging) return;
+  hugging = true; updateCare();
+  try { await workout(); } catch (e) {}
+  finally { [bunny, pinky].forEach(b => b.classList.remove('lifting')); setFat(); hugging = false; updateCare(); }
+};
+
 /* --- abrazo de los dos conejitos --- */
 const HUG_W = ['Ufff qué abrazo más bueno 🥹', 'Esto es lo que necesitaba 🫠', 'Abrazo de parte de Adri eh ☺️', 'Otro cuando quieras 🥰'];
 const HUG_P = ['Jo qué gustito 🥺', 'Este va de su parte 🤗', 'Te queremos mucho eh ☺️', 'Ya está, ya está 🥹'];
 function resetHugPose() {
   $('hugHeart').classList.remove('on');
-  [bunny, pinky].forEach(el => { el.classList.remove('hug', 'happy', 'travel', 'hop'); el.style.transform = ''; });
+  [bunny, pinky].forEach(el => { el.classList.remove('hug', 'happy', 'travel', 'hop', 'lifting'); el.style.transform = ''; });
 }
 async function doHug() {
   bunny.classList.remove('sleep', 'hop'); pinky.classList.remove('hop', 'chomp');
