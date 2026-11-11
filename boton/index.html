@@ -322,21 +322,31 @@
   .env { position: fixed; left: 50%; top: 44%; z-index: 45; width: 236px; height: 156px; margin: -78px 0 0 -118px; display: none; cursor: pointer; perspective: 800px; }
   .env.on { display: block; }
   .env > i, .env > .et { position: absolute; display: block; }
-  .env .eb { inset: 0; border-radius: 10px; background: #B8285F; box-shadow: 0 26px 40px -16px rgba(0, 0, 0, .65); z-index: 1; }
+  .env { will-change: transform; }
+  .env .env-shadow { left: 12%; right: 12%; bottom: -30px; height: 20px; border-radius: 50%; background: radial-gradient(closest-side, rgba(0, 0, 0, .45), transparent); z-index: 0; transition: opacity .4s; }
+  .env.idle .env-shadow { animation: shadowp 2.6s ease-in-out infinite; }
+  @keyframes shadowp { 50% { transform: scale(.82); opacity: .6; } }
+  .env.rise .env-shadow, .env.drop .env-shadow { opacity: 0; }
+  .env .eb { inset: 0; border-radius: 10px; z-index: 1; box-shadow: 0 26px 40px -16px rgba(0, 0, 0, .65), inset 0 0 0 1px rgba(255, 255, 255, .15);
+    background: radial-gradient(#EE6FA5 2px, transparent 2.3px) 0 0 / 16px 16px, radial-gradient(#A6CC45 1.6px, transparent 1.9px) 8px 8px / 16px 16px, #FBC3D9; }
   .env .ep { left: 14px; right: 14px; top: 8px; height: 134px; border-radius: 5px; background-color: var(--cream); z-index: 2; transition: transform .85s cubic-bezier(.3, 1.25, .5, 1);
     background-image: repeating-linear-gradient(transparent 0 15px, rgba(194, 48, 107, .18) 15px 16px); background-position: 0 30px; }
   .env .ep::before { content: "para Olga ♡"; position: absolute; left: 14px; top: 6px; font-family: var(--hand); font-weight: 700; font-size: 19px; color: var(--rose); }
-  .env .ef { inset: 0; border-radius: 10px; z-index: 3; background: linear-gradient(160deg, #F27BAE, #D9548E); clip-path: polygon(0 0, 50% 57%, 100% 0, 100% 100%, 0 100%); }
+  .env .ef { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 3; overflow: visible; filter: drop-shadow(0 -2px 3px rgba(80, 10, 35, .18)); }
   .env .et { left: 0; right: 0; top: 0; height: 96px; z-index: 4; transform-origin: 50% 0; transform-style: preserve-3d; -webkit-transform-style: preserve-3d; transition: transform .75s cubic-bezier(.5, 0, .25, 1); }
   .env .et b { position: absolute; inset: 0; clip-path: polygon(0 0, 100% 0, 50% 100%); -webkit-backface-visibility: hidden; backface-visibility: hidden; }
-  .env .et .o { background: linear-gradient(180deg, #F48BB8, #E2457F); }
-  .env .et .n { background: linear-gradient(0deg, #FCD3E3, #F7A9C9); transform: rotateX(180deg); }
-  .env .es { left: 50%; top: 70px; width: 48px; height: 48px; margin-left: -24px; z-index: 5; }
-  .env .es b { position: absolute; inset: 0; border-radius: 50%; background: radial-gradient(circle at 34% 30%, #A8325A, var(--burg) 65%); box-shadow: 0 3px 8px rgba(0, 0, 0, .35);
+  .env .et .o { background: radial-gradient(rgba(255, 255, 255, .2) 1.5px, transparent 1.7px) 0 0 / 12px 12px, linear-gradient(180deg, #F6A0C4, #E2457F 92%); }
+  .env .et .o::after { content: ""; position: absolute; inset: 0; background: linear-gradient(115deg, transparent 40%, rgba(255, 255, 255, .25) 50%, transparent 60%); }
+  .env .et .n { transform: rotateX(180deg);
+    background: radial-gradient(#EE6FA5 2px, transparent 2.3px) 0 0 / 16px 16px, radial-gradient(#A6CC45 1.6px, transparent 1.9px) 8px 8px / 16px 16px, #FFE4EE; }
+  .env .es { left: 50%; top: 68px; width: 54px; height: 54px; margin-left: -27px; z-index: 5; }
+  .env .es b { position: absolute; inset: 0; border-radius: 46% 54% 50% 50% / 53% 47% 55% 45%;
+    background: radial-gradient(circle at 50% 50%, transparent 52%, rgba(255, 255, 255, .12) 54%, transparent 58%), radial-gradient(circle at 32% 28%, #B23C64, var(--burg) 62%, #4A0D24);
+    box-shadow: 0 4px 9px rgba(0, 0, 0, .4), inset 0 -4px 0 rgba(0, 0, 0, .22), inset 0 2px 2px rgba(255, 255, 255, .22);
     transition: transform .55s cubic-bezier(.3, .7, .4, 1), opacity .55s; }
   .env .es .s1 { clip-path: polygon(0 0, 55% 0, 42% 50%, 58% 100%, 0 100%); }
   .env .es .s2 { clip-path: polygon(55% 0, 100% 0, 100% 100%, 58% 100%, 42% 50%); }
-  .env .es span { position: absolute; inset: 0; display: grid; place-items: center; color: var(--cream); font-size: 18px; transition: transform .3s, opacity .3s; }
+  .env .es span { position: absolute; inset: 0; display: grid; place-items: center; color: #F7A9C9; font-size: 20px; text-shadow: 0 -1px 0 rgba(0, 0, 0, .35), 0 1px 0 rgba(255, 255, 255, .25); transition: transform .3s, opacity .3s; }
   .env.idle { animation: float 2.6s ease-in-out infinite; }
   .env.idle .es { animation: sealpulse 1.6s ease-in-out infinite; }
   @keyframes sealpulse { 50% { transform: scale(1.12); } }
@@ -382,9 +392,21 @@
   .lt-card p.pd { font-size: 21px; color: var(--ink-2); margin-bottom: 0; }
   .lt-card .bunnies { text-align: center; font-size: 26px; margin-top: 10px; opacity: 0; transition: opacity .8s; }
   .lt-card .bunnies.in { opacity: 1; }
-  .lt-card .lw { opacity: 0; filter: blur(3px); animation: lw .55s ease forwards; animation-delay: var(--d); }
-  @keyframes lw { to { opacity: 1; filter: none; } }
-  .lt-card.all .lw { animation: none; opacity: 1; filter: none; }
+  .lt-card { will-change: transform; box-shadow: 0 30px 60px -20px rgba(0, 0, 0, .7), inset 0 0 40px rgba(194, 48, 107, .07) !important; }
+  .lt-card .lw { display: inline-block; opacity: 0; }
+  .lt-card .lw.on { animation: ink .5s ease-out forwards; }
+  @keyframes ink { 0% { opacity: 1; clip-path: inset(-90% 100% -90% -10%); color: var(--rose); } 70% { color: var(--rose); } 99% { clip-path: inset(-90% -20% -90% -10%); } 100% { opacity: 1; clip-path: none; } }
+  .lt-card.all .lw { opacity: 1; animation: none; clip-path: none; }
+  .lt-pen { position: absolute; left: 0; top: 0; z-index: 2; pointer-events: none; opacity: 0; font-size: 24px; margin: -16px 0 0 -2px; transition: transform .3s cubic-bezier(.3, .9, .4, 1), opacity .4s; }
+  .lt-pen.on { opacity: 1; }
+  .lt-pen span { display: inline-block; animation: scribble .35s ease-in-out infinite; }
+  @keyframes scribble { 50% { transform: translate(2px, 2px) rotate(-8deg); } }
+  .lt-heart { display: block; width: 56px; margin: -4px 4px 4px auto; }
+  .lt-heart path { fill: none; stroke: var(--rose); stroke-width: 3; stroke-linecap: round; stroke-dasharray: 170; stroke-dashoffset: 170; }
+  .lt-heart.in path { transition: stroke-dashoffset 1.4s ease-in-out; stroke-dashoffset: 0; }
+  .lt-close, .lt-skip, .lt-replay { flex-shrink: 0; }
+  .lt-replay { font-size: 13px; font-weight: 800; color: var(--pink-2); padding: 6px 12px; opacity: 0; pointer-events: none; transition: opacity .4s; margin-top: -8px; }
+  .lt-replay.in { opacity: 1; pointer-events: auto; }
   .lt-card.flip { transition: none !important; }
   .lt-skip { font-size: 12.5px; font-weight: 700; color: rgba(255, 214, 230, .65); opacity: 0; transition: opacity .4s; margin-top: -8px; }
   .lt-skip.in { opacity: 1; }
@@ -521,7 +543,15 @@
 
 <button class="ev-btn" id="evBtn"></button>
 <div class="env" id="env" role="button" aria-label="Abrir la notita">
-  <i class="eb"></i><i class="ep"></i><i class="ef"></i><div class="et"><b class="o"></b><b class="n"></b></div><i class="es"><b class="s1"></b><b class="s2"></b><span>♥</span></i>
+  <i class="env-shadow"></i><i class="eb"></i><i class="ep"></i><svg class="ef" viewBox="0 0 236 156" preserveAspectRatio="none" aria-hidden="true">
+    <defs><linearGradient id="efg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F48BB8"/><stop offset="1" stop-color="#D9548E"/></linearGradient></defs>
+    <path d="M0 0 L118 90 L236 0 L236 146 Q236 156 226 156 L10 156 Q0 156 0 146 Z" fill="url(#efg)"/>
+    <path d="M10 13 L118 96 L226 13 M8 18 L8 148 L228 148 L228 18" fill="none" stroke="#FFE4EE" stroke-width="1.5" stroke-dasharray="5 4" opacity=".7"/>
+    <text x="20" y="136" font-family="Caveat, cursive" font-size="21" font-weight="700" fill="#FFF4EC">para michulita ♡</text>
+    <g opacity=".38" stroke="#5E1230" stroke-width="1.4" fill="none"><circle cx="170" cy="124" r="12"/><path d="M146 112 q5 -4 10 0 t10 0 t10 0 M146 120 q5 -4 10 0 t10 0 t10 0"/></g>
+    <g transform="translate(186 104)"><rect width="36" height="42" rx="1.5" fill="#FFF4EC" stroke="#FFF4EC" stroke-width="4" stroke-dasharray="2.2 2.4"/>
+      <rect x="4" y="4" width="28" height="34" fill="#D9EBA8"/><text x="18" y="29" text-anchor="middle" font-size="18">🐰</text></g>
+  </svg><div class="et"><b class="o"></b><b class="n"></b></div><i class="es"><b class="s1"></b><b class="s2"></b><span>♥</span></i>
   <div class="env-hint">tócala ☺️</div>
 </div>
 
@@ -530,10 +560,13 @@
     <div class="washi"></div>
     <span class="ldate" id="ltDate"></span>
     <div id="ltBody"></div>
-    <div class="bunnies">🐰💗🐰</div>
+    <svg class="lt-end lt-heart" viewBox="0 0 60 50" aria-hidden="true"><path d="M30 44 C9 30 3 18 10 10 C18 2 28 7 30 14 C32 7 42 2 50 10 C57 18 51 30 30 44 Z"/></svg>
+    <div class="bunnies lt-end">🐰💗🐰</div>
+    <span class="lt-pen" id="ltPen"><span>✏️</span></span>
   </article>
   <button class="lt-close" id="ltClose">💗 cerrar</button>
   <div class="lt-skip" id="ltSkip">toca la carta para verla entera</div>
+  <button class="lt-replay" id="ltReplay">✍️ verla escribirse otra vez</button>
 </div>
 
 <div class="care" id="care">
@@ -1241,7 +1274,7 @@ function renderBoard() {
     const L = document.createElement('button');
     L.className = 'pin letter'; L.style.setProperty('--pc', '#E2457F'); L.style.setProperty('--rot', '-1deg');
     L.innerHTML = `<p>💌 la notita que te trajo la conejita</p><span class="pd">${fdate(LETTER_DATE)} · tócala para releerla</span>`;
-    L.onclick = () => { buzz(6); openLetter(false); };
+    L.onclick = () => { buzz(6); openLetter('instant'); };
     board.appendChild(L);
   }
   const list = [...opened].reverse().filter(i => bFilter === 'all' || favs.has(i));
@@ -1378,9 +1411,11 @@ async function rainyVisit() {
   const dx = held.left + held.width / 2 - (er.left + er.width / 2), dy = held.top + held.height / 2 - (er.top + er.height / 2);
   await env.animate([
     { transform: `translate(${dx}px, ${dy}px) scale(${held.width / er.width})` },
-    { transform: `translate(${dx * .4}px, ${dy * .4 - 70}px) scale(.8) rotate(-8deg)`, offset: .55 },
+    { transform: `translate(${dx * .7}px, ${dy * .7 - 40}px) scale(.55) rotate(14deg)`, offset: .3 },
+    { transform: `translate(${dx * .35}px, ${dy * .35 - 80}px) scale(.85) rotate(-10deg)`, offset: .62 },
+    { transform: 'translate(0, -6px) scale(1.04) rotate(3deg)', offset: .85 },
     { transform: 'none' },
-  ], { duration: 950, easing: 'cubic-bezier(.3, 1.2, .4, 1)' }).finished;
+  ], { duration: 1350, easing: 'cubic-bezier(.33, .9, .4, 1)' }).finished;
   env.classList.add('idle');
   // deja de llover, sale el arcoíris
   stopRain();
@@ -1407,63 +1442,78 @@ async function rainyVisit() {
   await sleep(850);
   const paperRect = env.querySelector('.ep').getBoundingClientRect();
   env.classList.add('drop');
-  openLetter(true, paperRect);
+  openLetter('first', paperRect);
   setTimeout(() => env.classList.remove('on', 'crack', 'open', 'flapback', 'rise', 'drop'), 700);
 }
 
 /* --- la carta --- */
-let letterFirst = false, revealT = [], userScrolled = false;
-function openLetter(first, fromRect) {
-  letterFirst = first;
-  revealT.forEach(clearTimeout); revealT = [];
-  const card = $('ltCard'), body = $('ltBody'), bun = card.querySelector('.bunnies');
+let letterFirst = false, writing = null, userScrolled = false;
+// pausas como si lo escribiera a mano
+function pauseAfter(w) { if (/(\.\.\.|…)$/.test(w)) return 750; if (/[.!?]$/.test(w)) return 480; if (/[,;:]$/.test(w)) return 260; return 0; }
+function stopWriting() { if (writing) { cancelAnimationFrame(writing); writing = null; } }
+function openLetter(mode, fromRect) {           // mode: 'first' | 'write' | 'instant'
+  letterFirst = mode === 'first';
+  stopWriting();
+  const card = $('ltCard'), body = $('ltBody'), pen = $('ltPen');
   card.classList.remove('all');
   $('ltDate').textContent = fdate(LETTER_DATE);
   body.innerHTML = '';
-  let t = fromRect ? 700 : 350; const paras = [];
+  const sched = []; let t = fromRect ? 1000 : 600;
   LETTER.forEach(x => {
     const p = document.createElement('p'); let txt = x;
     if (Array.isArray(x)) { p.className = x[0]; txt = x[1]; }
-    if (first) {
-      paras.push([p, t]);
-      txt.split(' ').forEach(w => { const sp = document.createElement('span'); sp.className = 'lw'; sp.style.setProperty('--d', t + 'ms'); sp.textContent = w; p.append(sp, ' '); t += 30; });
-      t += 450;
-    } else p.textContent = txt;
-    body.appendChild(p);
-    p.classList.add('in');
+    txt.split(' ').forEach(w => {
+      const sp = document.createElement('span'); sp.className = 'lw'; sp.textContent = w; p.append(sp, ' ');
+      sched.push([sp, t]); t += 120 + Math.min(w.length, 10) * 10 + pauseAfter(w);
+    });
+    t += 900;
+    body.appendChild(p); p.classList.add('in');
   });
-  bun.classList.remove('in'); $('ltClose').classList.remove('in');
+  card.querySelectorAll('.lt-end').forEach(e => e.classList.remove('in'));
+  $('ltClose').classList.remove('in'); $('ltReplay').classList.remove('in'); pen.classList.remove('on');
   card.scrollTop = 0; userScrolled = false;
   $('lt').classList.add('on'); pushLayer('letter');
-  if (first) {
-    $('ltSkip').classList.add('in');
-    if (fromRect) {
-      card.classList.add('flip');
-      const cr = card.getBoundingClientRect();
-      const dx = fromRect.left + fromRect.width / 2 - (cr.left + cr.width / 2), dy = fromRect.top + fromRect.height / 2 - (cr.top + cr.height / 2);
-      card.animate([{ transform: `translate(${dx}px, ${dy}px) scale(${fromRect.width / cr.width}, ${fromRect.height / cr.height})`, opacity: .9 }, { transform: 'none', opacity: 1 }],
-        { duration: 760, easing: 'cubic-bezier(.2, 1, .3, 1)' }).finished.then(() => card.classList.remove('flip')).catch(() => {});
-    }
-    paras.forEach(([p, pt]) => revealT.push(setTimeout(() => {
-      if (!userScrolled && !card.classList.contains('all')) card.scrollTo({ top: Math.max(0, p.offsetTop - 70), behavior: 'smooth' });
-    }, pt)));
-    revealT.push(setTimeout(finishLetter, t));
-  } else {
-    $('ltSkip').classList.remove('in'); bun.classList.add('in'); $('ltClose').classList.add('in');
+  if (mode === 'instant') { finishLetter(); $('ltReplay').classList.add('in'); return; }
+  $('ltSkip').classList.add('in');
+  if (fromRect) {
+    card.classList.add('flip');
+    const cr = card.getBoundingClientRect();
+    const dx = fromRect.left + fromRect.width / 2 - (cr.left + cr.width / 2), dy = fromRect.top + fromRect.height / 2 - (cr.top + cr.height / 2);
+    card.animate([{ transform: `translate(${dx}px, ${dy}px) scale(${fromRect.width / cr.width}, ${fromRect.height / cr.height})`, opacity: .9 }, { transform: 'none', opacity: 1 }],
+      { duration: 800, easing: 'cubic-bezier(.2, 1, .3, 1)' }).finished.then(() => card.classList.remove('flip')).catch(() => {});
   }
+  const t0 = performance.now(); let i = 0;
+  const loop = now => {
+    const el = now - t0; let last = null;
+    while (i < sched.length && sched[i][1] <= el) { last = sched[i][0]; last.classList.add('on'); i++; }
+    if (last) {
+      pen.style.transform = `translate(${last.offsetLeft + last.offsetWidth}px, ${last.offsetTop}px)`;
+      pen.classList.add('on');
+      if (!userScrolled) {
+        const target = last.offsetTop - card.clientHeight * .5;
+        if (target > card.scrollTop + 24) card.scrollTo({ top: target, behavior: 'smooth' });
+      }
+    }
+    if (i >= sched.length) { writing = null; setTimeout(() => { if ($('lt').classList.contains('on') && !card.classList.contains('all')) finishLetter(); }, 700); return; }
+    writing = requestAnimationFrame(loop);
+  };
+  writing = requestAnimationFrame(loop);
 }
 function finishLetter() {
-  revealT.forEach(clearTimeout); revealT = [];
+  stopWriting();
   const card = $('ltCard'); card.classList.add('all');
-  card.querySelector('.bunnies').classList.add('in');
-  $('ltClose').classList.add('in'); $('ltSkip').classList.remove('in');
+  $('ltPen').classList.remove('on');
+  card.querySelectorAll('.lt-end').forEach((e, k) => setTimeout(() => e.classList.add('in'), 200 + k * 500));
+  setTimeout(() => $('ltClose').classList.add('in'), 600);
+  $('ltSkip').classList.remove('in');
 }
 ['touchstart', 'wheel'].forEach(ev => $('ltCard').addEventListener(ev, () => { userScrolled = true; }, { passive: true }));
 $('ltCard').addEventListener('click', () => { if (!$('ltCard').classList.contains('all') && $('ltSkip').classList.contains('in')) finishLetter(); });
+$('ltReplay').onclick = () => { buzz(8); openLetter('write'); };
 function closeLetter(fromPop) {
   if (!$('lt').classList.contains('on')) return;
   if (fromPop !== true) popLayer('letter');
-  revealT.forEach(clearTimeout); revealT = [];
+  stopWriting();
   $('lt').classList.remove('on');
   if (letterFirst) { letterFirst = false; afterLetter(); }
 }
