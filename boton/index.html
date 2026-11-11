@@ -415,23 +415,25 @@
   .lt-close { height: 54px; padding: 0 28px; border-radius: 999px; background: var(--pink); color: var(--wine); font-weight: 800; font-size: 16px; opacity: 0; pointer-events: none; transition: opacity .5s; }
   .lt-close.in { opacity: 1; pointer-events: auto; }
 
-  /* cuidados: zanahoria y abrazo */
-  .care { position: fixed; left: 50%; bottom: calc(92px + var(--safe-b)); z-index: 31; display: flex; gap: 12px; transform: translate(-50%, 14px); opacity: 0; pointer-events: none;
+  /* cuidados: queso, chocolate y abrazo */
+  .care { position: fixed; left: 50%; bottom: calc(92px + var(--safe-b)); z-index: 31; display: flex; gap: 8px; transform: translate(-50%, 14px); opacity: 0; pointer-events: none;
     transition: opacity .4s, transform .5s cubic-bezier(.3, 1.6, .5, 1); }
   .care.on { opacity: 1; pointer-events: auto; transform: translate(-50%, 0); }
-  .care-btn { position: relative; width: 66px; height: 66px; border-radius: 22px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px;
+  .care-btn { position: relative; width: 58px; height: 62px; border-radius: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px;
     background: rgba(255, 214, 230, .13); border: 1px solid rgba(255, 214, 230, .24); color: var(--blush); transition: transform .15s, background .2s;
     -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
   .care-btn:active { transform: scale(.9); background: rgba(255, 214, 230, .25); }
   .care-btn { touch-action: manipulation; -webkit-user-select: none; user-select: none; }
   .care-btn > * { pointer-events: none; }
   .care-btn span { font-size: 26px; line-height: 1.1; }
-  .care-btn small { font-size: 10.5px; font-weight: 800; letter-spacing: .02em; }
+  .care-btn small { font-size: 9.5px; font-weight: 800; letter-spacing: .02em; }
   .care-btn .cn { position: absolute; top: -6px; right: -6px; min-width: 20px; height: 20px; padding: 0 5px; border-radius: 10px; background: #F28C28; color: #fff;
     font-size: 11px; font-weight: 800; font-style: normal; line-height: 20px; text-align: center; }
   .care-btn .cn:empty { display: none; }
   body.has-pinky #jarScreen { padding-bottom: calc(176px + var(--safe-b)); }
-  .carrot-fly { position: fixed; z-index: 60; width: 30px; height: 30px; margin: -15px 0 0 -15px; font-size: 28px; line-height: 30px; text-align: center; pointer-events: none; }
+  .treat-fly { position: fixed; z-index: 60; width: 36px; height: 36px; margin: -18px 0 0 -18px; font-size: 30px; line-height: 36px; text-align: center; pointer-events: none; will-change: transform; }
+  .treat-fly.half-l { clip-path: inset(-10% 50% -10% -10%); }
+  .treat-fly.half-r { clip-path: inset(-10% -10% -10% 50%); }
   .hug-heart { position: fixed; z-index: 32; font-size: 54px; pointer-events: none; transform: translate(-50%, -50%) scale(0); opacity: 0; transition: opacity .3s; }
   .hug-heart.on { opacity: 1; animation: hb .9s ease-in-out infinite; }
   @keyframes hb { 0%, 100% { transform: translate(-50%, -50%) scale(.9); } 15% { transform: translate(-50%, -50%) scale(1.2); } 30% { transform: translate(-50%, -50%) scale(.95); } 45% { transform: translate(-50%, -50%) scale(1.12); } }
@@ -471,8 +473,8 @@
     <g class="ear ear-r"><ellipse cx="126" cy="52" rx="18" ry="50" fill="#FFF6F4" transform="rotate(14 126 52)"/><ellipse cx="126" cy="58" rx="8.5" ry="35" fill="#F7A9C9" transform="rotate(14 126 58)"/>
       <g transform="translate(140 84) rotate(18)"><path d="M0 0 C-12 -10 -18 4 -6 4 Z M0 0 C12 -10 18 4 6 4 Z" fill="#A6CC45"/><circle r="3.5" fill="#4F8226"/></g></g>
     <!-- cuerpo -->
-    <ellipse cx="100" cy="206" rx="54" ry="48" fill="#FFF6F4"/>
-    <ellipse cx="100" cy="214" rx="32" ry="30" fill="#FFE9EE"/>
+    <g class="belly"><ellipse cx="100" cy="206" rx="54" ry="48" fill="#FFF6F4"/>
+    <ellipse cx="100" cy="214" rx="32" ry="30" fill="#FFE9EE"/></g>
     <ellipse cx="72" cy="252" rx="22" ry="12" fill="#FFF6F4"/><ellipse cx="128" cy="252" rx="22" ry="12" fill="#FFF6F4"/>
     <ellipse cx="72" cy="254" rx="9" ry="5" fill="#F7A9C9"/><ellipse cx="128" cy="254" rx="9" ry="5" fill="#F7A9C9"/>
     <!-- bote pequeño en brazos -->
@@ -489,13 +491,13 @@
     <g class="paws-hold"><ellipse cx="66" cy="200" rx="13" ry="11" fill="#FFF6F4"/><ellipse cx="134" cy="200" rx="13" ry="11" fill="#FFF6F4"/></g>
     <g class="paws-rest"><ellipse cx="80" cy="196" rx="12" ry="10" fill="#FFF6F4"/><ellipse cx="120" cy="196" rx="12" ry="10" fill="#FFF6F4"/></g>
     <!-- cabeza -->
-    <ellipse cx="100" cy="122" rx="60" ry="53" fill="#FFF6F4"/>
-    <ellipse cx="64" cy="140" rx="12" ry="7.5" fill="#F7A9C9" opacity=".85"/><ellipse cx="136" cy="140" rx="12" ry="7.5" fill="#F7A9C9" opacity=".85"/>
+    <g class="head"><ellipse cx="100" cy="122" rx="60" ry="53" fill="#FFF6F4"/>
+    <ellipse class="ck" cx="64" cy="140" rx="12" ry="7.5" fill="#F7A9C9" opacity=".85"/><ellipse class="ck" cx="136" cy="140" rx="12" ry="7.5" fill="#F7A9C9" opacity=".85"/>
     <g class="eyes"><ellipse cx="78" cy="121" rx="8.5" ry="10.5" fill="#3A0A1C"/><ellipse cx="122" cy="121" rx="8.5" ry="10.5" fill="#3A0A1C"/>
       <circle cx="81" cy="116" r="3.4" fill="#fff"/><circle cx="125" cy="116" r="3.4" fill="#fff"/><circle cx="75.5" cy="125" r="1.5" fill="#fff"/><circle cx="119.5" cy="125" r="1.5" fill="#fff"/></g>
     <g class="happy-eyes" fill="none" stroke="#3A0A1C" stroke-width="4" stroke-linecap="round"><path d="M70 123 q8 -10 16 0"/><path d="M114 123 q8 -10 16 0"/></g>
     <path d="M95 133 q5 -4 10 0 q-5 6 -10 0z" fill="#E2457F"/>
-    <path d="M100 137 v4 M100 141 q-5 5 -9 1 M100 141 q5 5 9 1" fill="none" stroke="#3A0A1C" stroke-width="2.2" stroke-linecap="round"/>
+    <path d="M100 137 v4 M100 141 q-5 5 -9 1 M100 141 q5 5 9 1" fill="none" stroke="#3A0A1C" stroke-width="2.2" stroke-linecap="round"/></g>
   </svg>
 </div>
 
@@ -574,7 +576,8 @@
 </div>
 
 <div class="care" id="care">
-  <button class="care-btn" id="carrotBtn" aria-label="Dar una zanahoria"><span>🥕</span><small>zanahoria</small><i class="cn" id="carrotN"></i></button>
+  <button class="care-btn" id="cheeseBtn" aria-label="Darles queso"><span>🧀</span><small>queso</small></button>
+  <button class="care-btn" id="chocoBtn" aria-label="Darles chocolate"><span>🍫</span><small>chocolate</small></button>
   <button class="care-btn" id="hugBtn" aria-label="Dar un abrazo"><span>🤗</span><small>abrazo</small></button>
 </div>
 <div class="hug-heart" id="hugHeart">💗</div>
@@ -957,7 +960,7 @@ const CATS = {
   m: { name: '🧸 motes y tonterías',  paper: '#E7F2C6', tape: '#4F8226', pin: '#A6CC45' },
 };
 const BUNNY_LINES = ['Ufff que bonita esa 🥹', 'Tremenda eh', 'Esa tal cual 🫠', 'Jeje esa me encanta', 'Créeme que lo piensa de verdad', 'Otra va, porfa 🥺', 'Guárdatela eh ☺️', 'Pfff que cosita 🥰', 'Madre mía 😳', 'Esa es de las buenas eh', 'Oye pues qué bonito todo 🥹', 'Ya sabes que es verdad ☺️'];
-const BUNNY_PET = ['Jeje cosquillas no porfa 😳', 'Oye pues un abrazo sí te doy 🥰', 'Va, saca otra ☺️', 'Ojalá una zanahoria ahora 🥺', 'Te quiere mucho eh, que me lo ha dicho 🤫', 'Ufff que suave eres 🫠'];
+const BUNNY_PET = ['Jeje cosquillas no porfa 😳', 'Oye pues un abrazo sí te doy 🥰', 'Va, saca otra ☺️', 'Ojalá un trocito de chocolate ahora 🥺', 'Te quiere mucho eh, que me lo ha dicho 🤫', 'Ufff que suave eres 🫠'];
 function greet() { const h = new Date().getHours(); return h >= 6 && h < 14 ? 'Bon dia michulita ☺️' : h >= 14 && h < 21 ? 'Buenas tardes miniña ☺️' : 'Hola preciosa ☺️'; }
 
 /* ---------- utilidades ---------- */
@@ -1326,7 +1329,7 @@ document.querySelectorAll('.nav button').forEach(b => b.onclick = () => {
 
 /* =========================================================
    LA CONEJITA ROSA: llega con lluvia, trae la notita de Adrián,
-   sale el arcoíris y luego se queda (zanahorias y abrazos)
+   sale el arcoíris y luego se queda (queso, chocolate y abrazos)
    ========================================================= */
 const LETTER_DATE = '2026-11-11';
 const LETTER = [
@@ -1337,7 +1340,7 @@ const LETTER = [
   ['pd', 'PD: por favor cuidame bien a los conejitos, que me están ayudando mucho'],
 ];
 const pinky = $('pinky'), pBubble = $('pBubble'), care = $('care'), evBtn = $('evBtn');
-let carrots = store.get('carrots', 0), hugs = store.get('hugs', 0), eating = false, hugging = false;
+let treats = store.get('treats', store.get('carrots', 0)), hugs = store.get('hugs', 0), eating = false, hugging = false;
 
 function sayP(html, ms = 2600) {
   pBubble.innerHTML = html; pBubble.classList.remove('on'); void pBubble.offsetWidth; pBubble.classList.add('on');
@@ -1348,8 +1351,8 @@ function hopP() {
   clearTimeout(hopP.h); hopP.h = setTimeout(() => { if (!hugging) pinky.classList.remove('happy'); }, 900);
 }
 function setFat() {
-  pinky.style.setProperty('--fat', (1 + Math.min(carrots, 30) * .017).toFixed(4));
-  $('carrotN').textContent = carrots || '';
+  const f = (1 + Math.min(treats, 30) * .017).toFixed(4);
+  pinky.style.setProperty('--fat', f); bunny.style.setProperty('--fat', f);
 }
 function updateCare() {
   const onJar = !$('jarScreen').classList.contains('off');
@@ -1535,43 +1538,80 @@ function afterLetter() {
   pinky.classList.add('show', 'corner', 'gave');
   renderBoard(); updateCare();
   setTimeout(() => { hop(); say('Ya no llueve eh ☺️', 2600); }, 400);
-  setTimeout(() => { hopP(); sayP('Yo me quedo por aquí, que me lo ha pedido él 🥰<br>¿me das una zanahoria? 🥺', 4500); }, 2400);
+  setTimeout(() => { hopP(); sayP('Yo me quedo por aquí, que me lo ha pedido él 🥰<br>¿nos das un poquito de queso o chocolate? 🥺', 4500); }, 2400);
 }
 
-/* --- zanahorias: la conejita se va poniendo gordita --- */
-const CARROT_HITOS = { 1: 'Ñam ñam 🥕☺️ gracias Olga', 5: 'Ufff ya llevo 5 eh 🤤', 10: 'Me estoy poniendo gordita 😳', 20: 'Pfff ya casi no quepo 🫠', 30: 'No puedo más 🥺… bueno, una más vale' };
-const CARROT_LINES = ['Ñam ñam 🥕', 'Ufff qué rica 🤤', 'Gracias Olga 🥹', 'Otra porfa 🥺', 'Jeje 🥰', 'Qué bien me cuidas eh ☺️'];
-// Cada toque lanza una zanahoria al momento (hasta 10 a la vez); nada se queda bloqueado.
+/* --- merienda: queso o chocolate, partido por la mitad, una mitad para cada uno --- */
+const TREATS = {
+  queso: { emoji: '🧀', w: ['Queso 🥹 qué rico', 'Ufff este queso 🤤', 'Ñam, del bueno eh', 'Mitad y mitad, como siempre ☺️'], p: ['Ñam ñam 🧀', 'Me encanta el queso 🥰', 'Gracias Olga 🥹', 'Otro trocito porfa 🥺'] },
+  choco: { emoji: '🍫', w: ['Ufff chocolate 🤤', 'Esto es vida 🫠', 'Ñam, qué rico 🍫', 'Tremendo chocolate eh'], p: ['Chocolateee 🥹', 'Ñam ñam 🍫', 'Qué bien nos cuidas ☺️', 'Otro poquito porfa 🥺'] },
+};
+const TREAT_HITOS = { 1: ['Ñam 🥹 mitad para cada uno', 'Gracias Olga ☺️'], 5: ['Ya llevamos 5 eh 🤤', 'Ufff qué ricas'], 10: ['Nos estamos poniendo gorditos 😳', 'Jeje 😳'], 20: ['Pfff ya casi no cabemos 🫠', 'Rodando vamos 🥺'], 30: ['No podemos más 🥺', '…bueno, un trocito más vale'] };
 let inFlight = 0, settleWaiters = [], hugQueued = false;
-function carrotsSettled() { return inFlight ? new Promise(r => settleWaiters.push(r)) : Promise.resolve(); }
-async function throwCarrot() {
-  const b = $('carrotBtn').getBoundingClientRect(), p = pinky.getBoundingClientRect();
-  const sx = b.left + b.width / 2, sy = b.top + b.height / 2;
-  const tx = p.left + p.width * .5 - sx, ty = p.top + p.height * .52 - sy;
-  const c = document.createElement('span'); c.className = 'carrot-fly'; c.textContent = '🥕';
-  c.style.left = sx + 'px'; c.style.top = sy + 'px'; document.body.appendChild(c);
-  try {
-    await c.animate([
-      { transform: 'translate(0, 0) scale(.7) rotate(0)' },
-      { transform: `translate(${tx * .5}px, ${ty - 80}px) scale(1.25) rotate(-160deg)`, offset: .5 },
-      { transform: `translate(${tx}px, ${ty}px) scale(.7) rotate(-300deg)` },
-    ], { duration: 620, easing: 'cubic-bezier(.3, .1, .3, 1)', fill: 'forwards' }).finished;
-    pinky.classList.remove('chomp'); void pinky.offsetWidth; pinky.classList.add('chomp', 'happy');
-    for (const cut of [34, 67, 100]) { c.style.clipPath = `inset(0 0 0 ${cut}%)`; sparks(sx + tx, sy + ty + 8, 3, 24, ['·', '•', '✦']); buzz(10); await sleep(170); }
-  } finally { c.remove(); }
-  carrots++; store.set('carrots', carrots); setFat();
-  sparks(p.left + p.width * .5, p.top + p.height * .5, 5, 45, ['ñam', '✦', '♥']);
-  sayP(CARROT_HITOS[carrots] || (carrots > 30 ? rand(['Estoy redondita ya 😳', 'Ñam… 🫠', 'Una más y ruedo 🥺']) : rand(CARROT_LINES)), 2200);
-  clearTimeout(window._chomp); window._chomp = setTimeout(() => { if (!hugging) pinky.classList.remove('chomp', 'happy'); }, 950);
+function treatsSettled() { return inFlight ? new Promise(r => settleWaiters.push(r)) : Promise.resolve(); }
+function mouthOf(el) { const r = el.getBoundingClientRect(); return [r.left + r.width * .5, r.top + r.height * .52]; }
+function mkTreat(emoji, at, cls) {
+  const e = document.createElement('span'); e.className = 'treat-fly ' + cls; e.textContent = emoji;
+  e.style.left = at[0] + 'px'; e.style.top = at[1] + 'px'; document.body.appendChild(e); return e;
 }
-$('carrotBtn').onclick = () => {
+async function giveTreat(kind) {
+  const T = TREATS[kind], br = $(kind === 'queso' ? 'cheeseBtn' : 'chocoBtn').getBoundingClientRect();
+  const start = [br.left + br.width / 2, br.top + br.height / 2];
+  const wm = mouthOf(bunny), pm = mouthOf(pinky);
+  const mid = [(wm[0] + pm[0]) / 2, Math.min(wm[1], pm[1]) - 80];
+  const made = [];
+  try {
+    // 1) el trozo entero vuela al centro, entre los dos
+    const whole = mkTreat(T.emoji, start, 'whole'); made.push(whole);
+    const dx = mid[0] - start[0], dy = mid[1] - start[1];
+    await whole.animate([
+      { transform: 'translate(0, 0) scale(.7) rotate(0)' },
+      { transform: `translate(${dx * .5}px, ${dy * .5 - 50}px) scale(1.1) rotate(-14deg)`, offset: .55 },
+      { transform: `translate(${dx}px, ${dy}px) scale(1.2) rotate(0)` },
+    ], { duration: 520, easing: 'cubic-bezier(.3, .1, .3, 1)', fill: 'forwards' }).finished;
+    whole.remove();
+    // 2) tiembla un poquito… y ¡crack!, se parte por la mitad
+    const shake = mkTreat(T.emoji, mid, 'whole'); made.push(shake);
+    await shake.animate([{ transform: 'scale(1.2) rotate(0)' }, { transform: 'scale(1.25) rotate(-10deg)' }, { transform: 'scale(1.25) rotate(10deg)' }, { transform: 'scale(1.3) rotate(0)' }],
+      { duration: 300, easing: 'ease-in-out', fill: 'forwards' }).finished;
+    shake.remove();
+    buzz([14, 30, 14]);
+    sparks(mid[0], mid[1], 9, 38, ['✦', '·', '•', '✧']);
+    const L = mkTreat(T.emoji, mid, 'half-l'), R = mkTreat(T.emoji, mid, 'half-r'); made.push(L, R);
+    // 3) una mitad para cada uno
+    const flyHalf = (el, to, side) => el.animate([
+      { transform: 'translate(0, 0) scale(1.3) rotate(0)' },
+      { transform: `translate(${side * 14}px, -10px) scale(1.3) rotate(${side * 18}deg)`, offset: .2 },
+      { transform: `translate(${(to[0] - mid[0]) * .55}px, ${(to[1] - mid[1]) * .55 - 36}px) scale(1.1) rotate(${side * 120}deg)`, offset: .6 },
+      { transform: `translate(${to[0] - mid[0]}px, ${to[1] - mid[1]}px) scale(.9) rotate(${side * 200}deg)` },
+    ], { duration: 640, easing: 'cubic-bezier(.3, .1, .3, 1)', fill: 'forwards' }).finished;
+    await Promise.all([flyHalf(L, wm, -1), flyHalf(R, pm, 1)]);
+    // 4) se la comen a mordiscos los dos a la vez
+    [bunny, pinky].forEach(b => { b.classList.remove('chomp', 'sleep'); void b.offsetWidth; b.classList.add('chomp', 'happy'); });
+    for (const cut of [25, 40, 50]) {
+      L.style.clipPath = `inset(-10% 50% -10% ${cut === 50 ? 50 : cut}%)`;
+      R.style.clipPath = `inset(-10% ${cut === 50 ? 50 : cut}% -10% 50%)`;
+      sparks(wm[0], wm[1] + 6, 2, 20, ['·', '•']); sparks(pm[0], pm[1] + 6, 2, 20, ['·', '•']);
+      buzz(8); await sleep(170);
+    }
+  } finally { made.forEach(e => e.remove()); }
+  treats++; store.set('treats', treats); setFat();
+  const h = TREAT_HITOS[treats];
+  say(h ? h[0] : (treats > 30 ? rand(['Estamos redonditos ya 😳', 'Una más y rodamos 🥺']) : rand(T.w)), 2300);
+  setTimeout(() => { if (!hugging) sayP(h ? h[1] : rand(T.p), 2300); }, 550);
+  clearTimeout(window._chomp);
+  window._chomp = setTimeout(() => { if (!hugging) [bunny, pinky].forEach(b => b.classList.remove('chomp', 'happy')); }, 900);
+}
+const feed = kind => () => {
   if (hugging || hugQueued || inFlight >= 10) return;
   inFlight++; buzz(8);
-  throwCarrot().catch(() => {}).finally(() => {
+  giveTreat(kind).catch(() => {}).finally(() => {
     inFlight = Math.max(0, inFlight - 1);
     if (!inFlight) { const w = settleWaiters; settleWaiters = []; w.forEach(f => f()); }
   });
 };
+$('cheeseBtn').onclick = feed('queso');
+$('chocoBtn').onclick = feed('choco');
 
 /* --- abrazo de los dos conejitos --- */
 const HUG_W = ['Ufff qué abrazo más bueno 🥹', 'Esto es lo que necesitaba 🫠', 'Abrazo de parte de Adri eh ☺️', 'Otro cuando quieras 🥰'];
@@ -1607,8 +1647,8 @@ async function doHug() {
 $('hugBtn').onclick = async () => {
   if (hugging || hugQueued) return;
   buzz(10);
-  hugQueued = true; updateCare();          // si aún hay zanahorias en el aire, espera a que acaben
-  await carrotsSettled();
+  hugQueued = true; updateCare();          // si aún hay merienda en el aire, espera a que acabe
+  await treatsSettled();
   hugQueued = false;
   if (hugging) return;
   hugging = true; updateCare();
@@ -1620,12 +1660,12 @@ $('hugBtn').onclick = async () => {
 };
 
 /* --- tocar a la conejita --- */
-const PINKY_PET = ['Jeje hola ☺️', '¿me das una zanahoria? 🥺', 'Te quiere mucho eh', 'Ufff qué bien se está aquí 🫠', 'Cuídame bien eh, que me lo ha dicho él 🥹', '¿Un abrazo? 🤗'];
+const PINKY_PET = ['Jeje hola ☺️', '¿nos das un trocito de chocolate? 🥺', 'Te quiere mucho eh', 'Ufff qué bien se está aquí 🫠', 'Cuídame bien eh, que me lo ha dicho él 🥹', '¿Un abrazo? 🤗'];
 pinky.addEventListener('click', () => {
   if (!pinky.classList.contains('corner') || document.body.classList.contains('event') || hugging) return;
   hopP(); buzz(10);
   const r = pinky.getBoundingClientRect(); sparks(r.left + r.width / 2, r.top + 30, 8, 60, ['💗', '💕', '✨']);
-  sayP(carrots >= 10 && Math.random() < .3 ? 'Estoy gordita por tu culpa 😳' : rand(PINKY_PET), 2400);
+  sayP(treats >= 10 && Math.random() < .3 ? 'Estamos gorditos por tu culpa 😳' : rand(PINKY_PET), 2400);
 });
 
 function initPinky() {
