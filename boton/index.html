@@ -217,9 +217,9 @@
   .note { position: relative; width: min(380px, 100%); min-height: 290px; padding: 54px 26px 30px; border-radius: 6px; background: var(--paper); color: var(--ink);
     box-shadow: 0 30px 60px -20px rgba(0, 0, 0, .7); display: flex; flex-direction: column; justify-content: center; touch-action: none; transform: rotate(var(--r, -1deg));
     background-image: repeating-linear-gradient(transparent 0 37px, rgba(94, 18, 48, .09) 37px 38px); background-position: 0 24px; }
-  .note.unfold { animation: unfold .75s cubic-bezier(.2, 1.3, .4, 1) both; }
-  @keyframes unfold { 0% { transform: scale(.25, .06) rotate(8deg); opacity: .6; } 35% { transform: scale(.9, .1) rotate(-3deg); opacity: 1; }
-    100% { transform: rotate(var(--r, -1deg)); } }
+  .note.unfold { animation: unfold .9s cubic-bezier(.2, 1.1, .35, 1) both; transform-origin: 50% 0; }
+  @keyframes unfold { 0% { transform: perspective(900px) rotateX(-96deg) scale(.45) translateY(-30px); opacity: 0; } 40% { opacity: 1; }
+    72% { transform: perspective(900px) rotateX(10deg) scale(1.02); } 100% { transform: perspective(900px) rotateX(0) rotate(var(--r, -1deg)); } }
   .note .washi { position: absolute; top: -12px; left: 50%; width: 110px; height: 28px; transform: translateX(-50%) rotate(-3deg); background: var(--tc); opacity: .85;
     background-image: repeating-linear-gradient(45deg, rgba(255, 255, 255, .25) 0 5px, transparent 5px 10px); }
   .note .new-tag { position: absolute; top: 18px; right: 20px; font-family: var(--hand); font-size: 22px; font-weight: 700; color: var(--rose); transform: rotate(6deg); }
@@ -319,25 +319,49 @@
   .ev-btn:active { transform: translateX(-50%) scale(.95); }
 
   /* sobre */
-  .env { position: fixed; left: 50%; top: 44%; z-index: 45; width: 230px; height: 152px; margin: -76px 0 0 -115px; display: none; cursor: pointer; }
+  .env { position: fixed; left: 50%; top: 44%; z-index: 45; width: 236px; height: 156px; margin: -78px 0 0 -118px; display: none; cursor: pointer; perspective: 800px; }
   .env.on { display: block; }
-  .env > i { position: absolute; display: block; }
-  .env .eb { inset: 0; border-radius: 10px; background: #C2306B; box-shadow: 0 24px 40px -16px rgba(0, 0, 0, .6); }
-  .env .ep { left: 14px; right: 14px; top: 8px; height: 130px; border-radius: 5px; background: var(--cream); transition: transform .7s cubic-bezier(.3, 1.2, .5, 1) .3s;
-    background-image: repeating-linear-gradient(transparent 0 15px, rgba(194, 48, 107, .18) 15px 16px); }
-  .env .ef { inset: 0; border-radius: 10px; background: linear-gradient(160deg, #EE6FA5, #D9548E); clip-path: polygon(0 0, 50% 56%, 100% 0, 100% 100%, 0 100%); }
-  .env .et { left: 0; right: 0; top: 0; height: 92px; transform-origin: top; background: linear-gradient(180deg, #F27BAE, #E2457F); clip-path: polygon(0 0, 100% 0, 50% 100%);
-    border-radius: 10px 10px 0 0; transition: transform .55s ease-in-out, z-index 0s .28s; z-index: 3; }
-  .env .es { left: 50%; top: 66px; width: 46px; height: 46px; margin-left: -23px; z-index: 4; border-radius: 50%; display: grid; place-items: center; font-size: 18px; color: var(--cream);
-    background: radial-gradient(circle at 34% 30%, #A8325A, var(--burg) 65%); box-shadow: 0 3px 8px rgba(0, 0, 0, .35); transition: transform .4s, opacity .4s; }
+  .env > i, .env > .et { position: absolute; display: block; }
+  .env .eb { inset: 0; border-radius: 10px; background: #B8285F; box-shadow: 0 26px 40px -16px rgba(0, 0, 0, .65); z-index: 1; }
+  .env .ep { left: 14px; right: 14px; top: 8px; height: 134px; border-radius: 5px; background-color: var(--cream); z-index: 2; transition: transform .85s cubic-bezier(.3, 1.25, .5, 1);
+    background-image: repeating-linear-gradient(transparent 0 15px, rgba(194, 48, 107, .18) 15px 16px); background-position: 0 30px; }
+  .env .ep::before { content: "para Olga ♡"; position: absolute; left: 14px; top: 6px; font-family: var(--hand); font-weight: 700; font-size: 19px; color: var(--rose); }
+  .env .ef { inset: 0; border-radius: 10px; z-index: 3; background: linear-gradient(160deg, #F27BAE, #D9548E); clip-path: polygon(0 0, 50% 57%, 100% 0, 100% 100%, 0 100%); }
+  .env .et { left: 0; right: 0; top: 0; height: 96px; z-index: 4; transform-origin: 50% 0; transform-style: preserve-3d; -webkit-transform-style: preserve-3d; transition: transform .75s cubic-bezier(.5, 0, .25, 1); }
+  .env .et b { position: absolute; inset: 0; clip-path: polygon(0 0, 100% 0, 50% 100%); -webkit-backface-visibility: hidden; backface-visibility: hidden; }
+  .env .et .o { background: linear-gradient(180deg, #F48BB8, #E2457F); }
+  .env .et .n { background: linear-gradient(0deg, #FCD3E3, #F7A9C9); transform: rotateX(180deg); }
+  .env .es { left: 50%; top: 70px; width: 48px; height: 48px; margin-left: -24px; z-index: 5; }
+  .env .es b { position: absolute; inset: 0; border-radius: 50%; background: radial-gradient(circle at 34% 30%, #A8325A, var(--burg) 65%); box-shadow: 0 3px 8px rgba(0, 0, 0, .35);
+    transition: transform .55s cubic-bezier(.3, .7, .4, 1), opacity .55s; }
+  .env .es .s1 { clip-path: polygon(0 0, 55% 0, 42% 50%, 58% 100%, 0 100%); }
+  .env .es .s2 { clip-path: polygon(55% 0, 100% 0, 100% 100%, 58% 100%, 42% 50%); }
+  .env .es span { position: absolute; inset: 0; display: grid; place-items: center; color: var(--cream); font-size: 18px; transition: transform .3s, opacity .3s; }
   .env.idle { animation: float 2.6s ease-in-out infinite; }
+  .env.idle .es { animation: sealpulse 1.6s ease-in-out infinite; }
+  @keyframes sealpulse { 50% { transform: scale(1.12); } }
   @keyframes float { 50% { transform: translateY(-8px) rotate(-2deg); } }
-  .env.open .et { transform: rotateX(180deg); z-index: 0; }
-  .env.open .es { transform: scale(0) rotate(120deg); opacity: 0; }
-  .env.open .ep { transform: translateY(-80px); }
+  .env.crack .es .s1 { transform: translate(-18px, 16px) rotate(-45deg); opacity: 0; }
+  .env.crack .es .s2 { transform: translate(18px, 16px) rotate(45deg); opacity: 0; }
+  .env.crack .es span { transform: scale(0); opacity: 0; }
+  .env.open .et { transform: rotateX(180deg); }
+  .env.flapback .et { z-index: 1; }
+  .env.rise .ep { transform: translateY(-114px); }
+  .env.drop { transition: transform .6s ease-in, opacity .6s; transform: translateY(90px) scale(.9); opacity: 0; }
   .env-hint { position: absolute; left: 50%; top: calc(100% + 18px); transform: translateX(-50%); white-space: nowrap; font-family: var(--hand); font-size: 26px; color: var(--blush);
     animation: nudge 1.6s ease-in-out infinite; }
-  .env.open .env-hint { display: none; }
+  .env.crack .env-hint { display: none; }
+
+  /* charquitos y paraguas de hoja */
+  .ripple { position: absolute; width: 28px; height: 8px; margin-left: -14px; border: 1.5px solid rgba(255, 214, 230, .55); border-radius: 50%; animation: ripple 1.3s ease-out infinite; }
+  @keyframes ripple { 0% { transform: scale(.2); opacity: .9; } 100% { transform: scale(1.7); opacity: 0; } }
+  .pinky .umbrella { display: none; }
+  .bunny.pinky.stage .bubble { margin-bottom: 46px; }
+  .pinky.umb .umbrella { display: inline; }
+  .bunny.shake svg { animation: shakeoff .65s ease-in-out; }
+  @keyframes shakeoff { 20% { transform: rotate(-9deg); } 40% { transform: rotate(8deg); } 60% { transform: rotate(-6deg); } 80% { transform: rotate(3deg); } }
+  .bunny.travel svg { animation: tHop .32s ease-in-out infinite !important; }
+  @keyframes tHop { 50% { transform: translateY(-16px) scale(.97, 1.04); } }
 
   /* carta */
   .lt { position: fixed; inset: 0; z-index: 55; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px;
@@ -358,6 +382,12 @@
   .lt-card p.pd { font-size: 21px; color: var(--ink-2); margin-bottom: 0; }
   .lt-card .bunnies { text-align: center; font-size: 26px; margin-top: 10px; opacity: 0; transition: opacity .8s; }
   .lt-card .bunnies.in { opacity: 1; }
+  .lt-card .lw { opacity: 0; filter: blur(3px); animation: lw .55s ease forwards; animation-delay: var(--d); }
+  @keyframes lw { to { opacity: 1; filter: none; } }
+  .lt-card.all .lw { animation: none; opacity: 1; filter: none; }
+  .lt-card.flip { transition: none !important; }
+  .lt-skip { font-size: 12.5px; font-weight: 700; color: rgba(255, 214, 230, .65); opacity: 0; transition: opacity .4s; margin-top: -8px; }
+  .lt-skip.in { opacity: 1; }
   .lt-close { height: 54px; padding: 0 28px; border-radius: 999px; background: var(--pink); color: var(--wine); font-weight: 800; font-size: 16px; opacity: 0; pointer-events: none; transition: opacity .5s; }
   .lt-close.in { opacity: 1; pointer-events: auto; }
 
@@ -452,6 +482,9 @@
       <g transform="translate(66 22) rotate(-24)"><path d="M0 0 C-15 -13 -24 5 -8 6 Z M0 0 C15 -13 24 5 8 6 Z" fill="#E2457F"/><path d="M-11 -3 q4 -3 8 0 M3 -3 q4 -3 8 0" stroke="#FFD6E6" stroke-width="1.6" fill="none" opacity=".7"/><circle r="4.2" fill="#C2306B"/></g></g>
     <g class="ear ear-r"><ellipse cx="126" cy="52" rx="18" ry="50" fill="#FFE4EE" transform="rotate(14 126 52)"/><ellipse cx="126" cy="58" rx="8.5" ry="35" fill="#EE6FA5" transform="rotate(14 126 58)"/>
       <g transform="translate(134 22) rotate(24)"><path d="M0 0 C-15 -13 -24 5 -8 6 Z M0 0 C15 -13 24 5 8 6 Z" fill="#E2457F"/><path d="M-11 -3 q4 -3 8 0 M3 -3 q4 -3 8 0" stroke="#FFD6E6" stroke-width="1.6" fill="none" opacity=".7"/><circle r="4.2" fill="#C2306B"/></g></g>
+    <g class="umbrella"><path d="M140 194 L140 -2" stroke="#2E5A1B" stroke-width="4" stroke-linecap="round"/>
+      <path d="M62 12 Q140 -74 218 12 Q200 0 180 10 Q160 -6 140 10 Q120 -6 100 10 Q80 0 62 12 Z" fill="#4F8226"/>
+      <path d="M72 6 Q140 -58 208 6 M140 -48 L140 8" stroke="#A6CC45" stroke-width="2.5" fill="none" stroke-linecap="round"/></g>
     <g class="belly"><ellipse cx="100" cy="206" rx="54" ry="48" fill="#FFE4EE"/><ellipse cx="100" cy="214" rx="32" ry="30" fill="#FFF3F7"/></g>
     <ellipse cx="72" cy="252" rx="22" ry="12" fill="#FFE4EE"/><ellipse cx="128" cy="252" rx="22" ry="12" fill="#FFE4EE"/>
     <ellipse cx="72" cy="254" rx="9" ry="5" fill="#EE6FA5"/><ellipse cx="128" cy="254" rx="9" ry="5" fill="#EE6FA5"/>
@@ -488,7 +521,7 @@
 
 <button class="ev-btn" id="evBtn"></button>
 <div class="env" id="env" role="button" aria-label="Abrir la notita">
-  <i class="eb"></i><i class="ep"></i><i class="ef"></i><i class="et"></i><i class="es">♥</i>
+  <i class="eb"></i><i class="ep"></i><i class="ef"></i><div class="et"><b class="o"></b><b class="n"></b></div><i class="es"><b class="s1"></b><b class="s2"></b><span>♥</span></i>
   <div class="env-hint">tócala ☺️</div>
 </div>
 
@@ -500,6 +533,7 @@
     <div class="bunnies">🐰💗🐰</div>
   </article>
   <button class="lt-close" id="ltClose">💗 cerrar</button>
+  <div class="lt-skip" id="ltSkip">toca la carta para verla entera</div>
 </div>
 
 <div class="care" id="care">
@@ -902,7 +936,13 @@ const favs = new Set(store.get('favs', []).filter(i => i < NOTAS.length));
 const isOpen = new Set(opened);
 const save = () => { store.set('opened', opened); store.set('favs', [...favs]); };
 const rand = a => a[Math.random() * a.length | 0];
-const buzz = p => { try { navigator.vibrate && navigator.vibrate(p); } catch {} };
+let acted = false; addEventListener('pointerdown', () => { acted = true; }, { capture: true });
+const buzz = p => { if (!acted) return; try { navigator.vibrate && navigator.vibrate(p); } catch {} };
+// el botón «atrás» del móvil cierra la notita o la carta en vez de salir de la web
+let layer = null;
+function pushLayer(n) { if (layer === n) return; try { history.pushState({ l: n }, ''); layer = n; } catch {} }
+function popLayer(n) { if (layer === n) { layer = null; try { history.back(); } catch {} } }
+addEventListener('popstate', () => { const l = layer; layer = null; if (l === 'note') closeNote(true); else if (l === 'letter') closeLetter(true); });
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
 function sparks(x, y, n = 10, spread = 90, chars) {
@@ -1090,6 +1130,7 @@ function openNote(id, { fresh, list }) {
   setFav();
   note.style.transition = ''; note.style.transform = ''; note.style.opacity = '';
   note.classList.remove('unfold'); void note.offsetWidth; note.classList.add('unfold');
+  if (!modal.classList.contains('on')) pushLayer('note');
   modal.classList.add('on');
 }
 function setFav() { const on = favs.has(current), b = $('mFav'); b.classList.toggle('on', on); b.textContent = on ? '♥ guardada' : '♡ guardar'; }
@@ -1102,8 +1143,11 @@ function toggleFav(force) {
     const r = note.getBoundingClientRect(); sparks(r.left + r.width / 2, r.top + r.height / 2, 14, 150, ['💗', '💕', '♥', '✨']); buzz(16);
   }
 }
-async function closeNote() {
-  if (!modal.classList.contains('on')) return;
+let closing = false;
+async function closeNote(fromPop) {
+  if (!modal.classList.contains('on') || closing) return;
+  closing = true;
+  if (fromPop !== true) popLayer('note');
   // la notita vuela al tablero
   if (!viewList) {
     const tb = $('boardTab').getBoundingClientRect(), nr = note.getBoundingClientRect();
@@ -1113,7 +1157,7 @@ async function closeNote() {
       { duration: 480, easing: 'cubic-bezier(.5, 0, .7, .4)' }).finished.catch(() => {});
     const b = $('badge'); b.classList.remove('bump'); void b.offsetWidth; b.classList.add('bump');
   }
-  modal.classList.remove('on');
+  modal.classList.remove('on'); closing = false;
   if (!viewList) setTimeout(react, 250);
 }
 async function next(dir = 1) {
@@ -1126,6 +1170,7 @@ async function next(dir = 1) {
     const i = viewList.indexOf(current);
     openNote(viewList[(i + (dir > 0 ? 1 : -1) + viewList.length) % viewList.length], { fresh: false, list: viewList });
   } else {
+    popLayer('note');
     modal.classList.remove('on');
     await sleep(120);
     draw();
@@ -1289,6 +1334,11 @@ function startRain() {
     d.style.cssText = `left:${Math.random() * 108}%;height:${14 + Math.random() * 16}px;opacity:${.35 + Math.random() * .6};animation-duration:${.55 + Math.random() * .5}s;animation-delay:${-Math.random() * 1.2}s`;
     r.appendChild(d);
   }
+  for (let i = 0; i < 16; i++) {
+    const rp = document.createElement('i'); rp.className = 'ripple';
+    rp.style.cssText = `left:${Math.random() * 100}%;top:${72 + Math.random() * 26}%;animation-delay:${-Math.random() * 1.4}s;animation-duration:${1.1 + Math.random() * .6}s`;
+    r.appendChild(rp);
+  }
   r.classList.add('on'); document.body.classList.add('gloom');
 }
 function stopRain() {
@@ -1299,7 +1349,7 @@ function stopRain() {
 /* --- la escena --- */
 async function rainyVisit() {
   document.body.classList.add('event'); updateCare();
-  if (modal.classList.contains('on')) modal.classList.remove('on');
+  if (modal.classList.contains('on')) { popLayer('note'); modal.classList.remove('on'); }
   document.querySelectorAll('.nav button').forEach(x => x.classList.toggle('on', x.dataset.s === 'jarScreen'));
   document.querySelectorAll('.screen').forEach(sc => sc.classList.toggle('off', sc.id !== 'jarScreen'));
   bunny.classList.remove('hidden', 'sleep');
@@ -1307,7 +1357,7 @@ async function rainyVisit() {
   await sleep(1100);
   say('Uy… está lloviendo 🥺', 2600);
   await sleep(2700);
-  pinky.className = 'bunny pinky show stage enter';
+  pinky.className = 'bunny pinky show stage enter umb';
   await sleep(2150);
   pinky.classList.remove('enter'); hopP();
   say('¡anda! 😳', 1800);
@@ -1323,7 +1373,7 @@ async function rainyVisit() {
   await sleep(450);
   const held = pinky.querySelector('.held').getBoundingClientRect();
   pinky.classList.add('gave');
-  const env = $('env'); env.classList.remove('open'); env.classList.add('on');
+  const env = $('env'); env.classList.remove('open', 'crack', 'flapback', 'rise', 'drop', 'idle'); env.classList.add('on');
   const er = env.getBoundingClientRect();
   const dx = held.left + held.width / 2 - (er.left + er.width / 2), dy = held.top + held.height / 2 - (er.top + er.height / 2);
   await env.animate([
@@ -1334,6 +1384,9 @@ async function rainyVisit() {
   env.classList.add('idle');
   // deja de llover, sale el arcoíris
   stopRain();
+  pinky.classList.remove('umb'); pinky.classList.add('shake');
+  { const q = pinky.getBoundingClientRect(); sparks(q.left + q.width / 2, q.top + q.height * .3, 10, 70, ['💧', '✦', '💧']); }
+  setTimeout(() => pinky.classList.remove('shake'), 700);
   await sleep(700);
   document.body.classList.remove('calm', 'static'); document.body.classList.add('rainbow');
   buzz([20, 50, 20]);
@@ -1342,37 +1395,79 @@ async function rainyVisit() {
   await sleep(1000);
   say('Mira, ¡un arcoíris! 🥹', 2600);
   await new Promise(res => env.onclick = () => { env.onclick = null; res(); });
-  env.classList.remove('idle'); env.classList.add('open'); buzz([12, 40, 20]);
-  const r2 = env.getBoundingClientRect(); sparks(r2.left + r2.width / 2, r2.top + 20, 16, 120);
-  await sleep(1050);
-  env.classList.remove('on', 'open');
-  openLetter(true);
+  env.classList.remove('idle');
+  const r2 = env.getBoundingClientRect();
+  env.classList.add('crack'); buzz([8, 30, 8]);
+  sparks(r2.left + r2.width / 2, r2.top + r2.height * .6, 10, 60, ['✦', '♥', '✧']);
+  await sleep(420);
+  env.classList.add('open'); buzz(12);
+  await sleep(380); env.classList.add('flapback');
+  await sleep(300); env.classList.add('rise');
+  sparks(r2.left + r2.width / 2, r2.top - 10, 14, 120);
+  await sleep(850);
+  const paperRect = env.querySelector('.ep').getBoundingClientRect();
+  env.classList.add('drop');
+  openLetter(true, paperRect);
+  setTimeout(() => env.classList.remove('on', 'crack', 'open', 'flapback', 'rise', 'drop'), 700);
 }
 
 /* --- la carta --- */
-let letterFirst = false;
-function openLetter(first) {
+let letterFirst = false, revealT = [], userScrolled = false;
+function openLetter(first, fromRect) {
   letterFirst = first;
+  revealT.forEach(clearTimeout); revealT = [];
+  const card = $('ltCard'), body = $('ltBody'), bun = card.querySelector('.bunnies');
+  card.classList.remove('all');
   $('ltDate').textContent = fdate(LETTER_DATE);
-  const body = $('ltBody'); body.innerHTML = '';
+  body.innerHTML = '';
+  let t = fromRect ? 700 : 350; const paras = [];
   LETTER.forEach(x => {
-    const p = document.createElement('p');
-    if (Array.isArray(x)) { p.className = x[0]; p.textContent = x[1]; } else p.textContent = x;
+    const p = document.createElement('p'); let txt = x;
+    if (Array.isArray(x)) { p.className = x[0]; txt = x[1]; }
+    if (first) {
+      paras.push([p, t]);
+      txt.split(' ').forEach(w => { const sp = document.createElement('span'); sp.className = 'lw'; sp.style.setProperty('--d', t + 'ms'); sp.textContent = w; p.append(sp, ' '); t += 30; });
+      t += 450;
+    } else p.textContent = txt;
     body.appendChild(p);
+    p.classList.add('in');
   });
-  const items = [...body.children, $('ltCard').querySelector('.bunnies')];
-  $('ltClose').classList.remove('in');
-  items.forEach(el => el.classList.remove('in'));
-  $('ltCard').scrollTop = 0;
-  $('lt').classList.add('on');
-  const step = first ? 1100 : 0;
-  items.forEach((el, i) => setTimeout(() => el.classList.add('in'), 500 + i * step));
-  setTimeout(() => $('ltClose').classList.add('in'), 500 + items.length * step);
+  bun.classList.remove('in'); $('ltClose').classList.remove('in');
+  card.scrollTop = 0; userScrolled = false;
+  $('lt').classList.add('on'); pushLayer('letter');
+  if (first) {
+    $('ltSkip').classList.add('in');
+    if (fromRect) {
+      card.classList.add('flip');
+      const cr = card.getBoundingClientRect();
+      const dx = fromRect.left + fromRect.width / 2 - (cr.left + cr.width / 2), dy = fromRect.top + fromRect.height / 2 - (cr.top + cr.height / 2);
+      card.animate([{ transform: `translate(${dx}px, ${dy}px) scale(${fromRect.width / cr.width}, ${fromRect.height / cr.height})`, opacity: .9 }, { transform: 'none', opacity: 1 }],
+        { duration: 760, easing: 'cubic-bezier(.2, 1, .3, 1)' }).finished.then(() => card.classList.remove('flip')).catch(() => {});
+    }
+    paras.forEach(([p, pt]) => revealT.push(setTimeout(() => {
+      if (!userScrolled && !card.classList.contains('all')) card.scrollTo({ top: Math.max(0, p.offsetTop - 70), behavior: 'smooth' });
+    }, pt)));
+    revealT.push(setTimeout(finishLetter, t));
+  } else {
+    $('ltSkip').classList.remove('in'); bun.classList.add('in'); $('ltClose').classList.add('in');
+  }
 }
-$('ltClose').onclick = () => {
-  $('lt').classList.remove('on'); buzz(8);
+function finishLetter() {
+  revealT.forEach(clearTimeout); revealT = [];
+  const card = $('ltCard'); card.classList.add('all');
+  card.querySelector('.bunnies').classList.add('in');
+  $('ltClose').classList.add('in'); $('ltSkip').classList.remove('in');
+}
+['touchstart', 'wheel'].forEach(ev => $('ltCard').addEventListener(ev, () => { userScrolled = true; }, { passive: true }));
+$('ltCard').addEventListener('click', () => { if (!$('ltCard').classList.contains('all') && $('ltSkip').classList.contains('in')) finishLetter(); });
+function closeLetter(fromPop) {
+  if (!$('lt').classList.contains('on')) return;
+  if (fromPop !== true) popLayer('letter');
+  revealT.forEach(clearTimeout); revealT = [];
+  $('lt').classList.remove('on');
   if (letterFirst) { letterFirst = false; afterLetter(); }
-};
+}
+$('ltClose').onclick = () => { buzz(8); closeLetter(); };
 
 function afterLetter() {
   store.set('pinky', 'done');
@@ -1399,12 +1494,13 @@ $('carrotBtn').onclick = async () => {
     { transform: 'translate(0, 0) scale(.7) rotate(0)' },
     { transform: `translate(${tx * .5}px, ${ty - 80}px) scale(1.25) rotate(-160deg)`, offset: .5 },
     { transform: `translate(${tx}px, ${ty}px) scale(.7) rotate(-300deg)` },
-  ], { duration: 620, easing: 'cubic-bezier(.3, .1, .3, 1)' }).finished;
+  ], { duration: 620, easing: 'cubic-bezier(.3, .1, .3, 1)', fill: 'forwards' }).finished;
+  pinky.classList.remove('chomp'); void pinky.offsetWidth; pinky.classList.add('chomp', 'happy');
+  for (const cut of [34, 67, 100]) { c.style.clipPath = `inset(0 0 0 ${cut}%)`; sparks(sx + tx, sy + ty + 8, 3, 24, ['·', '•', '✦']); buzz(10); await sleep(170); }
   c.remove();
   carrots++; store.set('carrots', carrots); setFat();
   pinky.classList.remove('chomp'); void pinky.offsetWidth; pinky.classList.add('chomp', 'happy');
   sparks(p.left + p.width * .5, p.top + p.height * .5, 6, 45, ['ñam', '✦', '♥']);
-  buzz([10, 70, 10, 70, 10]);
   sayP(CARROT_HITOS[carrots] || (carrots > 30 ? rand(['Estoy redondita ya 😳', 'Ñam… 🫠', 'Una más y ruedo 🥺']) : rand(CARROT_LINES)), 2200);
   setTimeout(() => { eating = false; }, 380);
   clearTimeout(window._chomp); window._chomp = setTimeout(() => pinky.classList.remove('chomp', 'happy'), 950);
@@ -1419,9 +1515,11 @@ $('hugBtn').onclick = async () => {
   bunny.classList.remove('sleep'); bubble.classList.remove('on'); pBubble.classList.remove('on');
   updateCare();
   const cx = innerWidth / 2, wr = bunny.getBoundingClientRect(), pr = pinky.getBoundingClientRect();
+  bunny.classList.add('travel'); pinky.classList.add('travel');
   bunny.style.transform = `translateX(${cx - wr.width + 16 - wr.left}px)`;
   pinky.style.transform = `translateX(${cx - 16 - pr.left}px)`;
   await sleep(950);
+  bunny.classList.remove('travel'); pinky.classList.remove('travel');
   bunny.classList.add('hug', 'happy'); pinky.classList.add('hug', 'happy');
   const h = $('hugHeart'); h.style.left = cx + 'px'; h.style.top = (wr.top + 6) + 'px'; h.classList.add('on');
   for (let i = 0; i < 4; i++) {
@@ -1429,11 +1527,14 @@ $('hugBtn').onclick = async () => {
     sparks(cx, wr.top + wr.height * .45, 7, 75, ['💗', '💕', '♥', '✦']);
     await sleep(900);
   }
+  sparks(cx, wr.top + wr.height * .4, 18, 140, ['💗', '💖', '✨', '♥']);
   h.classList.remove('on');
   bunny.classList.remove('hug', 'happy'); pinky.classList.remove('hug', 'happy');
   hugs++; store.set('hugs', hugs);
+  bunny.classList.add('travel'); pinky.classList.add('travel');
   bunny.style.transform = ''; pinky.style.transform = '';
   await sleep(950);
+  bunny.classList.remove('travel'); pinky.classList.remove('travel');
   hugging = false; updateCare();
   say(rand(HUG_W), 2600);
   setTimeout(() => sayP(rand(HUG_P), 2600), 1100);
